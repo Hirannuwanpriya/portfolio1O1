@@ -42,7 +42,7 @@ export default function ArrowButton({
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-3 text-sm font-medium text-[var(--color-text-primary)] transition-colors duration-200 hover:text-[var(--color-accent-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-blue)] focus-visible:ring-offset-2 ${className}`}
+      className={`group inline-flex items-center gap-3 text-sm font-medium text-[var(--color-text-primary)] transition-colors duration-200 hover:text-[var(--color-accent-crimson)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-crimson)] focus-visible:ring-offset-2 ${className}`}
     >
       <span className="underline-offset-4 group-hover:underline">
         {children}

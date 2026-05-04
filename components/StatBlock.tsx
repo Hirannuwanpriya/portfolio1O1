@@ -16,7 +16,7 @@ export default function StatBlock({ value, symbol, caption }: StatBlockProps) {
           {value}
         </span>
         {symbol ? (
-          <span className="mt-1 text-2xl font-semibold leading-none md:text-3xl">
+          <span className="mt-1 text-2xl font-semibold font-serif leading-none md:text-3xl">
             {symbol}
           </span>
         ) : null}

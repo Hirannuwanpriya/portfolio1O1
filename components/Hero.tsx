@@ -57,7 +57,7 @@ export default function Hero() {
           <a
             href="#about"
             aria-label="Scroll to About Me section"
-            className="group inline-flex flex-col items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-blue)]"
+            className="group inline-flex flex-col items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] transition-opacity duration-200 opacity-70 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-blue)]"
           >
             <span>More About Me</span>
             <span

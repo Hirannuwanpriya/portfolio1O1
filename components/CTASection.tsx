@@ -17,8 +17,14 @@ export default function CTASection() {
           .
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
-          Available for roles, contract work, and freelance projects in
-          Australia, New Zealand, and remote teams.
+          Available for{" "}
+          <mark className="rounded-sm bg-[var(--color-accent-yellow)] px-1.5 py-0.5 text-[var(--color-text-primary)]">
+            roles
+          ,{" "}
+            contract work
+          </mark>
+          &nbsp;and freelance projects in Australia, New Zealand, and remote
+          teams.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <ArrowButton href="/contact" variant="pill">

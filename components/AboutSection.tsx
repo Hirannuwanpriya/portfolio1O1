@@ -9,10 +9,10 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { value: "50", symbol: "+", caption: "Projects shipped for startups and SMBs" },
-  { value: "4.9", symbol: "+", caption: "Average client satisfaction rating" },
-  { value: "60", symbol: "%", caption: "Faster page loads after performance audits" },
-  { value: "99", symbol: "%", caption: "Uptime across deployed Laravel & Next.js apps" },
+  { value: "110", symbol: "+", caption: "Projects Delivered" },
+  { value: "4", symbol: "+", caption: "Countries Served" },
+  { value: "46", symbol: "", caption: "Web Platforms & E-commerce Shipped" },
+  { value: "99", symbol: "%", caption: "Uptime across deployed Laravel apps" },
 ];
 
 /**
@@ -36,19 +36,14 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left column: micro-label, bio, CTA */}
           <div>
-            <p className="mb-6 font-mono text-xs uppercase tracking-widest text-[var(--color-text-secondary)]">
-              Meet <span className="mx-1">———</span> Hiran
-            </p>
-            <p className="max-w-xl text-base leading-relaxed text-[var(--color-text-primary)] md:text-lg">
-              I&apos;m a full stack engineer based in Hobart, Tasmania,
-              shipping Laravel and Next.js applications for startups, SMBs,
-              and established brands. My focus is on outcome-driven software:
-              measurable performance gains, fewer bugs in production, and
-              interfaces that respect the people using them.
+            <p className="max-w-xl text-base leading-relaxed text-[var(--color-text-primary)] md:text-lg">      
+              As an full stack engineer I lead teams and shipping Laravel and React/Vue applications for startups, SMBs,
+              and established brands. I own architecture decisions, mentor developers, and stay hands-on across the full stack. 
+              I've delivered products for clients across Australia, Europe, and Asia — from SaaS platforms to eCommerce, Education and healthcare systems.
             </p>
             <div className="mt-8">
               <ArrowButton href="/contact" variant="inline">
-                Contact Me
+                Portfolio
               </ArrowButton>
             </div>
           </div>
