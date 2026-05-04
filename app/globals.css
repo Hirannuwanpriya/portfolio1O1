@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Neutral foundation */
+  --color-bg: #ffffff;
+  --color-bg-soft: #fafafa;
+  --color-text-primary: #111418;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Accents */
+  --color-accent-sand: #f9d5a3;
+  --color-accent-yellow: #f1c40f;
+  --color-accent-blue: #3498db;
+  --color-accent-violet: #9b59b6;
+  --color-accent-purple: #7d3c98;
+  --color-accent-crimson: #c0392b;
+
+  /* Fonts — Cormorant Garamond is the primary site font */
+  --font-sans: var(--font-cormorant), Georgia, serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-mono: var(--font-geist-mono);
+
+  /* Animations */
+  --animate-spin-slow: spin-slow 20s linear infinite;
+  --animate-bounce-soft: bounce-soft 1.8s ease-in-out infinite;
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes bounce-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(4px);
+    }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

@@ -1,11 +1,39 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Hero from "@/components/Hero";
+import AboutSection from "@/components/AboutSection";
+import LatestWorksSection from "@/components/LatestWorksSection";
+import CTASection from "@/components/CTASection";
+import { buildPageMetadata } from "@/lib/seo";
+import {
+  personSchema,
+  serializeJsonLd,
+  webSiteSchema,
+} from "@/lib/structured-data";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title:
+      "Hiran Nuwanpriya | Full Stack Engineer | Laravel, React & Next.js Developer",
+    description:
+      "Portfolio of Hiran Nuwanpriya, a full stack engineer specialising in Laravel, React, Next.js, Vue.js, SaaS platforms, CRM systems and scalable web applications.",
+    path: "/",
+  });
+}
 
 export default function Home() {
+  const jsonLd = serializeJsonLd([personSchema(), webSiteSchema()]);
+
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-3xl font-bold">
-        Welcome to Portfolio101 🚀
-      </h1>
-    </main>
+    <>
+      <script
+        type="application/ld+json"
+        // JSON.stringify output is safe for inline JSON-LD here.
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
+      <Hero />
+      <AboutSection />
+      <LatestWorksSection />
+      <CTASection />
+    </>
   );
 }
