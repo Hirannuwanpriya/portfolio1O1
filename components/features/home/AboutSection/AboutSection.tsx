@@ -1,6 +1,4 @@
-import SectionLabel from "@/components/SectionLabel";
-import StatBlock from "@/components/StatBlock";
-import ArrowButton from "@/components/ArrowButton";
+import { ArrowButton, SectionLabel, StatBlock } from "@/components/ui";
 
 interface Stat {
   value: string;

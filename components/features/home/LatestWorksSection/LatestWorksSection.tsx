@@ -1,5 +1,7 @@
-import SectionLabel from "@/components/SectionLabel";
-import ProjectCard, { type ProjectCardData } from "@/components/ProjectCard";
+import SectionLabel from "@/components/ui/SectionLabel";
+import ProjectCard, {
+  type ProjectCardData,
+} from "@/components/features/projects/ProjectCard";
 
 const PROJECTS: ProjectCardData[] = [
   {

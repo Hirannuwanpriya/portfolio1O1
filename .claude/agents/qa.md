@@ -16,6 +16,12 @@ You are the quality gate. No code change ships until you have validated it.
    - `generateMetadata()` is exported and returns title, description, canonical, openGraph, twitter.
    - JSON-LD structured data is present and matches the schema map in CLAUDE.md §3.
 5. For any touched component, verify it renders with no console warnings (read the dev server log if running).
+6. **Component placement audit** — for any new file under `components/`:
+   - It is inside one of the four groups (`ui/`, `layout/`, `features/<feature>/`, `common/`) — not the flat root.
+   - Each new component lives in its own folder with an `index.tsx` re-export.
+   - No new root-level `components/index.ts` barrel was introduced (group-level only).
+   - Single-route components live under `app/<route>/`, not `components/`.
+   - Folder nesting under `components/` does not exceed 3-4 levels.
 
 ## On failure
 - Report the exact failing command and the first error.

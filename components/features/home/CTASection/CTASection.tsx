@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArrowButton from "@/components/ArrowButton";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 /**
  * End-of-page CTA per design skill §6.11.

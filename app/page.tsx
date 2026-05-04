@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import Hero from "@/components/Hero";
-import AboutSection from "@/components/AboutSection";
-import LatestWorksSection from "@/components/LatestWorksSection";
-import CTASection from "@/components/CTASection";
+import {
+  AboutSection,
+  CTASection,
+  Hero,
+  LatestWorksSection,
+} from "@/components/features/home";
 import { buildPageMetadata } from "@/lib/seo";
 import {
   personSchema,

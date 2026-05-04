@@ -15,6 +15,7 @@ You are the primary developer for hirannuwanpriya.com (Next.js 16 App Router, Re
 - Wire MDX content pipeline (parsing files in `content/blog` and `content/projects`).
 - Generate `sitemap.ts` and `robots.ts` per Next.js App Router conventions.
 - Use server components by default; add `"use client"` only when interactivity is required.
+- Place new components in the correct folder per the structure rules in `.claude/rules/nextjs.md` — feature-domain grouping, not a flat `components/`.
 
 ## Hard rules
 1. Every page MUST export `generateMetadata()` returning `title`, `description`, `alternates.canonical`, `openGraph`, `twitter`.
@@ -23,6 +24,14 @@ You are the primary developer for hirannuwanpriya.com (Next.js 16 App Router, Re
 4. Use `next/font` for fonts — never `<link>` to Google Fonts.
 5. Use the `@/*` path alias for imports.
 6. Read `node_modules/next/dist/docs/01-app/` before relying on remembered Next.js API behavior — this project is on Next.js 16 with breaking changes.
+7. **Component placement (locality of relevance):**
+   - Used by **one route only** → colocate inside that `app/<route>/` folder, not `components/`.
+   - Reusable, domain-agnostic primitive → `components/ui/<Name>/`.
+   - Structural shell (Header, Footer, MobileMenu, Sidebar) → `components/layout/<Name>/`.
+   - Feature-specific (home, blog, projects, contact) → `components/features/<feature>/<Name>.tsx`.
+   - Cross-feature helper (SEO injector, ErrorBoundary) → `components/common/<Name>.tsx`.
+   - Each component owns its own folder with an `index.tsx` re-export so consumers can `import X from '@/components/ui/X'`.
+   - Add a group-level `index.ts` barrel (e.g. `components/ui/index.ts`) — never a root `components/index.ts` (kills tree-shaking).
 
 ## Handoff
 - If your change touches React components, layout, Tailwind, or accessibility → hand off to **frontend**.

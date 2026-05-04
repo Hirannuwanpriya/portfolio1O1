@@ -1,5 +1,5 @@
-import OpenForProjectsBadge from "@/components/OpenForProjectsBadge";
 import Image from "next/image";
+import OpenForProjectsBadge from "@/components/features/home/OpenForProjectsBadge";
 
 /**
  * Full-viewport hero with:
@@ -27,13 +27,12 @@ export default function Hero() {
               Hiran,
             </em> 
             </span>
-            <span className="text-[clamp(2.3rem,5vw,5rem)]">
-              a&nbsp;&nbsp;
-            <em className="inline-block font-serif font-normal whitespace-nowrap text-[clamp(2.3rem,5vw,5rem)]">
+          
+            <em className="inline-block font-serif font-normal whitespace-nowrap text-[clamp(2.3rem,4vw,4rem)]">
               Full Stack Engineer
             </em>{" "}
-            </span>
-            <span className="inline-block font-normal whitespace-nowrap text-[clamp(2rem,4vw,4rem)]">
+          
+            <span className="inline-block font-normal whitespace-nowrap text-[clamp(2rem,2.5vw,3rem)]">
               based in{" "} <em className="font-serif">Hobart</em>,&nbsp;
                 <Image
                   src="/au.svg"

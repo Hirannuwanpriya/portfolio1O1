@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import HeaderClock from "@/components/HeaderClock";
-import ArrowButton from "@/components/ArrowButton";
-import MobileMenu from "@/components/MobileMenu";
+import HeaderClock from "@/components/layout/HeaderClock";
+import MobileMenu from "@/components/layout/MobileMenu";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 interface NavItem {
   href: string;
@@ -26,39 +26,39 @@ const NAV_ITEMS: NavItem[] = [
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/90 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 md:px-8 lg:px-12">
+      <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 md:px-8 lg:px-12">
         {/* Wordmark — primary logo + name */}
         <Link
           href="/"
           aria-label="Hiran Nuwanpriya — home"
           className="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[var(--color-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-blue)]"
         >
-          <Image
+          {/* <Image
             src="/logo-primary.png"
             alt=""
             width={200}
             height={180}
             priority
             className="h-7 w-auto md:h-8"
-          />
-          <span className="hidden text-sm uppercase tracking-wide sm:inline">
-            Hiran{" "}
-            <span className="font-[var(--font-serif)] text-base font-normal italic normal-case">
+          /> */}
+          <span className="hidden tracking-wide sm:inline">
+            <span className="text-4xl font-serif">Hiran{" "}</span>
+            {/* <span className="font-[var(--font-serif)] text-base font-normal italic normal-case -ml-2 text-3xl">
               Nuwanpriya
-            </span>
+            </span> */}
           </span>
         </Link>
 
-        {/* Nav */}
+        {/* Nav — absolutely centred to the viewport, independent of side widths */}
         <nav
           aria-label="Primary"
-          className="hidden lg:flex items-center gap-7"
+          className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex"
         >
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-[var(--color-text-primary)] transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-blue)] focus-visible:ring-offset-2"
+              className="pointer-events-auto text-sm text-[var(--color-text-primary)] transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-blue)] focus-visible:ring-offset-2"
             >
               {item.label}
             </Link>
