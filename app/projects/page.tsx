@@ -93,7 +93,7 @@ export default async function ProjectsPage() {
               className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
             >
               {projects.map((entry) => (
-                <li key={entry.slug} className="flex">
+                <li key={entry.slug} className="contents">
                   <ProjectCard project={toCardData(entry)} />
                 </li>
               ))}
