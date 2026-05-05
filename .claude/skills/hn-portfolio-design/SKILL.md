@@ -77,6 +77,7 @@ Rules:
 - Accents appear on text labels, borders, underlines, dots, and small icons — never as full panel fills.
 - The primary call-to-action button uses `#111418` background with white text; reserve accent colour for the arrow icon or hover underline only.
 - Visited links: `#3498DB` with 60 % opacity.
+- **Dark feature sections (§6.12)**: `--color-accent-yellow` (`#F1C40F`) is the *single* permitted accent on the dark Core Skills surface — used for the `// EYEBROW` label, category labels, and the optional headline rule. No second accent inside chips. Dark surfaces are limited to **Footer (§6.10)** and **Core Skills (§6.12)**; any new dark fill needs explicit project-owner sign-off.
 
 ---
 
@@ -339,6 +340,78 @@ in Australia, New Zealand, and remote teams.
 - Top/bottom: `border-t border-b border-border`
 - Heading: `text-3xl md:text-4xl font-bold`
 
+### 6.12 Dark feature section (Core Skills variant)
+
+The site is **white-dominant**. Dark fills are limited to two surfaces: the **Footer (§6.10)** and the **Core Skills section (this pattern)**. Any new dark fill requires explicit project-owner sign-off — flag it, do not invent.
+
+```
+// TECHNICAL PURVIEW                          ← mono, yellow, tracking-widest
+Core Skills                                   ← serif italic, large, white
+────                                          ← optional 1px yellow accent rule
+
+BACKEND          FRONTEND          CLOUD & DEVOPS
+[chip] [chip]    [chip] [chip]     [chip] [chip]
+[chip] [chip]    [chip] [chip]     [chip] [chip]
+
+DATABASE         SECURITY & PERF   LEADERSHIP
+[chip] [chip]    [chip] [chip]     [chip] [chip]
+```
+
+**Surface**
+- Background: `bg-[var(--color-text-primary)]` (`#111418`).
+- Text: white primary, `#6B7280` secondary.
+- Vertical rhythm: `py-24 md:py-32` (slightly more than light sections — dark needs more breathing room).
+- Container: `max-w-7xl mx-auto px-6 md:px-8 lg:px-12`.
+
+**Eyebrow** — code-comment style label
+```html
+<p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-yellow)]">
+  // TECHNICAL PURVIEW
+</p>
+```
+
+**Headline** — serif italic, large, white
+```html
+<h2 class="mt-3 font-[var(--font-serif)] text-5xl md:text-6xl lg:text-7xl font-normal italic">
+  Core Skills
+</h2>
+```
+
+**Optional accent rule** — thin yellow underline below the headline
+```html
+<div class="mt-6 h-px w-20 bg-[var(--color-accent-yellow)]" />
+```
+
+**Categories grid** — 6 columns on desktop (3 × 2)
+```html
+<div class="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
+  <div>
+    <p class="text-xs font-mono uppercase tracking-widest text-[var(--color-accent-yellow)]">
+      BACKEND
+    </p>
+    <div class="mt-4 flex flex-wrap gap-2.5">
+      <SkillChip label="Laravel (all versions)" />
+      ...
+    </div>
+  </div>
+  ...
+</div>
+```
+
+**SkillChip primitive** (`components/ui/SkillChip/`) — dark tone (default in this section)
+```css
+inline-flex rounded-md border border-white/10 bg-white/[0.04] px-3 py-1.5
+font-mono text-xs text-white
+```
+
+A `light` tone variant exists for reuse on white sections (mirrors the existing ProjectCard tech-tag pattern):
+```css
+inline-flex rounded-md border border-[var(--color-border)] bg-[var(--color-bg-soft)]
+px-3 py-1.5 font-mono text-xs text-[var(--color-text-primary)]
+```
+
+**Accent budget**: yellow is the *only* accent on this surface (eyebrow + category labels + optional rule). Do not introduce a second accent inside chips or links.
+
 ---
 
 ## 7. Motion & Interaction
@@ -550,7 +623,8 @@ hirannuwanpriya.com/
 │   ├── ProjectCard.tsx
 │   ├── BlogCard.tsx
 │   ├── ExperienceTimeline.tsx
-│   ├── SkillBadge.tsx
+│   ├── SkillChip.tsx           ← dark + light tone pill (renamed from SkillBadge)
+│   ├── CoreSkillsSection.tsx   ← dark feature section, see §6.12
 │   ├── TechnologyStack.tsx
 │   ├── StatsRow.tsx
 │   ├── ContactForm.tsx

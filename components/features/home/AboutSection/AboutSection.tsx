@@ -27,7 +27,7 @@ export default function AboutSection() {
         <div className="mb-12 md:mb-16">
           <SectionLabel className="mb-4">Introduction</SectionLabel>
           <h2 className="text-5xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text-primary)] md:text-6xl lg:text-7xl">
-            About Me
+            About <span className="tracking-[-0.08em]">Me</span>
           </h2>
         </div>
 

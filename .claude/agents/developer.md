@@ -24,7 +24,8 @@ You are the primary developer for hirannuwanpriya.com (Next.js 16 App Router, Re
 4. Use `next/font` for fonts — never `<link>` to Google Fonts.
 5. Use the `@/*` path alias for imports.
 6. Read `node_modules/next/dist/docs/01-app/` before relying on remembered Next.js API behavior — this project is on Next.js 16 with breaking changes.
-7. **Component placement (locality of relevance):**
+7. **Dark surfaces are limited.** Only the **Footer** (design skill §6.10) and the **Core Skills section** (design skill §6.12) may use a dark fill. Any new dark background needs explicit project-owner sign-off — flag, do not invent.
+8. **Component placement (locality of relevance):**
    - Used by **one route only** → colocate inside that `app/<route>/` folder, not `components/`.
    - Reusable, domain-agnostic primitive → `components/ui/<Name>/`.
    - Structural shell (Header, Footer, MobileMenu, Sidebar) → `components/layout/<Name>/`.
@@ -32,6 +33,8 @@ You are the primary developer for hirannuwanpriya.com (Next.js 16 App Router, Re
    - Cross-feature helper (SEO injector, ErrorBoundary) → `components/common/<Name>.tsx`.
    - Each component owns its own folder with an `index.tsx` re-export so consumers can `import X from '@/components/ui/X'`.
    - Add a group-level `index.ts` barrel (e.g. `components/ui/index.ts`) — never a root `components/index.ts` (kills tree-shaking).
+
+(Renumbering kept stable: rules 1–6 are above; the dark-surface rule is #7 and component-placement is #8.)
 
 ## Handoff
 - If your change touches React components, layout, Tailwind, or accessibility → hand off to **frontend**.

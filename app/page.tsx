@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   AboutSection,
+  CoreSkillsSection,
   CTASection,
   Hero,
   LatestWorksSection,
@@ -34,6 +35,7 @@ export default function Home() {
       />
       <Hero />
       <AboutSection />
+      <CoreSkillsSection />
       <LatestWorksSection />
       <CTASection />
     </>

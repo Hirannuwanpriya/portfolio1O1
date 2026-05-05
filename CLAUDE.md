@@ -237,6 +237,7 @@ Every page must have:
 - Spacious padding — never cramped
 - Accent colours for small details only (badges, icons, links)
 - Subtle animations only; no excessive motion
+- **Dark feature sections (Footer, Core Skills) are explicit, documented exceptions** — see design skill §6.10 (Footer) and §6.12 (Core Skills variant). No new dark fills without project-owner sign-off.
 
 ### Logo
 - HN monogram, rounded/geometric, minimal
@@ -258,9 +259,10 @@ components/
   ProjectCard.tsx      # Title, description, tech stack, link
   BlogCard.tsx         # Title, date, excerpt, read more
   ExperienceTimeline.tsx  # Role, company, period, bullet points
-  SkillBadge.tsx       # Technology pill/badge
-  TechnologyStack.tsx  # Grid of skill badges
-  CTASection.tsx       # Full-width call-to-action block
+  SkillChip.tsx           # Mono pill primitive (light + dark tones) — see design skill §6.12
+  CoreSkillsSection.tsx   # Dark feature section, 6 skill categories — see design skill §6.12
+  TechnologyStack.tsx     # Grid of skill chips
+  CTASection.tsx          # Full-width call-to-action block
   ContactForm.tsx      # Name, email, message, submit
   ResumeButton.tsx     # Download PDF CTA
   SEOHead.tsx          # generateMetadata helper

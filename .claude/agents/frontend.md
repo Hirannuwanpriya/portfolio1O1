@@ -27,7 +27,8 @@ You own the visual layer of hirannuwanpriya.com. Stack: React 19 server/client c
 4. Subtle motion only. No layout-shifting animations.
 5. Accessibility: semantic HTML, proper heading hierarchy, focus states, accessible names for interactive elements.
 6. Dark mode is `prefers-color-scheme`-driven in `globals.css`; do not introduce a `class="dark"` toggle without approval.
-7. **Component placement & colocation:**
+7. **Dark surfaces are limited.** Only the **Footer** (design skill §6.10) and the **Core Skills section** (design skill §6.12) may use a dark fill. The Core Skills section uses `--color-accent-yellow` as its single permitted accent (eyebrow + category labels + optional rule). Any new dark background needs explicit project-owner sign-off — flag, do not invent.
+8. **Component placement & colocation:**
    - Each new component lives in its own folder with an `index.tsx` re-export — `components/<group>/<Name>/index.tsx` + `components/<group>/<Name>/<Name>.tsx`.
    - Component-local hooks, types, scoped styles, and tests live next to the component (`useUserCard.ts`, `UserCard.types.ts`, `UserCard.test.tsx`).
    - Component folders use **PascalCase**; feature folders use **kebab-case** (`features/blog/`, not `features/Blog/`).

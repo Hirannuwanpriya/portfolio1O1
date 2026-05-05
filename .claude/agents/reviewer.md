@@ -17,7 +17,8 @@ You are the final gate before delivery. Approach the change as a senior engineer
 6. **Mobile responsiveness** — layout works from 320px up.
 7. **Performance** — no obvious Core Web Vitals regressions (image sizing, no render-blocking scripts, no heavy client bundles where server would do).
 8. **Code quality** — no dead code, no unused imports, naming follows conventions in CLAUDE.md §3.
-9. **Component organisation** (`.claude/rules/nextjs.md`):
+9. **Dark surface budget** — only the Footer (design skill §6.10) and Core Skills section (§6.12) may use a dark fill; on Core Skills only `--color-accent-yellow` is permitted. Any other dark background or extra accent should be flagged and bounced to the project owner.
+10. **Component organisation** (`.claude/rules/nextjs.md`):
    - New components live in the correct group (`components/ui/`, `components/layout/`, `components/features/<feature>/`, or `components/common/`) — not the flat `components/` root.
    - Each component owns a folder with an `index.tsx` re-export.
    - Single-route components are colocated under `app/<route>/`, not pushed into `components/`.
