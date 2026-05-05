@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import HeaderClock from "@/components/layout/HeaderClock";
 import MobileMenu from "@/components/layout/MobileMenu";
@@ -7,6 +6,7 @@ import ArrowButton from "@/components/ui/ArrowButton";
 interface NavItem {
   href: string;
   label: string;
+  external?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -16,7 +16,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
-  { href: "/resume", label: "Resume" },
+  { href: "/M_T_Hiran_Nuwanpriya.pdf", label: "Resume", external: true },
 ];
 
 /**
@@ -55,15 +55,30 @@ export default function Header() {
           aria-label="Primary"
           className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex"
         >
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="pointer-events-auto text-sm text-[var(--color-text-primary)] transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-blue)] focus-visible:ring-offset-2"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const className =
+              "pointer-events-auto text-sm text-[var(--color-text-primary)] transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-blue)] focus-visible:ring-offset-2";
+
+            if (item.external) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={className}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
+            return (
+              <Link key={item.href} href={item.href} className={className}>
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right side: clock + CTA */}

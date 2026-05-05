@@ -7,6 +7,7 @@ import Link from "next/link";
 interface NavItem {
   href: string;
   label: string;
+  external?: boolean;
 }
 
 const MENU_ITEMS: NavItem[] = [
@@ -15,7 +16,7 @@ const MENU_ITEMS: NavItem[] = [
   { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
-  { href: "/resume", label: "Resume" },
+  { href: "/M_T_Hiran_Nuwanpriya.pdf", label: "Resume", external: true },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -143,17 +144,34 @@ export default function MobileMenu() {
             className="flex flex-1 flex-col justify-between px-6 pt-6 pb-10 md:px-8"
           >
             <ul className="flex flex-col gap-5">
-              {MENU_ITEMS.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={close}
-                    className="block text-4xl font-semibold tracking-[-0.02em] text-white transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-blue)] md:text-5xl"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {MENU_ITEMS.map((item) => {
+                const linkClassName =
+                  "block text-4xl font-semibold tracking-[-0.02em] text-white transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-blue)] md:text-5xl";
+
+                return (
+                  <li key={item.href}>
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={close}
+                        className={linkClassName}
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        onClick={close}
+                        className={linkClassName}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="mt-10">
