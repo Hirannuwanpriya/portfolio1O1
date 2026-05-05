@@ -1,0 +1,44 @@
+---
+title: "Why Laravel and React Are a Strong Stack for Business Applications"
+date: "2026-04-08"
+description: "Laravel on the server, React on the client — the pragmatic combination behind a decade of CRMs, ERPs, and SaaS platforms shipping to real customers."
+tags:
+  - Laravel
+  - React
+  - Architecture
+  - SaaS
+coverAlt: "Abstract diagram of a Laravel API serving a React frontend"
+---
+
+Most business software is not glamorous. It's an admin panel, a workflow engine, a billing system, a multi-tenant dashboard. The teams that ship that software well don't pick frameworks for novelty — they pick the boring, productive combinations that scale with the team. Laravel on the server and React on the client has been one of those combinations for nearly a decade, and the gap between it and the alternatives keeps widening.
+
+## Laravel handles the server problems you would otherwise hand-roll
+
+Every business app eventually needs the same set of capabilities: authentication, authorisation, queues, scheduled jobs, transactional email, file storage, caching, audit logs, multi-tenant isolation. Laravel ships first-party answers for all of them — Eloquent for the model layer, Sanctum and Fortify for auth, Horizon for queues, Pennant for feature flags, Scout for search, Cashier for billing, Nova or Filament for admin. None of these are "nice to have." They are the difference between a six-month build and an eighteen-month one.
+
+Pair Laravel with PHP 8.4 and you get typed properties, readonly classes, enums, and `array_*` improvements that make domain code feel like a serious language again. Add Larastan at level 8 and the static analysis catches the kind of bugs that used to wait for production.
+
+## React stays the safest frontend bet
+
+React's value isn't the framework — it's the gravitational pull around it. Every analytics SDK, charting library, payment widget, calendar, table, and DnD package targets React first. When you're building a CRM and the customer asks for a Gantt chart by Friday, "is there a React component for that?" is almost always answered yes.
+
+React 19 also closed most of the historic complaints. Server components mean less JavaScript shipped to the client. The new compiler removes the `useMemo` / `useCallback` ceremony that turned mid-size components into noise. Forms via the `<form action={serverAction}>` API tighten the bridge between the client and the server.
+
+## How they fit together in production
+
+The two patterns that work, both proven on real client builds:
+
+1. **Inertia.js** — Laravel routes return Inertia responses, React renders them. No API to design, no client-side router to maintain, type safety end-to-end with Wayfinder. Best for internal tools, admin panels, SaaS dashboards where the same team owns the whole app.
+2. **Laravel API + Next.js** — Laravel exposes a versioned REST or GraphQL API, Next.js renders the public-facing site and dashboards as a separate deployable. Best when you have a marketing site that needs SEO and a dashboard that needs auth, and they should evolve independently.
+
+Both patterns let you queue jobs in Laravel, broadcast events over WebSockets, and stream realtime updates to React without inventing infrastructure.
+
+## What this stack is not good at
+
+It's worth being honest about the boundaries. If you're building a static marketing site, you don't need Laravel — Next.js or Astro on Vercel will be cheaper and faster. If you're shipping a heavy compute backend (video transcoding, ML inference), Laravel is fine for the orchestration layer but the workers belong in Go, Rust, or Python. And if your team is already deep in Node, switching to PHP just to use Laravel is rarely the right trade.
+
+## The economics
+
+The argument that wins arguments is always the economics. A Laravel + React team of three engineers can ship and maintain a multi-tenant SaaS that would need five engineers and four extra services on most other stacks. The community is large, the hiring pool is deep, the documentation is excellent, and the upgrade path is smooth — Laravel ships an LTS-quality release every year and the migration guides actually work.
+
+For business applications — the unsexy software that pays the bills — that's a stack you can build a career on.

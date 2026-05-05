@@ -11,11 +11,12 @@ interface NavItem {
 
 const MENU_ITEMS: NavItem[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/#about", label: "About" },
   { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
   { href: "/resume", label: "Resume" },
+  { href: "/contact", label: "Contact" },
 ];
 
 /**

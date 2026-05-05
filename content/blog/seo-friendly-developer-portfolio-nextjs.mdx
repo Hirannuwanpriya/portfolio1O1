@@ -1,0 +1,68 @@
+---
+title: "How to Build an SEO-Friendly Developer Portfolio with Next.js"
+date: "2026-04-22"
+description: "A practical guide to shipping a fast, indexable developer portfolio with the Next.js App Router — covering metadata, structured data, sitemaps, and Core Web Vitals."
+tags:
+  - Next.js
+  - SEO
+  - Portfolio
+  - App Router
+coverAlt: "Editorial layout of a developer portfolio homepage"
+---
+
+A developer portfolio is one of the few sites where SEO and design pull in the same direction. Recruiters search your name, hiring managers paste it into LinkedIn, and conference organisers look for signal before reaching out. The site has to load fast, render server-first, and tell Google exactly what each page is about. The Next.js App Router gives you everything you need to do that without bolting on plugins.
+
+## Start with the App Router, not the Pages Router
+
+The App Router treats every `page.tsx` as a server component by default. That matters because the HTML Google sees is the HTML you render — no hydration round-trip, no client-only metadata. Drop a `generateMetadata()` export at the top of each route and you have unique titles, descriptions, canonical URLs, and Open Graph blocks rendered into the initial response.
+
+A common mistake is to put marketing copy in a client component "for animations" and then wonder why preview cards on Twitter or Slack are blank. Keep content rendering on the server and add `"use client"` only where you genuinely need interactivity — a contact form, a theme toggle, a clock.
+
+## Centralise metadata in `lib/seo.ts`
+
+Don't repeat metadata literals on every page. Build a small helper:
+
+```ts
+export function buildPageMetadata({ title, description, path }: Input): Metadata {
+  const canonical = `${SITE_URL}${path}`;
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: { url: canonical, title, description, images: [{ url: "/og.png" }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+  };
+}
+```
+
+Pages now call one function. Canonical URLs are guaranteed absolute. The OG image is consistent. When you eventually swap your social card design, you change one file.
+
+## Add JSON-LD per page type
+
+Google's rich-results system reads structured data, not your meta tags, when it decides whether to show authorship, breadcrumbs, or article cards. A portfolio maps cleanly:
+
+- Home — `Person` and `WebSite`
+- About / Resume — `ProfilePage` with a nested `Person`
+- Projects — `CollectionPage` with an `ItemList`
+- Blog post — `BlogPosting` with `author`, `datePublished`, `image`
+
+Generate these with typed helpers in `lib/structured-data.ts` and inject them with a single inline `<script type="application/ld+json">` per page. Validate every page once with the Rich Results Test before launch — you will catch missing fields you would never spot by eye.
+
+## Generate the sitemap from your content
+
+Hand-written `sitemap.xml` files rot the day you publish a new post. Use `app/sitemap.ts` to enumerate every static route plus every MDX slug under `content/blog` and `content/projects`. Pair it with `app/robots.ts` that points at `/sitemap.xml` and allows indexing on production only — gate it on `process.env.VERCEL_ENV === "production"` so preview deployments don't compete for search rankings.
+
+## Watch your Core Web Vitals
+
+A fast site outranks a slow one with the same content. The wins are predictable:
+
+- Use `next/image` everywhere with explicit `width` and `height` so the browser reserves space and CLS stays at zero.
+- Use `next/font` instead of a `<link>` to Google Fonts so font CSS ships inline and FOIT disappears.
+- Keep client bundles small — every component you mark `"use client"` adds JS. Server components stay free.
+- Defer analytics with `next/script` `strategy="afterInteractive"`.
+
+Run Lighthouse on every PR. If a green score becomes a yellow one, find out before merge, not after launch.
+
+## Ship, then iterate
+
+The biggest SEO mistake is waiting for a perfect site. Google needs months to crawl, rank, and stabilise a new domain — start that clock as soon as you have a working homepage, an About page, and a contact link. Ship the MVP, submit the sitemap to Search Console, and add depth (case studies, blog posts, schema refinements) over the following weeks. The compounding starts on day one.

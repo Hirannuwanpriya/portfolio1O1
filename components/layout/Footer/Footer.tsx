@@ -36,12 +36,12 @@ export default function Footer() {
                 height={240}
                 className="h-12 w-12 rounded-sm"
               />
-              <span className="text-sm uppercase tracking-wide">
+              {/* <span className="text-sm uppercase tracking-wide">
                 Hiran{" "}
                 <span className="font-[var(--font-serif)] text-base font-normal italic normal-case">
                   Nuwanpriya
                 </span>
-              </span>
+              </span> */}
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--color-text-secondary)]">
               Full Stack Engineer building scalable Laravel, React, and

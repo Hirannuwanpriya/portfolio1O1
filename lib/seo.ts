@@ -69,3 +69,35 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
     },
   };
 }
+
+export interface ArticleMetadataInput extends PageMetadataInput {
+  /** ISO publish date — used for `article:published_time`. */
+  publishedTime: string;
+  /** ISO modified date — defaults to `publishedTime`. */
+  modifiedTime?: string;
+  authors?: string[];
+  tags?: string[];
+}
+
+/**
+ * Build a fully populated `Metadata` object for a blog post. Same shape as
+ * `buildPageMetadata` but emits `openGraph.type = "article"` plus
+ * `publishedTime`, `modifiedTime`, `authors`, and `tags` so social platforms
+ * render rich previews and Google can surface article freshness signals.
+ */
+export function buildArticleMetadata(input: ArticleMetadataInput): Metadata {
+  const base = buildPageMetadata(input);
+  const resolvedAuthors = input.authors ?? [SITE_NAME];
+
+  return {
+    ...base,
+    openGraph: {
+      ...base.openGraph,
+      type: "article",
+      publishedTime: input.publishedTime,
+      modifiedTime: input.modifiedTime ?? input.publishedTime,
+      authors: resolvedAuthors,
+      ...(input.tags && input.tags.length > 0 ? { tags: input.tags } : {}),
+    },
+  };
+}

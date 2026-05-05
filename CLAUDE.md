@@ -404,8 +404,10 @@ npx tsc --noEmit       # TypeScript check
 ```
 
 ### Content
-Blog posts → `content/blog/[slug].mdx`
-Project case studies → `content/projects/[slug].mdx`
+Blog posts → `content/blog/[slug].mdx` — read via `lib/blog.ts` (`getAllPosts`, `getPostBySlug`, `getAllPostSlugs`).
+Project case studies → `content/projects/[slug].mdx` — read via `lib/content.ts` (`getAllProjects`, `getProjectBySlug`, `getAllProjectSlugs`).
+
+**MDX renderer:** `next-mdx-remote/rsc` (server component — no client runtime ships). The shared component map lives in `components/features/blog/MdxContent/`. When adding new MDX consumers, reuse this component or factor the map out — do not introduce a second MDX library.
 
 ### Deploy
 Push to `main` → Vercel auto-deploys.

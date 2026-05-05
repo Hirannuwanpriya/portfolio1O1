@@ -1,0 +1,74 @@
+---
+title: "Building Scalable SaaS Applications with Laravel"
+date: "2026-03-18"
+description: "Hard-won patterns for shipping multi-tenant SaaS on Laravel — from database design and queue workers to billing, observability, and zero-downtime deploys."
+tags:
+  - Laravel
+  - SaaS
+  - Architecture
+  - DevOps
+coverAlt: "Architecture diagram of a multi-tenant Laravel SaaS platform"
+---
+
+Laravel has a reputation as the framework you reach for to ship a product fast. That's true, and it undersells the part that matters more in year two: Laravel scales gracefully if you make a handful of decisions early. Most of the SaaS platforms that struggle aren't fighting the framework — they're paying back debt from shortcuts taken in the first sprint.
+
+Here are the patterns that have held up across CRM, ERP, healthcare, and travel platforms shipped to real customers.
+
+## Pick a tenancy model on day one
+
+Multi-tenancy is the architectural decision that's cheapest to get right and most expensive to fix later. There are three common models:
+
+- **Shared database, shared schema** — every row carries a `tenant_id`. Cheap to operate, but one bug in a query scope leaks data across tenants. Good for early-stage products with light isolation needs.
+- **Shared database, separate schema** — one Postgres database, one schema per tenant. Better isolation, easy backups, decent for B2B SaaS with hundreds of tenants.
+- **Separate database per tenant** — strongest isolation, used by enterprise tiers that demand it. Operationally heavier — migrations and backups now run N times.
+
+Laravel handles all three well via packages like `stancl/tenancy` or hand-rolled middleware. Pick one, document it, and write a global query scope or middleware that makes leaking data structurally impossible — not just policy-prevented.
+
+## Treat the queue as a first-class subsystem
+
+Anything slower than ~200 ms belongs in a queue. Email sending, PDF generation, third-party API calls, webhook delivery, search index updates, image processing — all of it. Use Horizon to monitor workers, set per-queue concurrency, and tag jobs by tenant so you can see at a glance whether one customer is starving the others.
+
+Two patterns worth standardising:
+
+```php
+// Idempotent job — safe to retry
+public function uniqueId(): string
+{
+    return "send-invoice-{$this->invoice->id}";
+}
+
+// Per-tenant rate limiting
+Bus::chain([new SyncContacts($tenant), new ReindexLeads($tenant)])
+    ->onQueue("tenant:{$tenant->id}")
+    ->dispatch();
+```
+
+When something breaks at 3 a.m., a per-tenant queue plus structured job logging is the difference between a five-minute fix and a two-hour incident.
+
+## Cache aggressively, invalidate precisely
+
+Redis pays for itself the moment your dashboard query starts to slow down. Cache the expensive read (`Cache::remember()` with a tenant-scoped key), and invalidate on the write side — never with a TTL alone. TTL-only cache is silent staleness; explicit invalidation is correctness.
+
+Tag cache entries by tenant and by model (`$tags = ["tenant:{$id}", "leads"]`) so you can flush a slice without nuking the cache. This matters more than it looks — a cold cache on Monday morning is its own outage.
+
+## Billing belongs to Cashier, not your domain
+
+Don't write Stripe code by hand. Cashier handles subscriptions, trials, proration, invoices, dunning, and webhook signature verification. Wire it to a `Billable` trait on your `Tenant` (not `User` — billing follows the tenant, not the seat) and route every webhook through Cashier's controller. The two-week shortcut of "we'll just call the Stripe API directly" becomes a six-month rebuild after the first refund dispute.
+
+## Observability is not optional
+
+Three minimum signals in production:
+
+1. **Application errors** — Flare, Sentry, or Bugsnag. Tagged by tenant, environment, and release.
+2. **Uptime** — Oh Dear or BetterStack pinging the marketing site, the dashboard, and the API every minute from at least two regions.
+3. **Performance** — slow query log on, APM on critical endpoints, Horizon dashboards visible to the on-call.
+
+Every Slack alert needs a runbook. "Queue depth high" without "here's the dashboard, here's the likely cause, here's the rollback command" is just noise.
+
+## Deploy with zero downtime, every time
+
+Use Forge or Vapor with Envoyer. Atomic releases (symlink swap), `php artisan down` only as a last resort, migrations run inside the deploy hook with `--force`, and OPcache cleared after symlink swap. Schedule cron jobs through Laravel's scheduler, not crontab — you want one source of truth and one log file.
+
+## The one habit that compounds
+
+Write tests as you ship features, not after. Pest makes it cheap. A SaaS with 3000 feature tests and 1500 unit tests is one you can refactor confidently in year three. A SaaS with 200 tests is one you stop touching, then rebuild. The framework gives you the tools — the discipline is yours to install.

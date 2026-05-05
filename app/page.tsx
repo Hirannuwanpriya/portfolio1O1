@@ -4,7 +4,7 @@ import {
   CoreSkillsSection,
   CTASection,
   Hero,
-  LatestWorksSection,
+  // LatestWorksSection,
 } from "@/components/features/home";
 import { buildPageMetadata } from "@/lib/seo";
 import {
@@ -36,7 +36,7 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <CoreSkillsSection />
-      <LatestWorksSection />
+      {/* <LatestWorksSection /> */}
       <CTASection />
     </>
   );
