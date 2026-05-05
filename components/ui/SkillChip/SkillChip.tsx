@@ -5,9 +5,9 @@ interface SkillChipProps {
 
 const TONE_CLASSES: Record<NonNullable<SkillChipProps["tone"]>, string> = {
   dark:
-    "inline-flex rounded-md border border-[var(--color-border)] bg-[var(--color-acc-soft)] hover:text-[var(--color-accent-yellow)] hover:border-[var(--color-accent-yellow)] px-3 py-1.5 font-mono text-xs text-text-primary",
+    "inline-flex rounded-md border border-[var(--color-border)] bg-[var(--color-acc-soft)] hover:text-[var(--color-accent-crimson)] hover:border-[var(--color-accent-crimson)] px-3 py-1.5 font-mono text-xs text-text-primary",
   light:
-    "inline-flex rounded-md border border-[var(--color-border)] bg-[var(--color-bg-soft)] hover:text-[var(--color-accent-yellow)] hover:border-[var(--color-accent-yellow)] px-3 py-1.5 font-mono text-xs text-[var(--color-text-primary)]",
+    "inline-flex rounded-md border border-[var(--color-border)] bg-[var(--color-bg-soft)] hover:text-[var(--color-accent-crimson)] hover:border-[var(--color-accent-crimson)] px-3 py-1.5 font-mono text-xs text-[var(--color-text-primary)]",
 };
 
 /**

@@ -91,7 +91,7 @@ const SKILL_GROUPS: SkillGroup[] = [
 export default function CoreSkillsSection() {
   return (
     <section
-          id="about"
+          id="skills"
           className="scroll-mt-20 bg-[var(--color-bg)]"
         >
           <div className="mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-24 lg:px-12">
