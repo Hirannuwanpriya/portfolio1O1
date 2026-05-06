@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_CONTACT } from "@/lib/site-contact";
 
 const FOOTER_NAV = [
   { href: "/", label: "Home" },
@@ -9,9 +10,9 @@ const FOOTER_NAV = [
 ];
 
 const SOCIAL_LINKS = [
-  { href: "https://github.com/hirannuwanpriya", label: "GitHub" },
-  { href: "https://linkedin.com/in/hirannuwanpriya", label: "LinkedIn" },
-  { href: "mailto:hi@hirannuwanpriya.com", label: "Email" },
+  { href: SITE_CONTACT.github, label: "GitHub" },
+  { href: SITE_CONTACT.linkedin, label: "LinkedIn" },
+  { href: SITE_CONTACT.emailHref, label: "Email" },
 ];
 
 /**

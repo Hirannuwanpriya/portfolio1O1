@@ -1,5 +1,6 @@
 import type { ExperienceEntry } from "@/lib/experience";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { SITE_CONTACT } from "@/lib/site-contact";
 
 export interface JsonLdObject {
   "@context"?: string;
@@ -30,10 +31,7 @@ const PERSON_KNOWS_ABOUT = [
   "ERP",
 ] as const;
 
-const PERSON_SAME_AS = [
-  "https://linkedin.com/in/hirannuwanpriya",
-  "https://github.com/hirannuwanpriya",
-] as const;
+const PERSON_SAME_AS = [SITE_CONTACT.linkedin, SITE_CONTACT.github] as const;
 
 /**
  * Person JSON-LD reused across pages that describe Hiran personally.
@@ -45,12 +43,15 @@ export function personSchema(): JsonLdObject {
     name: SITE_NAME,
     jobTitle: "Full Stack Engineer",
     url: SITE_URL,
+    email: SITE_CONTACT.email,
+    telephone: SITE_CONTACT.phone,
     sameAs: [...PERSON_SAME_AS],
     knowsAbout: [...PERSON_KNOWS_ABOUT],
     address: {
       "@type": "PostalAddress",
       addressCountry: "AU",
       addressRegion: "TAS",
+      addressLocality: "Hobart",
     },
   };
 }
@@ -261,6 +262,43 @@ export function blogPostingSchema(input: BlogPostingSchemaInput): JsonLdObject {
     ...(input.tags && input.tags.length > 0
       ? { keywords: input.tags.join(", ") }
       : {}),
+  };
+}
+
+/**
+ * `ContactPage` JSON-LD for `/contact`. Embeds a `ContactPoint` (email + phone)
+ * plus the canonical `Person` as `mainEntity` so search engines can resolve
+ * the site owner directly from the contact route.
+ */
+export function contactPageSchema(input: {
+  name: string;
+  description: string;
+  path: string;
+}): JsonLdObject {
+  const url = `${SITE_URL}${input.path === "/" ? "" : input.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: input.name,
+    description: input.description,
+    url,
+    inLanguage: "en-AU",
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    mainEntity: {
+      ...stripContext(personSchema()),
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "business",
+        email: SITE_CONTACT.email,
+        telephone: SITE_CONTACT.phone,
+        areaServed: ["AU", "NZ", "Worldwide"],
+        availableLanguage: ["English"],
+      },
+    },
   };
 }
 
