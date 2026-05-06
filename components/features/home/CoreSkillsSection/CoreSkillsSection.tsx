@@ -12,45 +12,56 @@ const SKILL_GROUPS: SkillGroup[] = [
       "Laravel (all versions)",
       "PHP 8.x",
       "Symfony",
-      "Node.js",
+      "Cake PHP",
+      "Codeigniter",
       "RESTful APIs",
-      "GraphQL",
       "Microservices",
-      "Event-Driven Arch",
+      "Service Layer Architecture",
+      "Node.js",
+      "Event-Driven Architecture",
+      "GraphQL",
       "Queue Systems",
+      "Filament",
     ],
   },
   {
     label: "FRONTEND",
     skills: [
       "React.js",
-      "Next.js",
       "Vue.js",
+      "Next.js",
       "Inertia.js",
-      "Tailwind CSS",
       "Alpine.js",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Bootstrap",
       "React Native",
       "Livewire",
-      "TypeScript",
+      "UI/UX implementation",
+      "Component-based frontend development",
     ],
   },
   {
     label: "CLOUD & DEVOPS",
     skills: [
       "AWS (ECS, Lambda, RDS)",
-      "Google Cloud Platform",
+      "DigitalOcean",
       "Docker / Kubernetes",
-      "Terraform",
       "CI/CD Pipelines",
       "Azure",
-      "DigitalOcean",
-      "Hetzner",
+      "Cloudflare",
+      "Plesk",
+      "Linux Server Management",
+      "cPanel / WHM",
+      "DNS & Hosting Management",
     ],
   },
   {
     label: "DATABASE",
     skills: [
       "MySQL / PostgreSQL",
+      "MSSQL",
       "MongoDB",
       "Redis",
       "Elasticsearch",
@@ -65,9 +76,25 @@ const SKILL_GROUPS: SkillGroup[] = [
       "Penetration Testing",
       "Cybersecurity",
       "Caching Strategies",
-      "Load Balancing",
       "Data Encryption",
+      "Performance Optimisation",
+      "Load Balancing",
       "SSL / TLS",
+      "API Security",
+      "Role-Based Access Control",
+    ],
+  },
+  {
+    label: "Testing & Quality",
+    skills: [
+      "PHPUnit",
+      "Pest PHP",
+      "API Testing",
+      "Debugging",
+      "Feature Testing",
+      "Unit Testing",
+      "Regression Testing",
+      "Error Monitoring",
     ],
   },
   {
@@ -77,8 +104,26 @@ const SKILL_GROUPS: SkillGroup[] = [
       "Tech Mentorship",
       "Code Review",
       "Architecture Design",
-      "Team Building",
+      "Team Collaboration",
+      "Client Communication",
       "Jira / Confluence",
+      "Requirement Analysis",
+      "Technical Documentation",
+    ],
+  },
+  {
+    label: "Architecture & System Design",
+    skills: [
+      "MVC",
+      "Clean",
+      "SaaS",
+      "Multi-Tenant",
+      "Modular App Design",
+      "High-Traffic App",
+      "Repository Pattern",
+      "Domain-Driven Design",
+      "Scalable System Design",
+      "Reusable Component Design",
     ],
   },
 ];
@@ -91,18 +136,18 @@ const SKILL_GROUPS: SkillGroup[] = [
 export default function CoreSkillsSection() {
   return (
     <section
-          id="skills"
-          className="scroll-mt-20 bg-[var(--color-bg)]"
-        >
-          <div className="mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-24 lg:px-12">
-            <div className="mb-12 md:mb-16">
-              <SectionLabel className="mb-4">TECHNICAL PURVIEW</SectionLabel>
-              <h2 className="text-5xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text-primary)] md:text-6xl lg:text-7xl">
-                Core <span className="tracking-[-0.08em]">Skills</span>
-              </h2>
-            </div>
-    
-            <div className="mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:mt-20 md:grid-cols-2 lg:grid-cols-3">
+      id="skills"
+      className="scroll-mt-20 bg-[var(--color-bg)]"
+    >
+      <div className="mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-24 lg:px-12">
+        <div className="mb-12 md:mb-16">
+          <SectionLabel className="mb-4">TECHNICAL PURVIEW</SectionLabel>
+          <h2 className="text-5xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text-primary)] md:text-6xl lg:text-7xl">
+            Core <span className="tracking-[-0.08em]">Skills</span>
+          </h2>
+        </div>
+
+        <div className="mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:mt-20 md:grid-cols-2 lg:grid-cols-3">
           {SKILL_GROUPS.map((group) => (
             <div key={group.label}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[var(--color-accent-crimson)]">
@@ -116,7 +161,7 @@ export default function CoreSkillsSection() {
             </div>
           ))}
         </div>
-          </div>
-        </section>
+      </div>
+    </section>
   );
 }
