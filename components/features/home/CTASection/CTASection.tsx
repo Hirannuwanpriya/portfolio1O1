@@ -10,22 +10,12 @@ export default function CTASection() {
     <section className="border-t border-b border-[var(--color-border)] bg-[var(--color-bg-soft)]">
       <div className="mx-auto max-w-7xl px-6 py-20 text-center md:px-8 md:py-28 lg:px-12">
         <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight tracking-[-0.02em] text-[var(--color-text-primary)] md:text-5xl">
-          Let&apos;s build something{" "}
-          <em className="inline-block font-[var(--font-serif)] font-normal whitespace-nowrap italic">
-            useful
+          I have got just what you need.
+          <em className="inline-block font-[var(--font-serif)]  whitespace-nowrap">
+            <u className="decoration-[var(--color-accent-yellow)] decoration-4 underline-offset-4">Lets talk</u>
           </em>
           .
         </h2>
-        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
-          Available for{" "}
-          <mark className="rounded-sm bg-[var(--color-accent-yellow)] px-1.5 py-0.5 text-[var(--color-text-primary)]">
-            roles
-          ,{" "}
-            contract work
-          </mark>
-          &nbsp;and freelance projects in Australia, New Zealand, and remote
-          teams.
-        </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <ArrowButton href="/contact" variant="pill">
             Contact Me
