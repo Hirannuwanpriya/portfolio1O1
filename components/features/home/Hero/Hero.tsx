@@ -32,7 +32,7 @@ export default function Hero() {
               Full Stack Engineer
             </em>{" "}
           
-            <span className="inline-block font-normal whitespace-nowrap text-[clamp(2rem,2.5vw,3rem)]">
+            <span className="inline-block font-normal whitespace-nowrap text-[clamp(2rem,2.5vw,3rem)] mt-2">
               based in{" "} <em className="font-serif">Hobart</em>,&nbsp;
                 <Image
                   src="/au.svg"

@@ -98,7 +98,7 @@ export default function ContactDetailsList({
       aria-label="Contact details"
     >
       {rows.map((row) => (
-        <li key={row.key} className="flex items-start gap-4">
+        <li key={row.key} className="flex items-center gap-4">
           <span
             aria-hidden="true"
             className="mt-0.5 inline-flex h-10 w-10 flex-none items-center justify-center rounded-full border border-[var(--color-border)] bg-white text-[var(--color-text-primary)]"

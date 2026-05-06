@@ -42,7 +42,7 @@ export default function ContactPage() {
           </p>
           <h1 className="mt-6 text-center text-4xl font-bold tracking-tight text-[var(--color-text-primary)] md:text-5xl">
             I have got just what you need.{" "}
-            <em className="inline-block font-[var(--font-serif)] font-normal italic underline decoration-[var(--color-accent-blue)] underline-offset-4">
+            <em className="inline-block font-[var(--font-serif)] font-normal italic underline decoration-[var(--color-accent-yellow)] underline-offset-4">
               Let&apos;s talk.
             </em>
           </h1>
