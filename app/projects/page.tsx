@@ -70,16 +70,15 @@ export default async function ProjectsPage() {
           <div className="mb-12 max-w-3xl md:mb-16">
             <SectionLabel className="mb-4">Projects</SectionLabel>
             <h1 className="text-4xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text-primary)] md:text-6xl lg:text-7xl">
-              Selected work in{" "}
+              Digital solutions{" "}
               <em className="inline-block font-[var(--font-serif)] font-normal italic">
-                full stack engineering
+                 I have worked on
               </em>
               .
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
-              SaaS platforms, CRM and ERP systems, and product-grade web
-              applications built with Laravel, React, Next.js and Vue.js for
-              teams in Australia, New Zealand and remote.
+              Demonstrate my experience in backend engineering, frontend development,
+              deployment, optimisation, and scalable web application delivery.
             </p>
           </div>
 
