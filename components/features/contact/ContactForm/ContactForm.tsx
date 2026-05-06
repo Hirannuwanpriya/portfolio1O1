@@ -8,8 +8,10 @@ interface ContactFormProps {
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
-const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
-const IS_DEV = process.env.NODE_ENV === "development";
+interface ContactApiResponse {
+  ok: boolean;
+  error?: string;
+}
 
 const INPUT_CLASS =
   "w-full rounded-md border border-[var(--color-border)] bg-white px-4 py-3 text-base text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] transition-colors duration-150 focus:border-[var(--color-text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-text-primary)] focus-visible:ring-offset-2";
@@ -17,70 +19,58 @@ const INPUT_CLASS =
 const LABEL_CLASS =
   "mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-secondary)]";
 
+const GENERIC_ERROR =
+  "Something went wrong, please try again or email me directly.";
+
 /**
- * Brand-aligned contact form. POSTs to Formspree via native fetch with
- * HTML5-native validation. Renders one of four states (idle, submitting,
- * success, error) per design skill §6.9.
+ * Brand-aligned contact form. POSTs JSON to the internal `/api/contact`
+ * route which forwards the message to Hiran via Resend. Renders one of
+ * four states (idle, submitting, success, error) per design skill §6.9.
  */
 export default function ContactForm({ className }: ContactFormProps) {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const endpointMissing = !FORMSPREE_ENDPOINT;
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
-    if (!FORMSPREE_ENDPOINT) {
-      setStatus("error");
-      setErrorMessage(
-        "Contact form endpoint is not configured. Please email me directly.",
-      );
-      return;
-    }
-
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      subject: String(formData.get("subject") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    };
 
     setStatus("submitting");
     setErrorMessage(null);
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
+      let data: ContactApiResponse | null = null;
+      try {
+        data = (await response.json()) as ContactApiResponse;
+      } catch {
+        /* swallow — handled below */
+      }
+
+      if (response.ok && data?.ok) {
         setStatus("success");
         form.reset();
         return;
       }
 
-      let detail = "Something went wrong. Please try again or email me directly.";
-      try {
-        const data: unknown = await response.json();
-        if (
-          data &&
-          typeof data === "object" &&
-          "errors" in data &&
-          Array.isArray((data as { errors: unknown }).errors)
-        ) {
-          const errs = (data as { errors: { message?: string }[] }).errors;
-          const first = errs.find((e) => typeof e?.message === "string");
-          if (first?.message) detail = first.message;
-        }
-      } catch {
-        /* swallow — keep default detail */
-      }
       setStatus("error");
-      setErrorMessage(detail);
+      setErrorMessage(data?.error ?? GENERIC_ERROR);
     } catch {
       setStatus("error");
-      setErrorMessage(
-        "Network error — please try again or email me directly.",
-      );
+      setErrorMessage(GENERIC_ERROR);
     }
   }
 
@@ -111,16 +101,6 @@ export default function ContactForm({ className }: ContactFormProps) {
       className={`flex flex-col gap-6 ${className ?? ""}`}
       aria-label="Contact form"
     >
-      {endpointMissing && IS_DEV ? (
-        <p
-          role="alert"
-          className="rounded-md border border-[var(--color-accent-crimson)] bg-white p-3 text-sm text-[var(--color-accent-crimson)]"
-        >
-          Dev notice: <code>NEXT_PUBLIC_FORMSPREE_ENDPOINT</code> is not set.
-          Form submissions will fail until it is configured.
-        </p>
-      ) : null}
-
       <div className="grid gap-6 md:grid-cols-2">
         <div>
           <label htmlFor="contact-name" className={LABEL_CLASS}>

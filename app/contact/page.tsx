@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-// `ContactForm` is intentionally not imported while the form is hidden.
-// Re-add it to this import when the Formspree endpoint is wired.
-import { ContactDetailsList } from "@/components/features/contact";
+import { ContactDetailsList, ContactForm } from "@/components/features/contact";
 import { buildPageMetadata } from "@/lib/seo";
 import {
   contactPageSchema,
@@ -51,7 +49,7 @@ export default function ContactPage() {
 
           <ContactDetailsList className="mx-auto mt-12 max-w-md" />
 
-          {/* ContactForm hidden until Formspree endpoint is wired — restore <ContactForm className="mt-12" /> from @/components/features/contact when ready. */}
+          <ContactForm className="mt-12" />
         </div>
       </section>
     </>
