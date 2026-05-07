@@ -1,6 +1,6 @@
 ---
-title: "BookNordics"
-summary: "Nordic travel booking platform — full codebase rescue, modernisation, and performance overhaul of a multi-vendor travel aggregator serving tours, adventure stays, and mountain lodges across Scandinavia."
+title: "BookNordics — Nordic Travel Platform"
+summary: "Full codebase rescue, modernisation, and performance overhaul of a multi-vendor Nordic travel booking platform — taking it from an undocumented legacy environment to a stable, high-performance system with zero unplanned downtime."
 slug: "booknordics"
 date: "2026-01-12"
 order: 2
@@ -19,8 +19,16 @@ techStack:
   - HubSpot
   - Ahrefs
 
-coverImage: "/projects/booknordics.png"
+coverImage: "/images/projects/booknordics/cover.png"
 coverAlt: "BookNordics platform showing a Nordic tour listing with mountain lodge imagery and booking interface"
+
+gallery:
+  - src: "/images/projects/booknordics/screen-1.png"
+    alt: "Tour and activity listing page with filtered search and availability calendar"
+  - src: "/images/projects/booknordics/screen-2.png"
+    alt: "Adventure stays and mountain lodge detail page with media gallery"
+  - src: "/images/projects/booknordics/screen-3.png"
+    alt: "Statamic CMS backend showing product sync dashboard and manual sync controls"
 
 liveUrl: "https://booknordics.com"
 githubUrl: ""
@@ -33,10 +41,49 @@ role: "Associate Technical Lead / Full Stack Developer"
 duration: "6 months"
 teamSize: "Solo"
 
+hero:
+  name: "BookNordics"
+  tagline: "NORDIC TRAVEL & BOOKING PLATFORM"
+
+stats:
+  - value: "66%"
+    label: "Load time reduction — 12 sec → 4 sec"
+  - value: "10k+"
+    label: "Products synced per cycle with zero manual intervention"
+  - value: "0"
+    label: "Minutes of unplanned downtime during migration"
+
+phases:
+  - title: "Codebase Rescue & Environment Stabilisation"
+    description: "Mapped the undocumented architecture from production code, provisioned a parallel server, initialised Git for the first time, and resolved every inherited critical bug — all without a minute of unplanned downtime."
+  - title: "Modernisation"
+    description: "Upgraded Laravel and Statamic CMS to their latest stable releases, refreshed every Composer and NPM dependency, and brought the server environment in line with current PHP requirements. Zero data loss, minimal downtime."
+  - title: "Performance Overhaul"
+    description: "Cut page load from 12 seconds to 4 seconds — 66% faster — through N+1 elimination, Laravel route/response caching, REST API tuning, and Vue.js lazy loading on high-traffic routes."
+  - title: "Scalable Product Sync Pipeline"
+    description: "Re-architected 18 concurrent Horizon queues to process 10,000+ products with image optimisation at ingest, AWS S3 storage, and a Statamic-backed manual sync trigger for editorial control."
+  - title: "Integrations & Business Tooling"
+    description: "Wired Google Analytics, Zend Grid, HubSpot, and Ahrefs into the booking and editorial flows to deliver a complete operational platform with end-to-end traffic, CRM, and SEO instrumentation."
+
+outcomes:
+  - "Page load time reduced by **66%** — from 12 seconds to 4 seconds."
+  - "**10,000+ products** reliably synchronised per cycle with **zero manual intervention** required."
+  - "All inherited bugs and critical issues resolved at takeover."
+  - "Codebase placed under **version control for the first time** in the platform's history."
+  - "Full dependency stack modernised with **zero data loss** and minimal downtime."
+  - "Media pipeline migrated to **AWS S3**, eliminating server storage constraints."
+  - "Stakeholder confidence restored following a high-risk vendor transition."
+
+challenges:
+  - title: "No documentation. No handover. No downtime allowed."
+    description: "When I started there was no documentation, no local development environment, no Git history, and no colleague to ask. The only reference material was the production codebase itself. The challenge was to achieve full understanding of the system without making any change that could destabilise production. The approach was methodical — read the codebase entirely before touching anything, map the architecture on paper, then provision a completely separate server and deploy a verified copy before any modification was made to the original environment. Git was introduced on the parallel environment first, and only once the client was informed and the new environment was verified stable did the migration proceed — without a single minute of unplanned downtime."
+  - title: "18 queues. 10,000+ products. 100 HD images each. Some in 4K."
+    description: "The product sync ran 18 concurrent queues, with each of the 10,000+ products carrying an average of 100 media assets — and some supplier feeds delivering raw 4K source files. At peak, a single sync cycle attempted to store hundreds of gigabytes of unoptimised image data, causing storage exhaustion, API timeouts, and queue failures. The solution was a custom image processing layer inserted into the sync pipeline: every incoming image is intercepted before storage, resized and compressed into web-optimised variants at defined breakpoints, then written to AWS S3 rather than local disk. A manual sync trigger was also added to the Statamic CMS so editors could refresh any single product on demand — collapsing what was previously an engineering ticket into a single click."
+
 seo:
   title: "BookNordics — Nordic Travel Platform Rescue & Modernisation | Hiran Nuwanpriya"
   description: "Case study: full ownership rescue of a legacy Laravel + Statamic travel booking platform. 66% load time reduction, 10,000+ product sync pipeline, zero-downtime migration."
-  ogImage: "/projects/booknordics.png"
+  ogImage: "/images/projects/booknordics/og.png"
 
 structuredData:
   type: "SoftwareApplication"
@@ -47,190 +94,6 @@ structuredData:
 
 BookNordics is a travel booking platform specialising in Nordic tours, adventure
 stays, and mountain lodges — connecting travellers with unique experiences across
-Scandinavia. The platform aggregates thousands of products from third-party
-suppliers and presents them through a polished consumer-facing website backed
-by a Statamic CMS editorial layer.
-
-I was brought in to assume full ownership of the platform after an outgoing
-vendor departure, with no documentation, no handover, and a production
-environment that was accumulating technical debt by the day.
-
-## The Problem
-
-- A fully undocumented legacy codebase was abandoned by the outgoing vendor
-  with zero handover materials — no architecture notes, no deployment runbooks,
-  no local environment setup.
-- The platform was running on a 2-year-old infrastructure with outdated Laravel,
-  Statamic, and dependency versions that posed growing security and compatibility
-  risk.
-- Page load times had degraded to 12 seconds, creating high bounce rates and
-  a poor user experience across the booking journey.
-- 18 concurrent background queues were processing 10,000+ products — each with
-  up to 100 high-definition (and in some cases 4K) images — with no media
-  optimisation, causing storage bloat and API timeouts.
-- A large volume of inherited bugs remained unresolved, eroding client
-  confidence in the platform's stability.
-
-## My Role
-
-Associate Technical Lead and sole Full Stack Developer across the full
-engagement. I was responsible for:
-
-- Independently reverse-engineering the undocumented codebase and mapping
-  system architecture without any prior context.
-- All technical planning, client communication, and delivery — providing
-  structured progress updates at every stage.
-- Every line of code written, every infrastructure decision made, and every
-  deployment executed during the 6-month engagement.
-
-## Solution
-
-### Phase 1 — Codebase Rescue and Environment Stabilisation
-
-Before writing a single line of new code, the priority was to understand the
-system without breaking it. Working directly against the production server with
-no staging environment in place, I:
-
-- Mapped the full application architecture by reading the codebase in isolation.
-- Provisioned a separate parallel server environment and migrated the codebase
-  onto it with zero downtime.
-- Initialised Git version control on the codebase for the first time — applying
-  a carefully structured initial commit that preserved the full project history
-  without disrupting the live environment.
-- Resolved all inherited bugs and critical issues identified at takeover,
-  restoring platform stability and client confidence.
-
-Every step of this phase was planned in advance and discussed with the client
-before execution. No change was applied to production without a documented
-rationale and a rollback plan.
-
-### Phase 2 — Modernisation
-
-With the codebase safely under version control and the parallel environment
-verified, I performed a full-stack dependency upgrade:
-
-- Laravel upgraded to the latest stable version.
-- Statamic CMS upgraded to the latest stable version.
-- All Composer and NPM dependencies resolved and updated.
-- Server environment (PHP version, extensions, configuration) brought in line
-  with current requirements.
-
-The migration was executed with zero data loss and minimal downtime, performed
-during a low-traffic window with the client informed and on standby.
-
-### Phase 3 — Performance Overhaul
-
-Page load time was reduced from 12 seconds to 4 seconds — a 66% improvement —
-through a combination of:
-
-- Backend query optimisation and N+1 elimination across high-traffic routes.
-- Laravel caching layer (config, route, and response caching) implemented
-  across all applicable endpoints.
-- REST API performance tuning — reducing payload size and request volume for
-  third-party supplier calls.
-- Frontend rendering improvements in the Vue.js layer, including lazy loading
-  and component-level optimisation.
-
-### Phase 4 — Scalable Product Sync Pipeline
-
-The existing background sync processed 10,000+ products across three categories
-(tours and activities, adventure stays, and mountain lodges). Each product
-carried an average of 50–100 media assets, with some supplier feeds delivering
-4K source images.
-
-The re-architected pipeline:
-
-- Runs 18 concurrent Laravel Horizon queues with proper job sizing and retry
-  logic to process the full catalogue reliably within the sync window.
-- Passes every incoming image through a custom image resizer that generates
-  optimised web-ready variants at defined breakpoints before storage.
-- Stores all processed media assets in AWS S3, removing the media footprint
-  from the application server entirely.
-- Exposes a manual sync trigger button in the Statamic CMS backend, allowing
-  the client team to force a product refresh for any individual item on demand
-  without engineering involvement.
-
-### Phase 5 — Integrations and Business Tooling
-
-To deliver a complete operational platform, I integrated the following
-third-party services:
-
-- **Google Analytics** — full event and traffic instrumentation for the
-  booking journey.
-- **Zend Grid** — advanced data grid management for internal reporting and
-  product data views.
-- **HubSpot** — CRM and marketing automation connected to the booking inquiry
-  flow.
-- **Ahrefs** — SEO tooling integrated for ongoing content and ranking
-  optimisation.
-
-## Outcomes
-
-- Page load time reduced by **66%** — from 12 seconds to 4 seconds.
-- **10,000+ products** reliably synchronised per cycle with zero manual
-  intervention required.
-- All inherited bugs and critical issues resolved at takeover.
-- Codebase placed under version control for the first time in the platform's
-  history.
-- Full dependency stack modernised with zero data loss and minimal downtime.
-- Media pipeline migrated to AWS S3, eliminating server storage constraints.
-- Client team empowered with self-serve product sync tooling in the CMS.
-- Stakeholder confidence restored following a high-risk vendor transition.
-
-## Tech Stack Detail
-
-Laravel Horizon was chosen over simple queue workers for the sync pipeline
-because the volume and concurrency requirements needed runtime visibility —
-Horizon's dashboard allowed real-time monitoring of queue throughput, failure
-rates, and retry behaviour during the initial stabilisation period.
-
-Statamic was retained as the CMS layer rather than replaced, as it was deeply
-integrated into the editorial workflow. Upgrading in place — rather than
-migrating to a new CMS — preserved the client team's existing content workflows
-while delivering a modern, supported version.
-
-AWS S3 was introduced as the media storage layer because the volume of optimised
-image variants generated by the sync pipeline made local disk storage
-unsustainable at scale. S3 also provided the CDN integration path for future
-edge delivery improvements.
-
-## Challenges and Learnings
-
-### The undocumented codebase problem
-
-When I started, there was no documentation, no local development environment,
-no Git history, and no colleague to ask. The only reference material was the
-production codebase itself and the live server.
-
-The challenge was to achieve full understanding of the system without making
-any changes that could destabilise production. The approach was methodical:
-read the codebase entirely before touching anything, map the architecture on
-paper, then provision a completely separate server and deploy a verified copy
-before any modification was made to the original environment.
-
-Git was introduced on the separate environment first. Only once the parallel
-environment was confirmed stable and the client was informed and prepared did
-the migration proceed. The entire process — from first access to version-
-controlled deployment — was completed without a single minute of unplanned
-downtime. Every stage was documented and presented to the client before
-execution.
-
-### The media sync problem
-
-The product sync runs 18 concurrent queues, and each of the 10,000+ products
-carries an average of 100 media assets — with some supplier feeds sending raw
-4K source files. At peak, a single sync cycle was attempting to store hundreds
-of gigabytes of unoptimised image data, causing storage exhaustion, API
-timeouts, and queue failures.
-
-The solution was a custom image processing layer inserted into the sync
-pipeline: every incoming image is intercepted before storage, resized and
-compressed to generate web-optimised variants at defined breakpoints, then
-written to AWS S3 rather than local disk. The original source file is
-discarded after processing.
-
-In addition, a manual sync trigger was built into the Statamic CMS backend.
-Previously, any product update required an engineering request and a full
-pipeline run. With the trigger in place, the client team can force an
-immediate refresh of any individual product at any time — reducing the round-
-trip for urgent content updates from hours to seconds.
+Scandinavia. I was brought in to assume full ownership of the platform after an
+outgoing vendor departure, with no documentation, no handover, and a production
+environment accumulating technical debt by the day.

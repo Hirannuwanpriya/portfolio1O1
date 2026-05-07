@@ -302,6 +302,72 @@ export function contactPageSchema(input: {
   };
 }
 
+export interface ProjectSchemaInput {
+  title: string;
+  description: string;
+  slug: string;
+  /** "CreativeWork" (default) or "SoftwareApplication". */
+  type?: "CreativeWork" | "SoftwareApplication";
+  /** Required when `type === "SoftwareApplication"`. */
+  applicationCategory?: string;
+  techStack?: readonly string[];
+  liveUrl?: string;
+  /** Absolute or site-root-relative cover image URL. */
+  image?: string;
+  datePublished?: string;
+}
+
+/**
+ * `CreativeWork` or `SoftwareApplication` JSON-LD for `/projects/[slug]`.
+ * Per `.claude/rules/seo.md` schema map, project case-study pages emit one of
+ * these two schema types — the choice is driven by the project frontmatter.
+ */
+export function projectSchema(input: ProjectSchemaInput): JsonLdObject {
+  const url = `${SITE_URL}/projects/${input.slug}`;
+  const image = input.image
+    ? input.image.startsWith("http")
+      ? input.image
+      : `${SITE_URL}${input.image.startsWith("/") ? "" : "/"}${input.image}`
+    : undefined;
+
+  const type = input.type ?? "CreativeWork";
+
+  const base: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": type,
+    name: input.title,
+    headline: input.title,
+    description: input.description,
+    url,
+    inLanguage: "en-AU",
+    author: stripContext(personSchema()),
+    creator: stripContext(personSchema()),
+    ...(image ? { image: [image] } : {}),
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.techStack && input.techStack.length > 0
+      ? { keywords: input.techStack.join(", ") }
+      : {}),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+
+  if (type === "SoftwareApplication") {
+    return {
+      ...base,
+      ...(input.applicationCategory
+        ? { applicationCategory: input.applicationCategory }
+        : {}),
+      ...(input.liveUrl ? { installUrl: input.liveUrl } : {}),
+      operatingSystem: "Web",
+    };
+  }
+
+  return base;
+}
+
 /**
  * Remove the top-level `@context` so a schema can be safely embedded as a
  * nested entity inside another JSON-LD object.
