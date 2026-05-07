@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,18 +22,23 @@ const MENU_ITEMS: NavItem[] = [
 ];
 
 /**
- * Full-screen black slide-in mobile menu per design skill §6.1.
+ * Full-screen white slide-in mobile menu per design skill §6.1.
  *
  * - Hamburger trigger renders inline (only visible below `lg`).
  * - Opening locks body scroll, traps `Esc`, closes on backdrop click.
- * - Large white serif/sans link list, "Let's Talk" CTA at the bottom.
+ * - Large black link list with accent-blue hover, "Let's Talk" CTA at the bottom.
  */
 export default function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const openBtnRef = useRef<HTMLButtonElement>(null);
 
   const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Body scroll lock + Esc + focus management.
   useEffect(() => {
@@ -91,13 +97,14 @@ export default function MobileMenu() {
         </svg>
       </button>
 
-      {open ? (
+      {open && mounted ? createPortal(
         <div
           id="mobile-menu-panel"
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
           className="fixed inset-0 z-[60] flex flex-col bg-[var(--color-text-primary)] text-white lg:hidden"
+          style={{ minHeight: "100dvh" }}
         >
           {/* Close bar */}
           <div className="flex items-center justify-between px-6 pt-5 pb-4 md:px-8">
@@ -141,12 +148,12 @@ export default function MobileMenu() {
           {/* Backdrop click closes — covers the area between the close bar and the link list. */}
           <nav
             aria-label="Mobile primary"
-            className="flex flex-1 flex-col justify-between px-6 pt-6 pb-10 md:px-8"
+            className="flex flex-1 flex-col bg-white justify-between px-6 pt-6 pb-10 md:px-8"
           >
             <ul className="flex flex-col gap-5">
               {MENU_ITEMS.map((item) => {
                 const linkClassName =
-                  "block text-4xl font-semibold tracking-[-0.02em] text-white transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-blue)] md:text-5xl";
+                  "block text-4xl font-semibold tracking-[-0.02em] text-black transition-colors duration-150 hover:text-[var(--color-accent-blue)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-blue)] md:text-5xl";
 
                 return (
                   <li key={item.href}>
@@ -174,7 +181,7 @@ export default function MobileMenu() {
               })}
             </ul>
 
-            <div className="mt-10">
+            {/* <div className="mt-10">
               <Link
                 href="/contact"
                 onClick={close}
@@ -197,9 +204,10 @@ export default function MobileMenu() {
                   </svg>
                 </span>
               </Link>
-            </div>
+            </div> */}
           </nav>
-        </div>
+        </div>,
+        document.body
       ) : null}
     </>
   );
