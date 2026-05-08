@@ -1,0 +1,352 @@
+---
+title: "Coutellerie du Roi — Heritage E-Commerce & Brand Website"
+summary: "Full stack build of a Laravel 10 monolith with Livewire 3 components powering a heritage cutlery e-commerce site — product catalogue with brand and category filtering, Stripe-backed checkout, lead-capture pipeline, and editorial blog — backed by a custom Nova admin, an S3 + Cloudflare image pipeline with on-demand resizing, and webhook-driven order lifecycle."
+slug: "coutellerieduroi"
+date: "2025-05-08"
+order: 8
+category: "E-Commerce & Retail"
+
+techStack:
+  - Laravel
+  - Laravel Nova
+  - Livewire 3
+  - Alpine.js
+  - Tailwind CSS
+  - MySQL
+  - Cloudflare CDN
+  - Google Maps API
+  - AWS EC2
+  - AWS S3
+  - Stripe
+  - Google Analytics
+  - Figma
+
+coverImage: "/projects/coutellerieduroi.png"
+coverAlt: "Coutellerie du Roi homepage showing the hero section and product category navigation for knives, scissors, and shaving"
+
+gallery:
+  - src: "/images/projects/coutellerieduroi/screen-1.png"
+    alt: "Homepage hero with brand heritage statement and featured product categories"
+  - src: "/images/projects/coutellerieduroi/screen-2.png"
+    alt: "Product listing page showing knives with brand filters and pricing"
+  - src: "/images/projects/coutellerieduroi/screen-3.png"
+    alt: "Individual product detail page for a KAI Shun Classic Santoku knife"
+  - src: "/images/projects/coutellerieduroi/screen-4.png"
+    alt: "Blog listing page with editorial articles on blade heritage and care"
+
+liveUrl: "https://coutellerieduroi.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Coutellerie du Roi"
+clientLocation: "Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "3 months"
+teamSize: "Solo"
+
+hero:
+  name: "Coutellerie du Roi"
+  tagline: "HERITAGE E-COMMERCE & BRAND WEBSITE"
+
+stats:
+  - value: "11"
+    label: "Nova-managed admin entities — categories, brands, products, product images, orders, order items, blog posts, post categories, leads, testimonials, and media — wired through Eloquent relationships"
+  - value: "95+"
+    label: "Lighthouse performance score on collection and product detail routes — server-rendered Blade with Livewire islands, Cloudflare on-demand WebP resizing, and a JS payload under ~70KB on shop pages"
+  - value: "4"
+    label: "Stripe webhook events handled end-to-end — checkout.session.completed, payment_intent.succeeded/failed, and charge.refunded — driving order status, stock decrement, and queued buyer + admin notifications"
+
+seo:
+  title: "Coutellerie du Roi — Heritage E-Commerce & Brand Website | Hiran Nuwanpriya"
+  description: "Case study: Laravel + Livewire full stack build for Coutellerie du Roi — product catalogue with brand and category filtering, Stripe checkout with webhook-driven order lifecycle, custom Nova admin, S3 + Cloudflare image pipeline, and validated lead-capture pipeline."
+  ogImage: "/images/projects/coutellerieduroi/og.png"
+
+structuredData:
+  type: "WebSite"
+  applicationCategory: "ShoppingApplication"
+---
+
+## Overview
+
+Coutellerie du Roi is one of Brussels' oldest retail institutions — a cutlery
+and blades specialist trading from the Passage du Nord since 1750. The shop
+carries professional-grade knives, scissors, and shaving equipment from
+brands including KAI, Global, Morakniv, Condor, DOVO, and Dreiturm, and runs
+an in-store blade-sharpening service.
+
+From an engineering perspective the brief was a self-contained e-commerce
+build: a public catalogue with brand and category filtering, a transactional
+checkout, a lead-capture surface for newsletter signups, an editorial blog
+to compound long-tail SEO, and a custom admin the in-store team could
+operate without engineering involvement. The constraints were a strict SEO
+budget (the site has to rank for both the institution name and competitive
+"couteau Bruxelles / KAI Bruxelles" brand queries) and a hard Core Web
+Vitals target on image-heavy product pages.
+
+## The Problem
+
+- No existing data model — products, categories, brands, orders, leads, and
+  blog content all needed to be designed from scratch with relationships the
+  client could maintain.
+- No transactional surface — the retail offer existed only in the shop,
+  with no online order capture, stock tracking, payment flow, or customer
+  notification system.
+- No CMS — every product, price, or copy change required a developer, which
+  was unsustainable for a catalogue that turns over with seasonal premium
+  knife releases.
+- No structured lead-capture pipeline — there was no way to collect email
+  addresses, validate them, or segment them for the marketing campaigns the
+  client wanted to run.
+- Performance and SEO budget — the site had to rank against online-only
+  competitors for premium-blade brand queries while serving the
+  high-resolution product photography that closes the sale.
+
+## My Role
+
+Sole engineer across the full stack: schema design, Laravel application
+architecture, Livewire component build, Nova admin, Stripe integration and
+webhook handling, S3 + Cloudflare media pipeline, deployment, and client
+handover including admin training documentation.
+
+## Solution
+
+### Architecture
+
+A Laravel 10 monolith serves the whole site as server-rendered Blade, with
+Livewire 3 components mounted on the routes that need stateful interactivity
+— the product catalogue's brand/category filter, the cart drawer, and the
+lead-capture form. Lighter pages (homepage, blog, contact, brand story) use
+Alpine.js for progressive enhancement only, which keeps the JavaScript
+payload minimal on routes that don't need a full reactive runtime.
+
+The data layer is a normalised MySQL schema with Eloquent relationships
+covering categories → products, brands → products, products → product
+images, orders → order items, and posts → categories. A custom Laravel Nova
+admin exposes every entity to the client with inline media management,
+soft deletes on products, and a role-scoped distinction between editorial
+(blog) and commerce (catalogue + orders) staff.
+
+The application runs on AWS EC2 behind Cloudflare, with a queue worker
+(database driver) handling Stripe webhook side-effects, image processing,
+and outbound mail so the request-response cycle for checkout stays tight.
+
+### Catalogue Data Modelling
+
+Products belong to one `Category` (Couteaux, Ciseaux, Rasage) and one
+`Brand` (KAI, Global, DOVO, Morakniv, Condor, Dreiturm). I considered a
+many-to-many between products and brands but rejected it: a knife has
+exactly one manufacturer, and modelling it as a pivot would have added a
+join to every catalogue query for no editorial benefit. Brand and category
+slugs are indexed for fast lookup on the URL pattern
+`/products-list/collections/{category}` and
+`/products-list/brands/{brand}`, both of which are SEO-critical.
+
+`ProductImage` is a one-to-many off products with a `position` integer the
+client drags to reorder in Nova; the first image is the listing thumbnail.
+Stock, price, weight, and a structured allergen-style spec block (blade
+length, steel type, handle material) live as columns on the product itself
+so the catalogue page can render specs without N+1 queries.
+
+Orders are a single `orders` table with a one-to-many `order_items` so the
+cart can grow into mixed verticals (knife + scissors + shaving brush)
+without schema churn.
+
+### Stripe Integration and Order Lifecycle
+
+Checkout uses Stripe Checkout Sessions. The flow:
+
+1. The Livewire cart component posts to a Laravel controller that
+   revalidates pricing and stock server-side — the client cart is never
+   trusted as the source of truth.
+2. A pending `Order` record is created and a Checkout Session is opened
+   with the order ID in `metadata`.
+3. The user completes payment on Stripe-hosted checkout.
+4. A webhook endpoint verifies the signature, dispatches a queued job, and
+   the job transitions the order through `paid → confirmed → fulfilled`,
+   decrements stock, and triggers buyer + admin notifications via the
+   Laravel notification system.
+5. `payment_intent.failed` and `charge.refunded` events flow through the
+   same queue, keeping the order state machine in one place.
+
+Idempotency is handled by storing the Stripe event ID and short-circuiting
+duplicate deliveries — Stripe retries are common and the order lifecycle
+has to be safe to replay.
+
+### Livewire Catalogue and Cart
+
+The catalogue filter is a Livewire component: brand, category, and price
+range bind to query parameters, the URL stays shareable and crawlable, and
+each filter change triggers a server-rendered re-render of the product
+grid without a full page reload. This was a deliberate choice over a Vue
+SPA — Livewire keeps the catalogue rendering in Blade, which means every
+product variant is in the initial HTML for crawlers, while the user gets
+a SPA-like filter UX.
+
+The cart is a separate Livewire component mounted in the layout. State
+persists across navigations through a session-backed cart model, and the
+mini-cart drawer updates reactively when products are added from anywhere
+in the catalogue.
+
+### Custom CMS via Laravel Nova
+
+Rather than bolt on a generic CMS, I built the admin as Nova resources
+mapped directly to the domain model. Products carry a structured spec
+block, drag-and-drop image reordering, and a Nova action to bulk-toggle
+"featured on homepage". Blog posts have a Markdown body with image
+attachments resolved through the same media table. The orders resource
+exposes a lens for the in-store team showing pending fulfilment grouped
+by day, and the leads resource is filterable by signup source for
+campaign segmentation. The client handles every content change without
+engineering involvement.
+
+### Lead-Capture Pipeline
+
+The newsletter form (name, email, date of birth) runs through a dedicated
+`LeadRequest` form request with field-level validation (email format,
+date in the past, age bounds), Livewire surfaces the validation errors
+inline without a page reload, and successful submissions create a `Lead`
+record, dispatch a notification to the marketing inbox, and send the
+subscriber a templated confirmation. Honeypot plus per-IP rate limiting
+on the endpoint keeps spam out without a captcha.
+
+### S3 + Cloudflare Image Pipeline
+
+Product photography is uploaded through Nova; a queued job stores
+originals on S3 and records intrinsic dimensions on the model. The front
+end requests images through Cloudflare's image-resizing endpoint with
+`width`, `format`, and `quality` parameters, so a single S3 original
+yields any responsive variant on demand without pre-generating crops at
+upload time. Every `<img>` ships with explicit `width`/`height`
+attributes derived from stored dimensions, eliminating CLS on the
+catalogue and product detail pages.
+
+### Performance, SEO, and Accessibility
+
+- Server-rendered Blade for every public route keeps TTFB low and gives
+  crawlers fully populated catalogue and product pages without relying
+  on JavaScript execution.
+- Livewire is mounted only where stateful interactivity is required; the
+  catalogue and cart bundles never load on the blog or homepage.
+- Tailwind is purged to the actually-used class set, dropping production
+  CSS to a small fraction of the dev build.
+- Structured data (Product, Brand, Offer, BreadcrumbList, LocalBusiness)
+  is emitted from Blade partials so each Nova entity drives its own
+  schema.org payload — premium brand pages get rich results out of the
+  box.
+- Forms, navigation, the catalogue filter, and the cart are
+  keyboard-navigable with visible focus rings and ARIA labelling on the
+  icon-only controls.
+
+### Key Features
+
+- Server-rendered Laravel front end with Livewire 3 islands for the
+  catalogue filter, cart, and lead form; Alpine.js for lighter
+  interactions
+- Normalised MySQL schema covering categories, brands, products, product
+  images, orders, order items, posts, post categories, and leads
+- Stripe Checkout integration with signed-webhook-driven order
+  lifecycle, server-side cart revalidation, and idempotent event
+  handling
+- Custom Laravel Nova admin covering every content and commerce entity,
+  with role-scoped access between editorial and commerce staff
+- S3 + Cloudflare image pipeline with on-demand WebP resizing and
+  zero-CLS rendering via stored intrinsic dimensions
+- Lead-capture pipeline with server + client validation, honeypot, rate
+  limiting, and queued notifications to the marketing inbox
+- schema.org structured data emitted per entity (Product, Brand, Offer,
+  BreadcrumbList, LocalBusiness) for richer search results
+- Editorial blog with category taxonomy and Markdown body for long-tail
+  SEO compounding around heritage and craftsmanship queries
+
+## Outcomes
+
+- One Laravel codebase cleanly serves the catalogue, checkout, blog, and
+  lead-capture flows, and the client maintains every product, price, and
+  article through Nova without engineering involvement.
+- The shop processes Stripe-backed orders end-to-end with stock,
+  notifications, and order state managed off a single webhook handler —
+  no manual reconciliation required.
+- Newsletter signups land in a validated, segmentable queue, giving the
+  business a marketable customer list for the first time in its history.
+- Public pages score in the green on Core Web Vitals; the JS payload on
+  shop pages stays under ~70KB by keeping Livewire mounted only where
+  stateful interactivity is required.
+- Premium brand pages (KAI, Global, DOVO) ship with Product +
+  BreadcrumbList structured data and are now indexed for the brand-name
+  queries that previously went entirely to online-only competitors.
+
+## Tech Stack Detail
+
+**Laravel** is the backbone — routing, controllers, Eloquent models, form
+requests, jobs, notifications, and the queue. Domain logic lives in
+service classes invoked from controllers, and the order state machine is
+implemented as explicit job classes per Stripe event so each side-effect
+is independently retryable.
+
+**Livewire 3** powers the stateful islands — the catalogue filter, the
+cart drawer, the checkout summary, and the lead-capture form. Each
+component re-renders server-side and patches the DOM, so every product
+variant is in the initial HTML for crawlers while the user gets a
+SPA-like UX.
+
+**Alpine.js** handles progressive enhancement on lighter pages — the
+mobile navigation drawer, the FAQ accordion on the contact page, the
+image lightbox on product detail — keeping these routes essentially
+zero-runtime.
+
+**Laravel Nova** is the admin layer. Every domain entity has a Nova
+resource with custom fields, actions (bulk "featured on homepage" toggle
+on products), and lenses (pending fulfilment grouped by day for the
+in-store team).
+
+**MySQL** holds the normalised schema. Indexes are placed on the foreign
+keys that drive catalogue queries, on category and brand slugs for fast
+lookup on collection routes, and on order lookups by Stripe session ID
+for fast webhook resolution.
+
+**AWS S3 + Cloudflare CDN** form the media pipeline — originals on S3,
+on-demand WebP resizing through Cloudflare's image endpoint, and
+long-cache TTLs on the resized output.
+
+**Stripe** handles payments via Checkout Sessions. Webhooks are verified
+by signature, persisted by event ID for idempotency, and processed by
+queued jobs that update the order state machine.
+
+**Google Maps API** is embedded for the Passage du Nord location surface,
+lazy-loaded so it never blocks the initial render.
+
+## Challenges and Learnings
+
+The most interesting decision was Livewire over a Vue SPA for the
+catalogue. The instinct on a filterable product grid is to reach for a
+client-side framework, but that would have meant either rendering the
+catalogue twice (once on the server for SEO, once on the client for
+interactivity) or accepting a JavaScript-rendered grid that crawlers
+have to execute to see. Livewire collapses both concerns — the grid
+re-renders server-side on every filter change, the URL stays shareable
+and crawlable, and the client only ships a small runtime to coordinate
+the swaps. For a shop where organic visibility is the primary
+acquisition channel, this was the right tradeoff.
+
+The Stripe integration reinforced two patterns I now reach for by
+default: never trust the client cart (always re-price server-side
+inside the checkout-create handler), and always queue webhook
+side-effects behind an idempotency key. The first prevents tampering;
+the second makes Stripe's retry behaviour a feature instead of a bug.
+
+The lead-capture form included a date-of-birth field for marketing
+segmentation, which required engineering attention beyond a simple
+input — date validation, age bounds, GDPR-aware storage, and a
+clear value-exchange copy treatment so the field didn't tank
+conversion. Validating server-side via a form request, surfacing the
+errors inline through Livewire, and storing the field with explicit
+purpose-of-processing metadata kept the implementation clean and
+auditable.
+
+The image pipeline taught me to push variant generation to request
+time rather than upload time. Pre-generating crops at upload is fast
+to write but expensive to evolve — the day you want a new breakpoint
+you re-process the entire library. On-demand resizing through
+Cloudflare is a one-line URL change to introduce a new variant and
+keeps the storage footprint flat.

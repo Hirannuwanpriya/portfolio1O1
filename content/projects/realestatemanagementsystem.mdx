@@ -1,0 +1,100 @@
+---
+title: "Trustee Real Estate Management System"
+summary: "Front-end development of a trustee real estate management platform built to enhance transparency and accountability in property and fund management — keeping owner funds clearly separated from manager funds across a full property portfolio."
+slug: "real-estate-management"
+date: "2024-09-12"
+order: 4
+category: "Real Estate & Finance"
+
+techStack:
+  - Vue.js
+  - Tailwind CSS
+  - MongoDB
+  - REST API
+  - AWS EC2
+  - AWS S3
+  - Cloudflare
+  - Forge
+  - Figma
+  - Postman
+
+coverImage: "/projects/trustee.png"
+coverAlt: "Real estate management dashboard showing property portfolio overview and fund separation ledger"
+
+gallery:
+  - src: "/images/projects/real-estate-management/screen-1.png"
+    alt: "Property portfolio dashboard with ownership breakdown and fund tracking"
+  - src: "/images/projects/real-estate-management/screen-2.png"
+    alt: "Fund management view showing owner and manager fund separation with transaction history"
+  - src: "/images/projects/real-estate-management/screen-3.png"
+    alt: "Property detail page with tenancy status, financial summary, and document management"
+
+liveUrl: ""
+githubUrl: ""
+
+featured: true
+published: true
+clientName: ""
+clientLocation: ""
+role: "Front-End Developer"
+duration: "8 months"
+teamSize: "2"
+
+hero:
+  name: "Real Estate Management"
+  tagline: "TRUSTEE PROPERTY & FUND MANAGEMENT PLATFORM"
+
+stats:
+  - value: "100%"
+    label: "Fund separation — owner and manager accounts clearly isolated at every view"
+  - value: "8"
+    label: "Months of cross-timezone collaboration between front-end and back-end"
+  - value: "REST"
+    label: "API-driven architecture — every view powered by live back-end data via Postman-verified contracts"
+
+phases:
+  - title: "Requirements & Design Review"
+    description: "Reviewed the product requirements and Figma designs with the back-end developer to establish a shared understanding of the data model, API contracts, and UI behaviour before any code was written. Postman was used throughout to inspect and agree on API response shapes ahead of integration."
+  - title: "Component Architecture & Foundation"
+    description: "Set up the Vue.js project structure, configured Tailwind CSS, and built the foundational component library — layout shells, navigation, table components, form elements, and the fund separation display patterns — all aligned to the Figma specifications."
+  - title: "API Integration"
+    description: "Integrated each front-end view against the REST API endpoints as they became available from the France-based back-end developer. Used Postman to validate response structures before wiring them into Vue components, catching contract mismatches early and keeping integration work clean."
+  - title: "Cross-Team Collaboration & Iteration"
+    description: "Maintained a consistent communication rhythm with the back-end developer across time zones via Slack for async updates and Google Meet for weekly alignment sessions. Raised blockers early, agreed on API changes in writing before implementation, and iterated on UI behaviour as back-end capabilities evolved."
+  - title: "QA, Refinement & Delivery"
+    description: "Worked through a structured QA pass across all views — verifying data accuracy against the API, testing edge cases in fund separation logic, and refining responsive behaviour across screen sizes. Final delivery was signed off against the original Figma designs with all REST API endpoints fully integrated."
+
+outcomes:
+  - "**Full front-end delivery** of a trustee real estate management system — every view built to Figma specification and powered by live REST API data."
+  - "**Clear fund separation** implemented across all financial views — property owner funds and property manager funds visually and logically isolated at every touchpoint."
+  - "**Seamless cross-timezone collaboration** maintained over 8 months with a France-based back-end developer through structured Slack and Google Meet communication."
+  - "**REST API integration** completed across the full product surface using Postman-verified contracts — no silent data mismatches in production views."
+  - "**Transparency and accountability** built into the core UI — property owners can track their funds independently of manager accounts at any time."
+
+challenges:
+  - title: "Building a front end against an API developed in a different timezone."
+    description: "The back-end API was being developed by a France-based developer in parallel with the front-end build, which meant API endpoints were not always ready when a UI view needed to be wired up. The approach was to use Postman to agree on response shapes before either side started implementation — treating the API contract as the handshake. When endpoints weren't yet available, components were built against mocked response data that matched the agreed structure exactly, so the real integration required minimal rework. Weekly Google Meet sessions kept both sides aligned on priority and any schema changes were communicated on Slack before they were merged."
+  - title: "Representing fund separation clearly in the UI without introducing confusion."
+    description: "The core product promise — that property owner funds and property manager funds are always kept separate and traceable — had to be expressed clearly in the interface for non-technical real estate clients. The challenge was designing views that made the separation immediately obvious without requiring users to cross-reference multiple screens. Working closely with the Figma designs, the solution was a consistent visual language across all financial views: colour-coded fund labels, clear ownership attribution on every transaction row, and summary panels that always showed both fund positions side by side."
+
+seo:
+  title: "Real Estate Management System — Front-End Development | Hiran Nuwanpriya"
+  description: "Case study: front-end development of a trustee real estate management system built in Vue.js — transparent fund separation, REST API integration, and cross-timezone collaboration over 8 months."
+  ogImage: "/images/projects/real-estate-management/og.png"
+
+structuredData:
+  type: "SoftwareApplication"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+This trustee real estate management system was built to bring transparency and
+accountability to property and fund management — giving property owners a clear,
+auditable view of their funds, kept entirely separate from the funds managed by
+the property manager. I joined the project as the dedicated front-end developer,
+working from Figma designs and collaborating closely with a France-based
+back-end developer over eight months to deliver a fully integrated Vue.js
+application driven by a REST API. Communication ran through Slack for day-to-day
+alignment and Google Meet for weekly syncs, keeping a two-person cross-timezone
+team moving at pace without losing clarity on requirements or API contracts.

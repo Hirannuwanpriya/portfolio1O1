@@ -9,11 +9,15 @@ interface ProjectHeroProps {
  * the short project name and small uppercase tagline shown in the reference
  * screenshot. The gradient runs from the brand `--color-accent-blue` token to
  * the darker `--color-accent-blue-deep` token defined in `app/globals.css`.
+ *
+ * This is the one place colour fills the surface — text inside stays white
+ * because it sits on the dark gradient. The rest of the project detail page
+ * is a light editorial layout (white surface, primary black text).
  */
 export default function ProjectHero({ hero }: ProjectHeroProps) {
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border border-white/10 px-6 py-16 md:px-12 md:py-20 lg:py-24"
+      className="relative overflow-hidden rounded-2xl px-6 py-16 md:px-12 md:py-20 lg:py-24"
       style={{
         background:
           "linear-gradient(135deg, var(--color-accent-blue) 0%, var(--color-accent-blue-deep) 100%)",

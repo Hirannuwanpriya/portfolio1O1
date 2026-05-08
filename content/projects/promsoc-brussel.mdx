@@ -1,0 +1,102 @@
+---
+title: "Promsoc Brussel — Student Association Platform Rebuild"
+summary: "Full platform rebuild for a Brussels-based student association — legacy system modernisation, zero-loss migration of 10,000+ user records, multilingual support, and a scalable course registration system built to handle 100,000+ users."
+slug: "promsoc-brussel"
+date: "2025-03-12"
+order: 2
+category: "Education & Membership Platform"
+
+techStack:
+  - Laravel
+  - Laravel Nova
+  - Vue.js
+  - Alpine.js
+  - Livewire
+  - Tailwind CSS
+  - MySql
+  - Redis
+  - AWS EC2
+  - AWS S3
+  - Cloudflare
+  - Forge
+  - Google Analytics
+  - Figma
+
+coverImage: "/projects/promsoc_brussels.png"
+coverAlt: "Promsoc Brussel member dashboard showing course registrations and multilingual account management"
+
+gallery:
+  - src: "/images/projects/promsoc-brussel/screen-1.png"
+    alt: "Member dashboard with course registration overview and enrolment history"
+  - src: "/images/projects/promsoc-brussel/screen-2.png"
+    alt: "Admin panel showing user management, registration approvals, and reporting"
+  - src: "/images/projects/promsoc-brussel/screen-3.png"
+    alt: "Multilingual course catalogue on mobile with French, Dutch, and English toggle"
+
+liveUrl: "https://example.com/promsoc-brussel"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Promsoc Brussel"
+clientLocation: "Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "6 months"
+teamSize: "Solo"
+
+hero:
+  name: "Promsoc Brussel"
+  tagline: "STUDENT ASSOCIATION PLATFORM"
+
+stats:
+  - value: "10k+"
+    label: "User records migrated with zero data loss"
+  - value: "100k+"
+    label: "Users supported after rebuild — up from a system that failed under hundreds"
+  - value: "25%"
+    label: "System performance improvement over legacy baseline"
+
+phases:
+  - title: "Discovery & Flow Mapping"
+    description: "Conducted structured workshops with the Promsoc team to map every user-facing workflow end to end — registration, membership renewal, course enrolment, payment, and admin approval. Identified all system actors (members, administrators, course coordinators) and verified which flows communicated directly with the client before any build decisions were made."
+  - title: "MVP Build & Client Validation"
+    description: "Built a focused MVP covering the core member registration and course enrolment journey. Walked the client through the working prototype, gathered structured feedback, and iterated on layout, language, and logic before expanding scope — preventing rework on peripheral features before the foundation was solid."
+  - title: "Full Feature Build"
+    description: "Built out the remaining functionality required to run the complete operational workflow: admin dashboard, bulk enrolment management, payment reconciliation, role-based access control, automated confirmation emails, and the multilingual content layer. Every feature was developed against the verified flow map from Phase 1."
+  - title: "Go-Live & Handover"
+    description: "Coordinated a phased go-live to allow the client team to begin using the new platform while the migration pipeline ran in parallel. Delivered support documentation and a walkthrough session so the Promsoc team could operate the system independently from day one."
+  - title: "Post-Launch Improvements"
+    description: "Worked through a structured backlog of client-requested enhancements — refined reporting views, additional notification triggers, bulk import tooling for new course records, and accessibility improvements identified through real member usage. All changes deployed incrementally to avoid disruption to active users."
+
+outcomes:
+  - "Platform now supports **100,000+ concurrent users** — rebuilt from a system that failed under a few hundred simultaneous sessions."
+  - "Overall system performance improved by **25%** against legacy baseline benchmarks."
+  - "**Full responsive support** across mobile, tablet, and desktop — mobile usage increased significantly post-launch with zero layout regressions."
+  - "**Multilingual support** (French, Dutch, English) across every member-facing surface — language-related support requests dropped to zero."
+  - "**Zero data loss** across the full migration of ~10,000 user records and their complete course registration histories."
+
+challenges:
+  - title: "Migrating 10,000 users from a legacy system — without losing a single record."
+    description: "Close to 10,000 user accounts — along with their full course registration histories, payment records, and membership status — needed to be transferred into a completely different data model. The legacy system had no formal API and inconsistent data formatting accumulated over many years. The solution was a dedicated migration pipeline that extracted raw data from the legacy database, applied a staged transformation and validation process, and loaded records into the new schema only after each record passed a full set of integrity checks. A reconciliation report was generated after every run, comparing record counts and key field values between source and destination. The pipeline was run multiple times in a staging environment with the client verifying sample records at each stage before the production cut-over was approved."
+  - title: "Rebuilding a live platform without disrupting an active membership."
+    description: "The rebuild had to be delivered without forcing members off the old system mid-cycle or losing any in-flight registrations during the transition window. The approach was to develop and validate the new platform in full isolation, run both systems in parallel during the final migration phase, and coordinate the cut-over to a low-activity window confirmed with the client. A rollback path was kept available until the reconciliation report confirmed full data integrity on the new system."
+
+seo:
+  title: "Promsoc Brussel — Platform Rebuild & Migration | Hiran Nuwanpriya"
+  description: "Case study: full platform rebuild for Promsoc Brussel with zero-loss migration of 10,000+ user records, multilingual support, and a scalable course registration system supporting 100,000+ users."
+  ogImage: "/images/projects/promsoc-brussel/og.png"
+
+structuredData:
+  type: "SoftwareApplication"
+  applicationCategory: "EducationApplication"
+---
+
+## Overview
+
+Promsoc Brussel is a Brussels-based student association managing memberships,
+course registrations, and community communications across a multilingual
+membership base. The existing platform had become unreliable — unable to handle
+peak enrolment traffic, inaccessible on mobile, and locked to a single language.
+I was brought in to deliver a complete rebuild: new architecture, new interface,
+multilingual support, and a zero-loss migration of all existing records — nearly
+10,000 users and their full registration histories — into the new system.

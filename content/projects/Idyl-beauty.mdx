@@ -1,0 +1,186 @@
+---
+title: "IDYL Natural Beauty Salon — Website & Custom CMS"
+summary: "End-to-end build of a multilingual beauty salon website for two Brussels locations — with a custom CMS, inline front-end editing, and a full e-commerce gift voucher store — giving the client complete content ownership without a developer."
+slug: "idylbeauty"
+date: "2025-05-08"
+order: 7
+category: "Website & CMS"
+
+techStack:
+  - Laravel
+  - Laravel Nova
+  - Vue.js
+  - Alpine.js
+  - Tailwind CSS
+  - MySQL
+  - AWS EC2
+  - AWS S3
+  - Cloudflare CDN
+  - Salonkee (Booking Integration)
+  - Stripe
+  - Figma
+
+coverImage: "/projects/idylbeauty.png"
+coverAlt: "IDYL Natural Beauty Salon homepage showing hero image and multilingual navigation in French"
+
+gallery:
+  - src: "/images/projects/idylbeauty/screen-1.png"
+    alt: "Homepage hero with natural beauty imagery and French/English/Dutch language switcher"
+  - src: "/images/projects/idylbeauty/screen-2.png"
+    alt: "Treatments listing page with service cards and booking CTA"
+  - src: "/images/projects/idylbeauty/screen-3.png"
+    alt: "Custom CMS interface showing inline front-end content editing panel"
+  - src: "/images/projects/idylbeauty/screen-4.png"
+    alt: "Gift voucher e-commerce store with online purchase flow"
+
+liveUrl: "https://www.idylbeauty.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "IDYL Natural Beauty Salon"
+clientLocation: "Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "3 months"
+teamSize: "Solo"
+
+hero:
+  name: "IDYL Natural Beauty Salon"
+  tagline: "MULTILINGUAL WEBSITE & CUSTOM CMS"
+
+stats:
+  - value: "3"
+    label: "Languages supported — French, English, and Dutch — serving Brussels' diverse clientele"
+  - value: "99%"
+    label: "Content managed independently by the client using the custom front-end editing interface"
+  - value: "Custom"
+    label: "CMS with inline front-end editing — the client updates content directly on the live page"
+
+seo:
+  title: "IDYL Natural Beauty Salon — Multilingual Website & CMS | Hiran Nuwanpriya"
+  description: "Case study: multilingual beauty salon website built with Laravel and Vue.js for two Brussels locations — trilingual content, custom CMS with inline front-end editing, and an integrated gift voucher store."
+  ogImage: "/images/projects/idylbeauty/og.png"
+
+structuredData:
+  type: "WebSite"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+IDYL Natural Beauty Salon is a Brussels-based natural beauty and wellness brand
+operating across two salon locations — Châtelain/Bailli in Saint-Gilles and
+Mérode in Woluwé-Saint-Lambert. The brand focuses on natural, eco-conscious
+treatments and positions itself against the conventional beauty industry with
+honest, unretouched imagery and sustainably sourced products.
+
+The client needed a complete digital presence that reflected this premium,
+values-led brand — a fast, polished website they could fully manage themselves,
+in three languages, without ever needing to call a developer.
+
+## The Problem
+
+- The existing online presence didn't reflect the quality and values of the brand.
+- All content updates required developer involvement, creating a bottleneck for
+  a fast-moving salon business with frequent new treatments, promotions, and
+  blog posts.
+- The site was French-only, excluding a significant portion of Brussels'
+  English- and Dutch-speaking clientele.
+- Gift vouchers were being sold in-salon only, leaving online revenue on the table.
+- Booking was managed by phone, with no integration to an online booking system.
+
+## My Role
+
+Sole engineer responsible for the full project lifecycle — discovery, architecture,
+design implementation, front-end and back-end development, CMS build, e-commerce
+integration, third-party booking system connection, deployment, and client
+handover and training.
+
+## Solution
+
+### Architecture
+
+Laravel back end serving a Vue.js front end, with all content and translations
+stored in a MySQL database and managed through a custom admin panel. Media assets
+— hero images, treatment photos, blog images — are stored on AWS S3 and served
+via Cloudflare CDN for fast load times across Belgium and neighbouring regions.
+
+### Multilingual Content System
+
+The site is fully trilingual — French, English, and Dutch — with a language
+switcher in the header. Every piece of content on every page has a translation
+record: page headings, treatment descriptions, blog posts, FAQ entries, team
+bios, and navigation labels. The client manages all three languages through the
+same CMS interface with a simple language tab per content item.
+
+### Custom CMS with Inline Front-End Editing
+
+The standout feature of the project is the inline editing system. Rather than
+asking the client to navigate a separate admin panel to update a heading or swap
+a hero image, the CMS exposes an editing toolbar directly on the live website
+when the client is authenticated. Clicking any piece of editable content — a
+heading, body paragraph, image, or button label — opens an inline editor in
+place, and saving pushes the change to the database immediately. The client's
+team took to the interface after a single training session and now manages all
+content independently.
+
+### Key Features
+
+- Full trilingual site: French, English, and Dutch with per-language URL routing
+- Inline front-end editing — content updated directly on the live page without
+  navigating to a separate CMS
+- Blog / News section with category tagging and multilingual post support
+- Gift voucher e-commerce store with online purchase, PDF delivery, and
+  multi-use voucher tracking across both salon locations
+- Salonkee booking integration for real-time appointment scheduling at both
+  Châtelain and Mérode
+- Treatments catalogue with filterable categories and individual service detail pages
+- Team profiles page with individual therapist bios
+- FAQ section managed entirely from the CMS
+- Two-location salon directory with contact details, maps, and location-specific
+  booking links
+- AWS S3 media library with drag-and-drop image upload in the CMS
+
+## Outcomes
+
+- The client's team manages 99% of content updates independently — new blog
+  posts, treatment descriptions, promotions, and seasonal hero images — without
+  any developer involvement.
+- Gift vouchers are now available for online purchase, adding a revenue channel
+  that previously required an in-person salon visit.
+- The trilingual setup serves Brussels' French-, English-, and Dutch-speaking
+  audiences from a single codebase with no duplicate maintenance overhead.
+- Online booking via the Salonkee integration reduced phone enquiries and
+  improved appointment fill rates across both locations.
+
+## Tech Stack Detail
+
+Vue.js was chosen for the front end to support the reactive inline editing
+experience — binding live content fields to the page without full page reloads
+made the editing flow feel immediate and approachable for a non-technical client.
+Alpine.js was used for lightweight interactive components such as the mobile
+navigation, FAQ accordions, and language switcher, keeping JavaScript payload
+small for pages that didn't need full Vue reactivity.
+
+AWS S3 was selected for media storage to decouple asset management from the
+application server, keeping the Forge-managed Laravel instance lean and making
+it straightforward to serve images through Cloudflare's CDN with cache headers
+optimised for Core Web Vitals.
+
+## Challenges and Learnings
+
+The trickiest part of the project was designing the inline editing system to be
+intuitive for a non-technical user while keeping it architecturally clean. The
+initial approach of attaching Vue component instances directly to every editable
+DOM node became unwieldy as the number of editable regions grew. The final
+solution introduced a single centralised EditableContent component that accepted
+a content key and locale prop — any text or image on the site could be made
+editable by wrapping it with this component and pointing it at a database key.
+This meant the CMS logic lived in one place, and adding new editable regions to
+future pages required only a one-line wrapper rather than a new component.
+
+The multilingual gift voucher checkout required careful thought around voucher
+redemption UX — the client wanted a single voucher to be usable across both
+salon locations and spendable in multiple visits. This was solved with a
+`voucher_transactions` ledger table that records each partial redemption against
+the voucher balance, rather than marking a voucher as used on first redemption.

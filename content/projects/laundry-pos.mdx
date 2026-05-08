@@ -1,0 +1,178 @@
+---
+title: "Laundry POS System"
+summary: "Legacy MS Access laundry POS transformed into a modern web platform — bridging a French-language codebase and a zero-English client through structured async collaboration, then rebuilding the system module by module into a cloud-accessible, multi-user application."
+slug: "laundry-pos"
+date: "2024-09-01"
+order: 4
+category: "ERP / POS"
+
+techStack:
+  - Laravel
+  - React.js
+  - Inertia.js
+  - Alpine.js
+  - Tailwind CSS
+  - MySql
+  - AWS EC2
+  - AWS S3
+  - Cloudflare
+  - Forge
+  - Redis
+  - Twilio
+  - Mailgun
+
+coverImage: "/projects/laundry-pos.png"
+coverAlt: "Laundry POS dashboard showing the order management screen with status indicators and customer panel"
+
+gallery:
+  - src: "/images/projects/laundry-pos/screen-1.png"
+    alt: "Order intake screen with dynamic pricing and garment category selection"
+  - src: "/images/projects/laundry-pos/screen-2.png"
+    alt: "Customer profile showing order history, notes, and visit frequency tracking"
+  - src: "/images/projects/laundry-pos/screen-3.png"
+    alt: "Role and permission settings panel with staff access levels"
+
+liveUrl: ""
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Laundry Business (Confidential)"
+clientLocation: "France"
+role: "Full Stack Engineer"
+duration: "6 months"
+teamSize: "2"
+
+hero:
+  name: "Laundry POS"
+  tagline: "LAUNDRY POINT-OF-SALE & ORDER MANAGEMENT PLATFORM"
+
+stats:
+  - value: "100%"
+    label: "Legacy data migrated from MS Access with zero data loss"
+  - value: "0"
+    label: "Manual customer calls — replaced by automated SMS & email notifications"
+  - value: "3"
+    label: "Delivery phases with client-confirmed specs before each build"
+
+phases:
+  - title: "Legacy System Study & French-Language Translation"
+    description: "Studied the entire MS Access database and application layer — all written in French — without any direct verbal contact with the client. Translated every form, query, report, and embedded business logic rule into a structured English specification, module by module."
+  - title: "Async Client Verification"
+    description: "Sent each translated module spec to the client as a detailed email with annotated screenshots of the original Access screens. The client confirmed, corrected, or clarified by return email in French, which I translated on my side. This loop continued until the full business logic was client-verified before development began."
+  - title: "Module-by-Module Development & Feedback"
+    description: "Built the system in discrete modules — order management, customer profiles, pricing, notifications, reporting — and presented each to the client as a working screen before moving to the next. Client feedback was captured per module, keeping corrections small and the final delivery clean."
+  - title: "Data Migration & Go-Live"
+    description: "Migrated all historical order and customer data from the MS Access .mdb file via a custom Laravel artisan command with a validation layer that flagged inconsistent records for review before import. Zero data loss. The client went live on the new platform with full historical data intact."
+
+outcomes:
+  - "**100% of historical data** migrated from MS Access with **zero data loss**."
+  - "Manual customer collection calls reduced to **near zero** through automated SMS and email notifications."
+  - "Eliminated **single-point-of-failure** dependency on one physical workstation."
+  - "Role-based access control introduced — **Owner, Manager, and Staff** roles with scoped permissions across order, pricing, and reporting."
+  - "Platform became **cloud-accessible** from any device on the shop network or remotely."
+  - "End-of-day reports matched the **exact format** the owner was familiar with from the legacy system."
+  - "Client confidence maintained throughout via **structured async communication** despite zero shared spoken language."
+
+challenges:
+  - title: "A French codebase. A French-only client. No shared language."
+    description: "The entire MS Access system — every field label, menu, query, report, and embedded business rule — was written in French. The shop owner spoke no English, and there was no way to jump on a call and ask questions. The only path forward was to treat the Access file itself as the source of truth and reverse-engineer the business logic from the data model and UI. I worked through every form and query systematically, translating and documenting each module into a plain-English spec. Each spec was then sent to the client as a structured email with annotated screenshots — showing the original Access screen alongside my interpretation of what it did. The client replied in French confirming or correcting my understanding. I translated the reply, updated the spec, and moved to the next module. This approach front-loaded time into discovery but meant that when development began, every business rule was verified. There were no surprises at delivery."
+  - title: "MS Access data with years of silent inconsistencies."
+    description: "MS Access tolerates loose data entry that a proper relational database would reject. After years of live use, the historical records contained mismatched foreign keys, blank required fields, and duplicate customer entries that the Access application had silently accepted. A straight import into MySQL would have either failed or carried corrupted data into the new system. The solution was a validation layer built into the migration artisan command: every row was checked against the new schema's constraints before being written, and any record that failed validation was written to a review log rather than skipped silently. The client received the review log with each flagged record explained in plain terms, corrections were agreed, and only then did the final import run. This made the migration fully auditable and gave the client confidence the new system was starting from a clean, verified baseline."
+
+seo:
+  title: "Laundry POS — MS Access to Modern Web Platform | Hiran Nuwanpriya"
+  description: "Case study: migration of a French-language MS Access laundry POS into a modern Laravel and Vue.js web application with automated notifications, RBAC, and zero data loss migration."
+  ogImage: "/images/projects/laundry-pos/og.png"
+
+structuredData:
+  type: "SoftwareApplication"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+A laundry business in France had been running its entire point-of-sale and order
+management operation on a Microsoft Access database installed on a single
+workstation. The system was functional but fragile — one hardware failure away
+from a complete operational halt — and had no way to notify customers
+automatically, no role separation for staff, and no path to a second location.
+
+I was engaged to rebuild the system as a modern web platform. The catch: the
+Access application was entirely in French, the client spoke no English, and
+there was no documentation, no handover package, and no colleague to ask.
+
+## The Problem
+
+- The entire business ran on a single MS Access installation on one machine.
+  Any hardware failure would bring operations to a complete stop.
+- Staff had to phone every customer manually when an order was ready for
+  collection — a significant time drain with no fallback if calls were missed.
+- Every staff member had unrestricted access to all records, including pricing
+  configuration and full historical data.
+- The system could not support a second location or any form of remote access.
+- The Access database, application layer, and all business logic were written
+  entirely in French, with no English-speaking contact available at the client.
+
+## My Role
+
+Sole engineer responsible for requirements discovery, system architecture,
+frontend and backend development, data migration, and deployment. This project
+required as much structured communication discipline as technical execution —
+the discovery and verification phase was a formal project deliverable in its
+own right, not a preliminary step.
+
+## Solution
+
+### Phase 1 — Legacy System Study and Translation
+
+Before writing a line of new code, I worked through the entire Access file
+systematically. Every form, query, report, and table was translated from French
+into a structured English specification. Business logic embedded in Access macros
+and VBA was documented and mapped to equivalent behaviour in the new system.
+
+Each module spec was sent to the client as a detailed email with annotated
+screenshots of the original Access screens alongside my interpretation of the
+logic. The client replied in French confirming or correcting my understanding.
+I translated each reply, updated the spec, and moved to the next module. No
+development began until every module was client-verified.
+
+### Phase 2 — Architecture and Development
+
+Laravel service layer behind a Vue.js + TypeScript frontend. MySQL database
+with a schema designed to mirror the verified Access data model while resolving
+its structural weaknesses — normalising denormalised tables and introducing
+proper relational constraints.
+
+### Key Features
+
+- Order intake with garment category selection, dynamic pricing rules, and
+  expected ready date calculation
+- Automated SMS and email notifications triggered on each order status change:
+  received, in-progress, ready for collection, collected
+- Customer profiles with full order history, notes, and visit frequency tracking
+- Role-based access control with three levels — Owner, Manager, and Staff —
+  each with scoped permissions across order management, pricing, and reporting
+- End-of-day summary reports matching the format the owner was familiar with
+  from the legacy Access system
+- Cloud-hosted and accessible from any device on the shop network or remotely
+
+### Phase 3 — Data Migration
+
+All historical order and customer records were migrated from the Access `.mdb`
+file via a custom Laravel artisan command using ODBC. A validation layer checked
+every row against the new schema before writing, logging any record with
+inconsistencies for client review rather than importing silently. Corrections
+were agreed with the client before the final import ran, resulting in a clean,
+fully auditable migration baseline.
+
+## Outcomes
+
+- Eliminated the single-point-of-failure dependency on one physical workstation.
+- Reduced manual customer collection calls to near zero through automated SMS
+  and email notifications.
+- Introduced role-level visibility for the owner across staff activity and daily
+  revenue without manual reconciliation.
+- Migrated all historical order and customer data from Access with zero data loss.
+- Delivered a system the client could use immediately, with reports and workflows
+  matching the patterns they already knew.

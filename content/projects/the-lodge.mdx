@@ -1,0 +1,226 @@
+---
+title: "The Lodge — Restaurant & Bar-Club Website"
+summary: "Full website build for The Lodge, a landmark Brussels restaurant and bar-club operating since 2008 from a private pond-side setting in Watermael-Boitsfort — delivering a bilingual digital presence with online menu, table reservations, and a private events enquiry system."
+slug: "the-lodge"
+date: "2025-05-08"
+order: 6
+category: "Hospitality & Restaurant"
+
+techStack:
+  - Laravel
+  - Livewire 3
+  - Laravel Nova
+  - Vue.js
+  - Alpine.js
+  - Tailwind CSS
+  - MySQL
+  - AWS EC2
+  - AWS S3
+  - Cloudflare CDN
+  - Google Maps API
+  - Facebook Integration
+  - Figma
+
+coverImage: "/projects/the-lodge.png"
+coverAlt: "The Lodge Brussels homepage showing the pond-side terrace hero image and restaurant navigation"
+
+gallery:
+  - src: "/images/projects/the-lodge/screen-1.png"
+    alt: "Homepage hero with atmospheric terrace and pond photography"
+  - src: "/images/projects/the-lodge/screen-2.png"
+    alt: "Restaurant menu page showing seasonal suggestions, starters, salads, pasta, and meat sections"
+  - src: "/images/projects/the-lodge/screen-3.png"
+    alt: "Events and private hire page with all-in menu packages"
+  - src: "/images/projects/the-lodge/screen-4.png"
+    alt: "Online table reservation system integrated into the site"
+
+liveUrl: "https://www.the-lodge.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "The Lodge Brussels"
+clientLocation: "Watermael-Boitsfort, Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "2 months"
+teamSize: "2"
+
+hero:
+  name: "The Lodge"
+  tagline: "RESTAURANT & BAR-CLUB WEBSITE"
+
+stats:
+  - value: "2"
+    label: "Languages — French and Dutch — serving Brussels' bilingual dining audience from a single codebase"
+  - value: "3"
+    label: "Revenue surfaces online — restaurant dining, bar-club evenings, and private event hire"
+  - value: "6"
+    label: "Menu sections managed through the CMS — seasonal suggestions, starters, salads, pasta, poultry, and meat"
+
+seo:
+  title: "The Lodge Brussels — Restaurant & Bar-Club Website | Hiran Nuwanpriya"
+  description: "Case study: bilingual website for The Lodge Brussels, a restaurant and bar-club in Watermael-Boitsfort — online menu, table reservations, and private event enquiries built with Laravel and Vue.js."
+  ogImage: "/images/projects/the-lodge/og.png"
+
+structuredData:
+  type: "WebSite"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+The Lodge is one of south-east Brussels' most distinctive hospitality venues —
+a restaurant and bar-club that has been welcoming diners, drinkers, and event
+guests since 2008, founded by two childhood friends, Hubert and Alexandre, at
+Rue des Pêcheries 2 in Watermael-Boitsfort. The venue occupies a uniquely
+charming setting: a green enclave with wooden terraces and a glazed veranda
+overlooking a private pond, a short distance from Auderghem, Ixelles, and the
+entrance to the Namur motorway.
+
+The Lodge operates across three distinct revenue activities: a restaurant serving
+Franco-Belgian brasserie cuisine with seasonal Mediterranean and Asian
+influences; an upstairs bar-club with a musical atmosphere for evening drinks
+and late-night socialising; and a private events business handling birthdays,
+corporate team building, and bespoke privatisations with all-in catering packages.
+
+The brief was to build a website that did justice to the venue's character and
+atmosphere, communicated all three activities clearly, and gave visitors a direct
+path to reserve a table or enquire about a private event.
+
+## The Problem
+
+- A well-established venue with a loyal following and consistently strong reviews
+  had no website that matched the warmth and character of the physical experience.
+- The menu — seasonal suggestions, starters, salads, pasta, poultry, and meat —
+  was not accessible online, forcing potential guests to call ahead or visit
+  before knowing what to expect.
+- The private events business had no dedicated online presence, meaning enquiries
+  were captured only through a generic email address shared informally through
+  word of mouth.
+- The all-in menus for events and group bookings — a significant revenue line —
+  were not communicated with the clarity needed to convert corporate or
+  celebration event planners researching options online.
+- The venue serves a bilingual Brussels audience but had no Dutch-language
+  presence, limiting its discoverability for Flemish-speaking visitors and
+  corporate groups.
+- The distinctive setting — wooden terraces over a private pond, an upstairs
+  bar-club, a veranda that ranks among the most atmospheric in Brussels —
+  was not being communicated visually in a way that drove footfall and reservations.
+
+## My Role
+
+Sole engineer across the full project: discovery, information architecture,
+design implementation, front-end and back-end development, bilingual content
+system, menu management, online reservation integration, events enquiry system,
+deployment, and client handover.
+
+## Solution
+
+### Architecture
+
+Laravel back end powering a Vue.js front end, with all content — menu sections,
+seasonal suggestions, event packages, and contact information — managed through
+a custom admin panel. The site is fully bilingual in French and Dutch, with
+separate URL paths (`/fr/` and `/nl/`) and independently managed translations
+for every content area. Photography is stored on AWS S3 and served through
+Cloudflare CDN, with the hero and venue imagery treated as a primary conversion
+asset throughout the layout.
+
+### Restaurant Menu System
+
+The full restaurant menu is managed through the CMS and presented across six
+sections: seasonal suggestions, starters, salads, pasta, poultry, and meat.
+Each section is independently editable — the client updates dishes, descriptions,
+and prices without developer involvement. Seasonal suggestions are surfaced
+prominently as a separate section, reflecting the chef's practice of introducing
+market-led specials alongside the core carte.
+
+The Dutch menu (`/nl/onze-kaart/`) mirrors the French menu structure exactly
+and is managed as a parallel translation in the admin panel, ensuring both
+language versions stay in sync when the menu is updated.
+
+### Online Reservation System
+
+A table reservation flow was integrated directly into the site, giving visitors
+a clear path from browsing the menu to booking a table without leaving the
+website. The reservation section handles both lunch and dinner covers and is
+connected to the venue's internal booking management.
+
+### Events and Private Hire
+
+A dedicated events section communicates The Lodge's private hire and group
+catering offer: birthday celebrations, corporate team building, and bespoke
+privatisations. All-in menus with per-person pricing are presented as clearly
+structured package pages, giving event planners the information they need to
+evaluate and enquire without needing a preliminary phone call. A direct event
+enquiry form routes requests to the client's events inbox.
+
+### Key Features
+
+- Fully bilingual site in French and Dutch with independent content management
+  per language
+- Six-section restaurant menu with seasonal suggestions surfaced as a priority
+  content area
+- Online table reservation system integrated into the site
+- Events and private hire section with all-in menu package pages
+- Direct event enquiry form for birthday, corporate, and privatisation requests
+- Atmospheric venue photography showcasing the pond-side terraces, veranda, and
+  bar-club
+- Google Maps integration for venue location
+- Facebook social integration for the venue's active social community
+- Full admin panel for menu, events content, and translation management
+
+## Outcomes
+
+- The Lodge's three revenue activities — restaurant, bar-club, and events — are
+  now clearly communicated in a single digital presence that reflects the venue's
+  character and quality.
+- The online menu gives prospective diners a complete picture of the offering
+  before they visit, reducing the barrier to a first reservation particularly
+  for new visitors unfamiliar with the venue.
+- The events section and all-in menu packages surface the private hire business
+  to corporate event planners and celebration organisers who are researching
+  venues online — an audience that previously had no dedicated point of contact.
+- The Dutch-language version extends the venue's discoverability to
+  Flemish-speaking Brussels diners and corporate groups, a segment previously
+  unreachable through French-only content.
+
+## Tech Stack Detail
+
+Vue.js handled the more interactive elements — the menu section navigation,
+the photo gallery carousel showcasing the venue's setting, and the reservation
+flow — while Alpine.js covered lightweight interactions such as the mobile
+navigation drawer and the events enquiry form validation. This split kept the
+JavaScript payload lean on content-heavy pages like the full menu, where fast
+initial load directly affects bounce rate for mobile visitors searching for
+Brussels restaurant options.
+
+The bilingual content system was built as a translation layer on top of a
+single content model rather than as two separate content trees. Each content
+record carries a locale flag, and the admin panel presents both language versions
+side by side within the same edit form, making it straightforward for the client
+to maintain parity between French and Dutch without navigating between separate
+sections.
+
+## Challenges and Learnings
+
+The central design challenge was capturing the atmosphere of The Lodge in a
+website layout — the venue's appeal is deeply sensory and experiential, built
+around the pond, the wooden terraces, the candlelit veranda, and the upstairs
+bar-club in the evening. A purely functional restaurant site with a menu and a
+reservation button would have missed what makes The Lodge worth visiting.
+
+The solution was to lead every section with full-width photography that treated
+the setting as the primary selling point, and to sequence the homepage so that
+a visitor encountered the atmosphere first and the practical information second.
+The menu, reservation, and events content was structured for clarity and
+conversion; the visual layer was structured for desire.
+
+The events section required particular care in information architecture. The
+Lodge handles multiple distinct event formats — birthday dinners, corporate
+bookings, full venue privatisations — each with different group sizes, catering
+requirements, and decision-maker profiles. Rather than presenting a single
+generic events page, the section was structured around these distinct formats
+with tailored package descriptions per event type, allowing each audience to
+quickly identify the offer that matched their need and move directly to an
+enquiry.

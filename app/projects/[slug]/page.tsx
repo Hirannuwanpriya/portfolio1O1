@@ -94,31 +94,31 @@ export default async function ProjectDetailPage({
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
 
-      <article className="bg-[var(--color-text-primary)] text-white">
+      <article className="bg-[var(--color-bg)] text-[var(--color-text-primary)]">
         <div className="mx-auto max-w-5xl px-6 pt-12 pb-24 md:px-8 md:pt-16 md:pb-32 lg:px-12">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 transition-colors duration-150 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-blue)]"
+            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--color-text-secondary)] transition-colors duration-150 hover:text-[var(--color-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-blue)]"
           >
             <span aria-hidden="true">&larr;</span> Projects
           </Link>
-
+{/* 
           {fm.hero ? (
             <div className="mt-8 md:mt-10">
               <ProjectHero hero={fm.hero} />
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="mt-12 md:mt-16">
             {fm.category ? (
-              <span className="inline-flex rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
+              <span className="inline-flex rounded-full border border-[var(--color-accent-blue)]/30 bg-[var(--color-accent-blue)]/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-blue-deep)]">
                 {fm.category}
               </span>
             ) : null}
-            <h1 className="mt-6 text-3xl font-bold leading-[1.1] tracking-[-0.02em] text-white md:text-5xl">
+            <h1 className="mt-6 text-3xl font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-text-primary)] md:text-5xl">
               {fm.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-relaxed text-white/75 md:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
               {fm.summary}
             </p>
           </div>
@@ -141,7 +141,7 @@ export default async function ProjectDetailPage({
 
           {fm.techStack.length > 0 ? (
             <section className="mt-16 md:mt-24">
-              <SectionHeading>Tech Stack</SectionHeading>
+              <SectionHeading styleClass="bolder text-[var(--color-accent-crimson)]">Tech Stack</SectionHeading>
               <div className="mt-6">
                 <TechStackList techStack={fm.techStack} />
               </div>
@@ -150,7 +150,7 @@ export default async function ProjectDetailPage({
 
           {fm.phases && fm.phases.length > 0 ? (
             <section className="mt-16 md:mt-24">
-              <SectionHeading>Delivery</SectionHeading>
+              <SectionHeading styleClass="text-[var(--color-text-primary)]">Delivery</SectionHeading>
               <div className="mt-6">
                 <DeliveryTimeline phases={fm.phases} />
               </div>
@@ -159,7 +159,7 @@ export default async function ProjectDetailPage({
 
           {fm.outcomes && fm.outcomes.length > 0 ? (
             <section className="mt-16 md:mt-24">
-              <SectionHeading>Outcomes</SectionHeading>
+              <SectionHeading styleClass="text-[var(--color-text-primary)]">Outcomes</SectionHeading>
               <div className="mt-6">
                 <OutcomesList outcomes={fm.outcomes} />
               </div>

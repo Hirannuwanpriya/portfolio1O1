@@ -1,0 +1,190 @@
+---
+title: "Stockel Village"
+summary: "Full rebuild of a Brussels commercial district platform serving 250+ merchants, restaurants, a cinema, and community events — migrated from WordPress using only admin credentials, with a custom membership billing engine that automatically tracks, notifies, and suspends businesses based on payment status."
+slug: "stockel-village"
+date: "2024-06-01"
+order: 3
+category: "Community & Directory Platform"
+
+techStack:
+  - Laravel 11
+  - Livewire 3
+  - Laravel Nova 5
+  - Echo
+  - Tailwind
+  - Horizon
+  - AlpineJs
+  - AWS EC2
+  - AWS S3
+  - Cloudflare
+  - Forge
+  - Envoyer
+  - Figma
+
+coverImage: "/projects/stockelvillage.png"
+coverAlt: "Stockel Village platform showing the merchant directory with category filters, event listings, and the Le Stockel cinema section"
+
+gallery:
+  - src: "/images/projects/stockel-village/screen-1.png"
+    alt: "Merchant directory listing page with category filters and search across 250+ businesses"
+  - src: "/images/projects/stockel-village/screen-2.png"
+    alt: "Individual merchant profile page with business details, opening hours, and contact information"
+  - src: "/images/projects/stockel-village/screen-3.png"
+    alt: "Admin membership dashboard showing payment status, activity checks, and automated suspension controls"
+
+liveUrl: "https://stockelvillage.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Stockel Village"
+clientLocation: "Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "5 months"
+teamSize: "Solo"
+
+hero:
+  name: "Stockel Village"
+  tagline: "BRUSSELS COMMERCIAL DISTRICT PLATFORM"
+
+stats:
+  - value: "250+"
+    label: "Merchants migrated and onboarded to the new platform"
+  - value: "10,000+"
+    label: "Monthly visitors served across the district directory"
+  - value: "1,000"
+    label: "Business capacity supported through full performance optimisation"
+
+phases:
+  - title: "WordPress Reverse-Engineering & Data Migration"
+    description: "With only WordPress admin credentials and no database access, I worked through the entire backend — posts, custom fields, user records, categories, and media — to map every data structure and business workflow before extracting and migrating 250+ merchant records into the new Laravel system."
+  - title: "Platform Rebuild — Directory, Events & Cinema"
+    description: "Built the full public-facing platform from scratch: a searchable, filterable merchant directory covering retail, restaurants, personal services, and Le Stockel cinema, plus a community events system with real-time publishing to the homepage feed."
+  - title: "Membership Billing & Automated Suspension Engine"
+    description: "Designed and built a monthly membership management system: on the first day of each month, the system checks each business's operational status, sends a membership payment reminder, tracks non-payment over a 3-month window, and automatically suspends listings that remain unpaid — all without manual admin intervention."
+  - title: "Multi-Language CMS & Performance Optimisation"
+    description: "Implemented full FR/NL/EN multi-language support across the public site and admin CMS. Optimised the entire platform to handle 1,000+ business listings with fast load times and sustained uptime under real visitor traffic."
+
+outcomes:
+  - "**250+ merchants** successfully migrated from WordPress with all business data, categories, and media intact."
+  - "Platform handles **10,000+ monthly visitors** with sustained uptime since launch."
+  - "System architected to support **1,000 businesses** — 4× the current directory size — without infrastructure changes."
+  - "Membership billing engine runs **fully automatically** — zero manual admin intervention required each month."
+  - "Businesses inactive for 3+ months are **automatically suspended** and removed from the public directory."
+  - "Full **FR/NL/EN multi-language** support across public site and merchant CMS."
+  - "Real-time event publishing — new community events appear on the **homepage feed instantly** upon admin approval."
+
+challenges:
+  - title: "No database access. Only a WordPress username and password."
+    description: "The entire migration had to be performed without direct database access. There was no MySQL dump, no phpMyAdmin, and no developer handover from the previous vendor. The only entry point was the WordPress admin panel. I worked through every section of the backend methodically — posts, pages, custom post types, ACF fields, user records, taxonomy structures, media library, and plugin-generated data — reading and documenting every data structure before touching anything. Each content type was mapped to the new Laravel schema by hand, and a custom migration script was written to extract records via the WordPress REST API and admin-accessible exports. Any data that could not be extracted programmatically was identified early and flagged for manual entry, so there were no gaps discovered at go-live."
+  - title: "Building a membership engine that runs itself."
+    description: "The district association needed to manage 250+ business memberships without a dedicated admin spending hours each month on manual follow-up. The requirement was clear but the logic had real complexity: on the first of each month, check whether each registered business is still actively operating, send a membership payment reminder, track the payment status, escalate the reminder if unpaid in subsequent months, and after three consecutive months of non-payment, automatically disable the business listing from the public directory. The solution was a scheduled Laravel job running at month start, backed by a state machine that tracked each business through active, reminded, overdue, and suspended states. Every transition triggered a templated email via Mailgun — in the merchant's preferred language — with the suspension email including a reactivation path so legitimate businesses with billing delays were not permanently removed. The entire flow runs without any admin action unless a merchant contacts the association directly."
+
+seo:
+  title: "Stockel Village — Brussels Commercial District Platform | Hiran Nuwanpriya"
+  description: "Case study: full rebuild of the Stockel Village Brussels district platform. 250+ merchants migrated from WordPress, automated membership billing engine, multi-language FR/NL/EN support, and real-time events."
+  ogImage: "/images/projects/stockel-village/og.png"
+
+structuredData:
+  type: "SoftwareApplication"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+Stockel Village is the digital platform for a major commercial district in
+Brussels, covering 250+ retail shops, restaurants, personal services, a cinema
+(Le Stockel), and a year-round programme of community events. The association
+needed a modern, multi-language platform to replace an ageing WordPress site —
+with a fully automated membership billing system layered on top to manage
+business registrations and payments without ongoing manual administration.
+
+I was the sole engineer across the entire project: migration, platform rebuild,
+billing engine, multi-language CMS, and performance optimisation.
+
+## The Problem
+
+- The existing WordPress site was outdated and could not support the growing
+  directory or the association's event and membership workflows.
+- There was no automated way to manage monthly membership fees across 250+
+  businesses — reminders, follow-ups, and suspensions were all handled manually.
+- The platform had no multi-language support despite serving a French, Dutch,
+  and English-speaking community.
+- No developer handover was provided. The only access available was a WordPress
+  admin username and password — no database credentials, no codebase, no
+  documentation.
+- The platform needed to be architected for growth, with capacity for 1,000+
+  business listings as the district expanded.
+
+## My Role
+
+Sole engineer responsible for data migration, system architecture, frontend and
+backend development, membership engine design, multi-language implementation,
+and performance optimisation. The project began with a reverse-engineering phase
+to extract all data and business logic from the live WordPress installation
+before a single line of new code was written.
+
+## Solution
+
+### Phase 1 — WordPress Reverse-Engineering and Migration
+
+With no direct database access, I worked through the entire WordPress admin
+panel to map every data structure: custom post types, ACF field groups, taxonomy
+hierarchies, user roles, media attachments, and plugin-generated records. Each
+content type was documented and mapped to the target Laravel schema before
+extraction began.
+
+A custom migration pipeline extracted records via the WordPress REST API and
+admin-accessible exports. Data quality issues — inconsistent category
+assignments, duplicate entries, missing required fields — were identified and
+resolved during extraction rather than carried into the new system.
+
+### Phase 2 — Platform Architecture
+
+Laravel service layer behind a Vue.js + TypeScript frontend. The directory was
+built to support filtering by category (retail, food, services, cinema, events),
+full-text search across all 250+ listings, and individual merchant profile pages
+with opening hours, contact details, gallery, and event associations.
+
+Le Stockel cinema was integrated as a dedicated section with its own content
+type — separate from the standard merchant listing — to support programme
+schedules and screening information managed through the CMS.
+
+### Phase 3 — Membership Billing Engine
+
+The membership engine runs on a scheduled Laravel job triggered on the first day
+of each month. The workflow for each registered business:
+
+1. Verify the business is still actively operating
+2. Send a membership payment reminder email in the merchant's preferred language
+3. Track payment status — if unpaid, escalate in subsequent months
+4. After three consecutive months without payment, automatically suspend the
+   business listing from the public directory
+5. Include a reactivation path in the suspension email so merchants with
+   legitimate billing delays can restore their listing without contacting support
+
+The full cycle runs without any admin intervention. Suspension and reactivation
+are handled entirely by the system.
+
+### Phase 4 — Multi-Language Support and Performance
+
+Full FR/NL/EN multi-language support was implemented across the public-facing
+site and the admin CMS, allowing both the association and individual merchants
+to manage content in their preferred language.
+
+Performance optimisation was applied across the full stack — query optimisation,
+eager loading, route and response caching, image optimisation at upload, and
+Vue.js lazy loading on high-traffic listing routes — to support the current
+10,000+ monthly visitors and a directory capacity of 1,000+ businesses.
+
+## Outcomes
+
+- All 250+ merchant records migrated from WordPress with zero data loss.
+- Platform sustains 10,000+ monthly visitors with consistent uptime since launch.
+- Membership billing engine operates fully automatically — no monthly admin
+  overhead for the association.
+- System capacity architected for 1,000 businesses, four times the current
+  directory size.
+- Full tri-language support live across all public and CMS interfaces.
+- Real-time event publishing live — community events appear on the homepage
+  feed immediately upon approval.

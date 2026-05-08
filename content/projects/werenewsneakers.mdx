@@ -1,59 +1,92 @@
 ---
-title: "WeRenewSneakers"
-summary: "Full-stack e-commerce web platform and React Native mobile app for buying and selling sneakers — real-time sync across web and mobile for orders, inventory, and user interactions, with integrated Stripe payments and marketplace listings."
+title: "WeRenewSneakers — E-Commerce & Mobile App"
+summary: "End-to-end build of a sneaker buy, sell, and restoration platform — from a client-validated e-commerce website through to a production REST API and React Native mobile app, increasing sales by 50% and building a daily-active buyer and seller community."
 slug: "werenewsneakers"
-date: "2023-11-30"
-order: 4
-category: "E-commerce / Mobile App"
+date: "2025-06-12"
+order: 3
+category: "E-Commerce & Mobile"
 
 techStack:
-  - Laravel 9
-  - Laravel Nova 3
-  - Laravel Sanctum
-  - Livewire
-  - REST API
-  - AlpineJS
-  - Tailwind CSS
-  - Meilisearch
-  - MySQL
-  - Stripe
+  - Laravel
+  - Laravel Nova
+  - React.js
   - React Native
-  - Redux Toolkit
-  - Axios
-  - NativeWind
-  - Stripe SDK
-  - Fastlane
-  - Laravel Forge
-  - Envoyer
-  - Flare
+  - Alpine.js
+  - Livewire
+  - Tailwind CSS
+  - MySQL
+  - Redis
+  - AWS EC2
+  - AWS S3
+  - Cloudflare
+  - Forge
+  - Stripe
+  - Google Analytics
+  - Figma
 
-coverImage: "/images/projects/werenewsneakers/cover.png"
-coverAlt: "WeRenewSneakers mobile app and web platform showing sneaker listings, product detail, and checkout flow"
+coverImage: "/projects/werenewsneakers.png"
+coverAlt: "WeRenewSneakers storefront showing sneaker listings with buy, sell, and restoration options"
 
 gallery:
   - src: "/images/projects/werenewsneakers/screen-1.png"
-    alt: "Sneaker marketplace listing page with Meilisearch-powered search, brand filters, and condition badges"
+    alt: "E-commerce storefront showing sneaker listings with buy and sell entry points"
   - src: "/images/projects/werenewsneakers/screen-2.png"
-    alt: "React Native mobile app showing product detail, size selection, and Stripe checkout"
+    alt: "Sneaker detail page with restoration service options and Stripe checkout"
   - src: "/images/projects/werenewsneakers/screen-3.png"
-    alt: "Seller dashboard with active listings, sales history, and order management"
-  - src: "/images/projects/werenewsneakers/screen-4.png"
-    alt: "Laravel Nova admin panel showing inventory sync, order management, and user listings"
+    alt: "React Native mobile app home screen with daily sneaker drops and sell flow"
 
-liveUrl: ""
+liveUrl: "https://werenewsneakers.com"
 githubUrl: ""
 
 featured: true
 published: true
 clientName: "WeRenewSneakers"
-clientLocation: "Belgium"
-role: "Full Stack Developer / Mobile Developer"
-duration: "8 months"
-teamSize: "3"
+clientLocation: ""
+role: "Full Stack Engineer"
+duration: "9 months"
+teamSize: "2"
+
+hero:
+  name: "WeRenewSneakers"
+  tagline: "SNEAKER E-COMMERCE & MOBILE PLATFORM"
+
+stats:
+  - value: "50%"
+    label: "Increase in online sales after platform launch"
+  - value: "2"
+    label: "Platforms delivered — web and mobile — from a single Laravel API"
+  - value: "Daily"
+    label: "Active mobile users checking in to buy and sell sneakers"
+
+phases:
+  - title: "E-Commerce Website Build & Client Validation"
+    description: "Built the full e-commerce website against the client's requirements — product listings for buying, selling, and restoration services, Stripe checkout, order management, and an admin panel for inventory and fulfilment. The site was reviewed and signed off by the client before any work began on the API or mobile app."
+  - title: "REST API Build"
+    description: "With the web platform validated, extracted and formalised the business logic into a structured Laravel REST API — authentication, product catalogue, order lifecycle, seller submissions, and restoration bookings. The API was designed to serve both the existing web front end and the upcoming mobile app from a single source of truth."
+  - title: "React Native Mobile App Development"
+    description: "Developed the React Native mobile app in parallel while the e-commerce website moved through its go-live process. The app consumed the same REST API, giving mobile users the full platform experience — browsing daily sneaker drops, submitting pairs for sale, booking restoration services, and completing purchases via Stripe — natively on iOS and Android."
+  - title: "Web Go-Live"
+    description: "Launched the e-commerce website to production following client sign-off. Redis-backed caching and AWS S3 media storage were confirmed stable under real traffic before the mobile launch window opened."
+  - title: "Mobile App Launch"
+    description: "After the web platform was confirmed live and performing, submitted the React Native app to the App Store and Google Play. The client now had two fully operational sales channels — web and mobile — running off the same API with consistent product data, order state, and inventory in real time."
+
+outcomes:
+  - "Client increased **online sales by 50%** following the launch of the e-commerce platform."
+  - "**Daily active mobile users** established — customers returning every day to browse new sneaker drops and list pairs for sale or restoration."
+  - "**Two platforms — web and mobile** — delivered from a single Laravel REST API with no duplicated business logic."
+  - "**Stripe payment integration** enabled secure online checkout for the first time, replacing manual bank transfers and in-person payments."
+  - "**AWS S3 media pipeline** handles high-quality sneaker photography at scale without impacting server performance."
+  - "Client gained a **regular buyer and seller community** through the mobile app, building repeat engagement beyond one-off purchases."
+
+challenges:
+  - title: "Building web and mobile from one API without duplicating logic."
+    description: "The core engineering challenge was ensuring the Laravel REST API could serve both the Vue.js web front end and the React Native mobile app with identical business rules — pricing, stock availability, order state, and seller submission validation — without any logic living in the client layer. Every rule was enforced at the API level, so both platforms stayed consistent automatically. This also meant that any future update to pricing or order logic only needed to be made once."
+  - title: "Sequencing a multi-platform build without blocking the client's go-live."
+    description: "The client needed the website live as quickly as possible to start taking orders. Building the mobile app at the same time risked either delaying the web launch or delivering a mobile app before the underlying API was properly validated by real traffic. The solution was to phase the build deliberately — web first, API formalisation second, mobile development in parallel with the web go-live — so the client never had to wait on the mobile app to start generating revenue, and the mobile launch had a battle-tested API beneath it from day one."
 
 seo:
-  title: "WeRenewSneakers — Sneaker E-commerce Web & Mobile App | Hiran Nuwanpriya"
-  description: "Case study: full-stack sneaker marketplace built with Laravel 9, REST API, and React Native. Buy and sell platform with real-time web/mobile sync, Stripe payments, and Meilisearch-powered discovery."
+  title: "WeRenewSneakers — E-Commerce & Mobile App | Hiran Nuwanpriya"
+  description: "Case study: end-to-end build of a sneaker buy, sell, and restoration platform on Laravel and React Native — 50% sales increase, daily-active mobile community, and a single API powering web and mobile."
   ogImage: "/images/projects/werenewsneakers/og.png"
 
 structuredData:
@@ -63,164 +96,11 @@ structuredData:
 
 ## Overview
 
-WeRenewSneakers is a dual-sided marketplace and e-commerce platform for sneaker
-enthusiasts in Belgium — enabling users to purchase new sneakers and list their
-pre-owned pairs for sale, all within a single platform. The product spans a
-Laravel-powered web platform, a REST API backend, and a React Native mobile
-app, with real-time synchronisation across all surfaces for orders, inventory,
-and user interactions.
-
-The team of three built the web platform and REST API collaboratively, while I
-took sole ownership of the React Native mobile app — from architecture through
-to App Store and Play Store deployment via Fastlane.
-
-## The Problem
-
-- Sneaker buyers and sellers in the Belgian market lacked a dedicated,
-  trustworthy platform tailored to their buying and selling workflows.
-- Generic marketplace platforms did not support the product-specific features
-  sneaker enthusiasts expect: size-specific listings, condition grading,
-  brand and colourway filtering, and seller reputation systems.
-- Any platform serving this audience needed to work as well on mobile as on
-  web — a separate, native mobile app was essential rather than a responsive
-  website alone.
-- Real-time inventory and order state synchronisation between web and mobile
-  was a hard requirement: a purchase made on one platform had to be immediately
-  reflected on the other to prevent overselling.
-
-## My Role
-
-Full Stack Developer and sole Mobile Developer across the 8-month engagement.
-My responsibilities spanned:
-
-- Contributing to the Laravel web platform and REST API design alongside the
-  team.
-- Full ownership of the React Native mobile application — architecture, UI,
-  state management, payment integration, and deployment.
-- Designing and implementing the REST API contract to serve both the Livewire
-  web front end and the React Native mobile app from a single backend.
-- Stripe payment integration on both web (Livewire) and mobile (Stripe SDK
-  for React Native).
-- Automated mobile deployment pipeline via Fastlane for both iOS and Android.
-
-## Solution
-
-### Architecture
-
-The platform is built around a single Laravel 9 service tier that serves two
-consumers: the Livewire/AlpineJS web front end and the React Native mobile app.
-Laravel Sanctum handles authentication for both surfaces — web sessions for the
-browser and token-based authentication for the mobile app. This single-backend
-approach ensures that inventory state, order records, and user data are always
-consistent regardless of which surface initiated the action.
-
-Redux Toolkit manages client-side state in the mobile app, with Axios handling
-all API communication. NativeWind was chosen as the styling layer to bring
-Tailwind's utility-class system to React Native, keeping the design language
-consistent between web and mobile and reducing the context-switching overhead
-of maintaining two separate styling approaches.
-
-### Web Platform
-
-- Full marketplace and e-commerce functionality built with Laravel 9 and
-  Livewire — product listings, shopping cart, checkout, and order tracking.
-- Meilisearch powers the product discovery layer: instant full-text search
-  with filtering by brand, size, condition, price range, and colourway.
-- Laravel Nova 3 provides the admin panel for inventory management, order
-  processing, seller verification, and platform moderation.
-- Stripe integration handles secure payment collection for both new sneaker
-  purchases and pre-owned marketplace transactions.
-- Envoyer manages zero-downtime deployments to the Forge-provisioned server.
-
-### React Native Mobile App
-
-- Native iOS and Android app built entirely with React Native, providing a
-  fast and platform-appropriate shopping experience on both operating systems.
-- Full feature parity with the web platform: browse listings, search and
-  filter, manage a cart, checkout via Stripe, track orders, and manage seller
-  listings — all from the mobile app.
-- Redux Toolkit manages all application state — cart contents, authentication,
-  order history, and listing drafts — with a predictable, testable data flow.
-- Stripe SDK for React Native handles the in-app payment flow with native
-  payment sheet UI on both iOS and Android.
-- Fastlane automates the build, signing, and submission pipeline for both
-  the App Store and Google Play, reducing release overhead to a single
-  command.
-
-### Key Features
-
-- Buy and sell marketplace — users can browse and purchase new sneakers or
-  list their pre-owned pairs with condition grading, size, and pricing.
-- Real-time order and inventory synchronisation between web and mobile via
-  the shared REST API — purchases on either surface are immediately reflected
-  across both.
-- User profiles with active listings, sales history, purchase records, and
-  buyer/seller interaction threads.
-- Advanced search and filtering powered by Meilisearch: brand, size,
-  condition, colourway, price range, and availability.
-- Secure payment processing via Stripe on both web and mobile surfaces.
-- Order tracking with status updates visible to both buyer and seller.
-- Flare error monitoring across the Laravel backend for production visibility.
-
-## Outcomes
-
-- A fully functional dual-sided sneaker marketplace launched across web,
-  iOS, and Android from a single backend.
-- Real-time inventory and order synchronisation across all platforms —
-  zero overselling incidents in production.
-- Complete e-commerce feature set delivered: listings, cart, checkout,
-  order tracking, and seller dashboards on both web and mobile.
-- Automated Fastlane deployment pipeline delivering signed iOS and Android
-  builds to their respective stores with a single command.
-- Consistent Tailwind-based design language maintained across the web
-  platform (Tailwind CSS) and mobile app (NativeWind) from a shared design
-  token system.
-
-## Tech Stack Detail
-
-Laravel Sanctum was chosen over Passport for the API authentication layer
-because the mobile app's token-based flow did not require the full OAuth2
-server capabilities Passport provides — Sanctum's lightweight personal access
-tokens were a better fit for a mobile client authenticating against a
-first-party API.
-
-Redux Toolkit was selected over lighter state management options because the
-cart, authentication, and listing flows each required optimistic updates and
-coordinated async state — RTK Query provided the data-fetching and caching
-layer that kept the mobile UI responsive under variable network conditions.
-
-NativeWind brought Tailwind's utility class system to React Native, which
-was a deliberate decision to reduce the visual divergence between the web
-and mobile surfaces. Designers and developers working across both platforms
-shared the same spacing, colour, and typography tokens without maintaining
-two separate style systems.
-
-Fastlane eliminated the manual overhead of iOS provisioning profile management
-and Android signing — both release pipelines are fully automated, including
-TestFlight distribution for iOS and internal track submission for Android.
-
-## Challenges and Learnings
-
-### Real-time inventory sync across two independent surfaces
-
-The core technical challenge of the platform was preventing overselling: if
-a user on the web and a user on the mobile app both added the same
-size-specific listing to their cart and proceeded to checkout simultaneously,
-only one could complete the purchase. The solution was a server-side inventory
-reservation layer built into the REST API — when a checkout is initiated on
-either surface, the relevant inventory unit is soft-locked for the duration
-of the payment flow and released if the payment fails or times out. This
-reservation state is maintained in the database and consulted by both the
-Livewire checkout and the React Native Stripe payment sheet before confirming
-any order.
-
-### Building and shipping a native mobile app as the sole mobile developer
-
-Owning the React Native app end-to-end — from the initial architecture
-decision through to App Store and Play Store submission — across an 8-month
-engagement required careful scope management alongside the web platform
-contributions. The Fastlane pipeline was set up early in the project
-specifically to remove the friction from iterative releases: with signing
-and submission automated, shipping a new build for testing or review became
-a routine part of the development cycle rather than a manual overhead that
-competed with feature development time.
+WeRenewSneakers is a sneaker platform built for buying, selling, and restoring
+sneakers — giving collectors and casual buyers a single destination to find
+pre-owned pairs, list their own, or book a professional restoration service.
+The client came with an established offline business and needed a digital
+presence that could take online orders, scale with demand, and eventually
+put the platform in customers' pockets. The project was delivered in two
+connected phases: a validated e-commerce website followed by a React Native
+mobile app, both powered by a single Laravel REST API.

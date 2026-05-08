@@ -39,25 +39,27 @@ export default function ProjectMeta({
   if (items.length === 0) return null;
 
   return (
-    <dl className="grid grid-cols-1 gap-y-8 border-y border-white/10 py-8 sm:grid-cols-2 md:grid-cols-4 md:gap-y-0">
+    <dl className="grid grid-cols-1 gap-y-8 border-y border-[var(--color-border)] py-8 sm:grid-cols-2 md:grid-cols-4 md:gap-y-0">
       {items.map((item, index) => (
         <div
           key={item.label}
           className={
             index > 0
-              ? "md:border-l md:border-white/10 md:pl-6"
+              ? "md:border-l md:border-[var(--color-border)] md:pl-6"
               : "md:pr-6"
           }
         >
-          <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
+          <dt className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">
             {item.label}
           </dt>
-          <dd className="mt-3 text-sm font-medium leading-relaxed text-white">
+          <dd className="mt-3 text-sm font-medium leading-relaxed text-[var(--color-text-primary)]">
             {item.primary}
             {item.secondary ? (
               <>
                 <br />
-                <span className="text-white/70">{item.secondary}</span>
+                <span className="text-[var(--color-text-secondary)]">
+                  {item.secondary}
+                </span>
               </>
             ) : null}
           </dd>

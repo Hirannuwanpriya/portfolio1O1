@@ -4,7 +4,7 @@ interface TechStackListProps {
 
 /**
  * Horizontal wrap of small outlined pills, one per stack item. Sits under a
- * "TECH STACK" heading on the dark project detail page.
+ * "TECH STACK" heading. Light editorial pills on white.
  */
 export default function TechStackList({ techStack }: TechStackListProps) {
   if (techStack.length === 0) return null;
@@ -13,7 +13,7 @@ export default function TechStackList({ techStack }: TechStackListProps) {
       {techStack.map((item) => (
         <li
           key={item}
-          className="inline-flex rounded-md border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-xs text-white"
+          className="inline-flex rounded-md border border-[var(--color-border)] bg-white px-3 py-1.5 font-mono text-xs text-[var(--color-text-primary)] transition-colors duration-150 hover:border-[var(--color-accent-crimson)] hover:text-[var(--color-accent-crimson)]"
         >
           {item}
         </li>

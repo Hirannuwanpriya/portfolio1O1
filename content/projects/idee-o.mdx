@@ -1,0 +1,310 @@
+---
+title: "Les Jardins Idée-ô — Pépinière Website & Landscape Design Studio"
+summary: "Full stack build of two connected Laravel + Inertia/Vue applications sharing a single codebase — a public pépinière site and a premium bureau d'étude site — backed by a custom Nova admin, a normalised portfolio + blog data model, an S3 + Cloudflare image pipeline with on-the-fly WebP resizing, and a domain-aware routing layer that serves both brands from one deployment."
+slug: "idee-o"
+date: "2025-05-08"
+order: 5
+category: "Business Website"
+
+techStack:
+  - Laravel
+  - Laravel Nova
+  - Inertia.js
+  - Vue.js
+  - Alpine.js
+  - Tailwind CSS
+  - MySQL
+  - AWS EC2
+  - AWS S3
+  - Cloudflare CDN
+  - Google Tag Manager
+  - Google Analytics
+  - Figma
+
+coverImage: "/projects/idee-o.png"
+coverAlt: "Les Jardins Idée-ô homepage showing a lush garden hero with Japanese pond and plant nursery navigation"
+
+gallery:
+  - src: "/images/projects/idee-o/screen-1.png"
+    alt: "Pépinière homepage with garden hero imagery and nursery navigation"
+  - src: "/images/projects/idee-o/screen-2.png"
+    alt: "Réalisations portfolio page showcasing completed garden projects across Brabant Wallon"
+  - src: "/images/projects/idee-o/screen-3.png"
+    alt: "Bureau d'étude services page covering conception paysagère, bassins, terrasses and jardins thématiques"
+  - src: "/images/projects/idee-o/screen-4.png"
+    alt: "Project process timeline showing the three-phase journey from first contact to completed garden"
+
+liveUrl: "https://www.idee-o.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Les Jardins Idée-ô"
+clientLocation: "Haut-Ittre, Brabant Wallon, Belgium"
+role: "Full Stack Engineer"
+duration: "4 months"
+teamSize: "2"
+
+hero:
+  name: "Les Jardins Idée-ô"
+  tagline: "PÉPINIÈRE WEBSITE & LANDSCAPE DESIGN STUDIO"
+
+stats:
+  - value: "14"
+    label: "Nova-managed admin entities across both sites — projects, project images, services, service categories, blog posts, post categories, testimonials, enquiries, media, and shared brand settings — wired through Eloquent relationships"
+  - value: "94+"
+    label: "Lighthouse performance score on portfolio and homepage routes — Inertia SSR for first paint, Cloudflare on-demand WebP resizing, and explicitly sized images keep CLS at zero and the JS bundle under ~110KB"
+  - value: "2"
+    label: "Brands served from one Laravel codebase — domain-aware middleware resolves the active site at request time, swaps the Inertia layout, and scopes Eloquent queries via a global brand scope so content never leaks across surfaces"
+
+seo:
+  title: "Les Jardins Idée-ô — Pépinière & Landscape Design Studio | Hiran Nuwanpriya"
+  description: "Case study: Laravel + Inertia/Vue full stack build for Les Jardins Idée-ô — multi-brand domain routing from a single codebase, custom Nova admin, normalised portfolio and blog data model, S3 + Cloudflare image pipeline, and validated lead-capture forms with queued notifications."
+  ogImage: "/images/projects/idee-o/og.png"
+
+structuredData:
+  type: "WebSite"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+Les Jardins Idée-ô is a premium landscape brand in Brabant Wallon that operates
+two distinct businesses under one roof: a public-facing pépinière (plant nursery
+and garden showroom) and a bureau d'étude paysager that designs and realises
+high-end private and hospitality gardens.
+
+From an engineering perspective the brief was effectively two products that had
+to look like one brand: two domains (`idee-o.be` and `design-idee-o.be`), two
+audiences with very different intent, two content models with overlapping but
+non-identical entities (portfolio, blog, services, testimonials), and one
+non-technical client who needed to maintain everything from a single admin.
+The interesting question was where the seam between "shared" and "separate"
+should sit in code — at the deployment level, the application level, the data
+level, or the routing level.
+
+## The Problem
+
+- No data model existed for portfolio realisations, services, or blog content —
+  every entity needed to be designed from scratch with relationships the client
+  could maintain without engineering involvement.
+- No CMS — copy and imagery changes required a developer, which was untenable
+  for a business that publishes seasonal news and adds completed garden projects
+  on an ongoing basis.
+- Two domains, one team — duplicating the codebase would double the maintenance
+  cost and double the risk of drift between the two brands' shared primitives
+  (typography, colour, image pipeline, contact handling).
+- Image-heavy by definition — large-format garden photography is the entire
+  product, but it had to ship inside a Core Web Vitals budget that protects
+  organic visibility for local "pépinière Brabant Wallon" queries.
+- Lead capture was unstructured — enquiries arrived over generic email with no
+  validation, no audit trail, and no way to differentiate a nursery question
+  from a six-figure garden brief.
+
+## My Role
+
+Sole engineer across both sites: schema design, Laravel application
+architecture, multi-brand routing layer, Inertia/Vue front end, Alpine
+progressive enhancement, Nova admin build, S3 + Cloudflare media pipeline, GTM
+and Analytics wiring, deployment, and client handover including admin
+documentation.
+
+## Solution
+
+### Architecture
+
+A single Laravel application serves both domains. A request-time middleware
+inspects the host header, resolves the active brand, binds it into the
+container, and tags the Inertia response with the correct layout and shared
+props. Eloquent models that belong to a single brand carry a global scope so a
+query for "latest blog posts" automatically returns the active brand's posts —
+there is no place in the controller layer where a developer has to remember to
+filter by site. Models that are genuinely shared (media, brand settings,
+enquiries with a `brand` discriminator) live in shared tables.
+
+The front end is Inertia.js with Vue 3 page components, Tailwind for styling,
+and Alpine.js for the few non-Inertia islands (mobile drawer, FAQ accordions).
+Inertia SSR is enabled so first paint is fully populated HTML for both
+crawlers and users on cold caches; subsequent navigations are client-side
+visits without full reloads. The application runs on AWS EC2 behind
+Cloudflare, with a queued worker handling image processing, outbound mail,
+and analytics events.
+
+### Multi-Brand Routing from One Codebase
+
+The decision to run both brands off one codebase rather than two deployments
+was deliberate. Two deployments would have meant two CI pipelines, two sets of
+env vars, two databases or a shared one with manual cross-checks, and twice
+the surface area for security patches. One codebase with brand resolution at
+the edge keeps the operational footprint flat: shared primitives are
+genuinely shared, brand-specific routes register conditionally based on the
+resolved brand, and the Inertia layout swap means each brand's audience sees
+a tonally distinct site with no awareness that the other exists.
+
+### Data Modelling — Portfolio, Services, Blog
+
+Portfolio realisations are a `Project` model with a one-to-many relationship
+to `ProjectImage` (ordered by a `position` integer the client drags in Nova),
+plus a many-to-many to `Tag` for headline features (pool, bamboo, Japanese
+garden, cascade). Services are modelled as `Service` belonging to
+`ServiceCategory`, which let the bureau d'étude site group its five
+disciplines (conception paysagère, jardins thématiques, bassins, terrasses,
+aménagement complet) without hard-coding the navigation. Blog posts use a
+standard `Post` ↔ `Category` shape with a `brand` column for scope, an
+excerpt field for cards, and a slug indexed for fast lookup.
+
+I considered a polymorphic content table covering projects, posts, and
+services. I rejected it for the same reason as on other Nova builds: each
+entity has its own field set, its own validation rules, and its own admin
+ergonomics — collapsing them into one table would have meant either a wide
+nullable schema or a metadata bag the client couldn't manage cleanly.
+Separate tables, shared brand scope.
+
+### Custom CMS via Laravel Nova
+
+Every domain entity is a Nova resource with custom fields, computed columns,
+and actions. Project imagery is uploaded inline with drag-and-drop reordering;
+blog posts have a Markdown body with image attachments resolved through the
+same media table; the services resource exposes a Nova action to bulk-toggle
+"featured on homepage" status. Role-scoped access lets the nursery team
+manage their own blog without seeing the bureau d'étude portfolio queue, and
+vice versa. The whole point of building the CMS was to make the client
+self-sufficient; documentation and a short Loom handover were part of the
+deliverable.
+
+### S3 + Cloudflare Image Pipeline
+
+Garden photography is the product, so the image pipeline got real attention.
+Editors upload originals through Nova; a queued job stores them on S3 and
+records dimensions and a blurhash on the model. The front end requests
+images through Cloudflare's image-resizing endpoint with `width`, `format`,
+and `quality` parameters in the URL, so a single S3 original yields any
+responsive variant on demand without pre-generating crops at upload time.
+Every `<img>` ships with explicit `width`/`height` attributes derived from
+the stored dimensions, eliminating CLS, and the blurhash drives an inline
+LQIP placeholder on the portfolio gallery.
+
+### Form Validation and Enquiry Routing
+
+The bureau d'étude enquiry form is the highest-value lead surface on either
+site. It runs through a dedicated `ProjectEnquiryRequest` form request with
+field-level rules (project type, indicative budget tier, postal area,
+required start window, free-text brief), Inertia surfaces the validation
+errors back into the Vue component without a page reload, and successful
+submissions create an `Enquiry` record tagged with the originating brand,
+dispatch a notification to the studio inbox, and send the enquirer a
+templated French-language confirmation. Honeypot plus per-IP rate limiting
+on the route blocks spam without a captcha.
+
+### Performance, SEO, and Accessibility
+
+- Inertia SSR delivers fully rendered HTML for every public route — crawlers
+  and first-time visitors never wait on a client-side hydration cycle for
+  primary content.
+- Tailwind is purged to the actually-used class set, dropping production CSS
+  to a small fraction of the dev build.
+- Cloudflare on-demand resizing serves WebP variants sized to the viewport,
+  keeping image bytes proportional to the device.
+- Structured data (LocalBusiness for the pépinière, Service + CreativeWork
+  for the bureau d'étude portfolio entries) is emitted from server-rendered
+  templates so each Nova entity drives its own schema.org payload.
+- Forms, navigation, and the portfolio gallery are keyboard-navigable with
+  visible focus rings and ARIA labelling on the icon-only controls.
+
+### Key Features
+
+- Single Laravel codebase serving two brands via host-aware middleware,
+  brand-scoped Eloquent global scopes, and Inertia layout swap
+- Inertia.js + Vue 3 front end with SSR for first paint and client-side
+  visits thereafter; Alpine.js for non-Inertia islands
+- Normalised MySQL schema covering projects, project images, services,
+  service categories, blog posts, post categories, testimonials, and
+  enquiries
+- Custom Laravel Nova admin with drag-and-drop image ordering, role-scoped
+  access per brand, and bulk-action lenses for editorial workflows
+- S3 + Cloudflare image pipeline with on-demand WebP resizing, blurhash
+  LQIP placeholders, and stored intrinsic dimensions for zero-CLS rendering
+- Validated, brand-tagged enquiry forms with honeypot, rate limiting,
+  queued notifications, and templated confirmations
+- schema.org structured data emitted per entity for richer search results
+- GTM + Google Analytics integration with dataLayer events on key
+  interactions (enquiry submitted, portfolio project opened, blog read)
+
+## Outcomes
+
+- One Laravel codebase cleanly serves two brands with no shared state leaking
+  between them, and the client maintains all content for both sites through a
+  single Nova admin without engineering involvement.
+- Public pages score in the green on Core Web Vitals despite being
+  image-heavy by definition; CLS is zero on the portfolio and homepage
+  thanks to stored dimensions and the LQIP placeholder.
+- Enquiries land in a structured queue with validated fields, brand tags,
+  and budget tier, removing the back-and-forth that previously preceded
+  every quote.
+- Operational footprint stayed flat: one CI pipeline, one deploy target, one
+  database, one set of monitoring — but two distinct brand experiences for
+  two distinct audiences.
+
+## Tech Stack Detail
+
+**Laravel** is the backbone — routing, controllers, Eloquent models, form
+requests, jobs, notifications, and the queue. The brand resolution layer is
+implemented as middleware plus a container binding so any service or model
+can resolve the active brand without threading it through method signatures.
+
+**Inertia.js + Vue.js** provide the page-level UI. Inertia SSR is enabled so
+the first byte is fully rendered HTML; the Vue runtime hydrates and takes
+over for subsequent visits, giving the feel of a SPA without sacrificing
+SEO or first paint.
+
+**Alpine.js** covers the small non-Inertia interactions — mobile navigation
+drawer, FAQ accordions, image lightbox triggers — keeping these pieces
+essentially zero-runtime.
+
+**Laravel Nova** is the admin layer. Every domain entity has a Nova resource
+with custom fields, drag-and-drop reordering on image collections, and
+role-scoped access so each team sees only the surface they own.
+
+**MySQL** holds the normalised schema. Indexes are placed on the brand
+column, on the foreign keys driving public catalogue queries, and on slugs
+for fast lookup on detail routes.
+
+**AWS S3 + Cloudflare CDN** form the media pipeline — originals on S3,
+on-demand WebP resizing through Cloudflare's image endpoint, and long-cache
+TTLs on the resized output.
+
+**Google Tag Manager + Google Analytics** are wired with a typed dataLayer
+helper on the front end so key interactions emit consistent events.
+
+## Challenges and Learnings
+
+The most interesting decision was the seam between "shared" and "separate".
+The product instinct on a two-brand build is to spin up two repos, two
+deploys, and two databases — but the operational cost of that decision
+compounds for years, and the brands genuinely share more than they don't
+(image pipeline, form handling, admin patterns, base layout primitives).
+Pulling the seam down to the routing layer — one codebase, brand-aware
+middleware, brand-scoped models, Inertia layout swap — kept the
+infrastructure flat without leaking content between the audiences. I'd
+reach for this pattern again on any multi-brand build where the brands are
+managed by the same team.
+
+The schema decision — separate tables per content type vs polymorphic
+content — reinforced a pattern from earlier Nova work: weight admin
+ergonomics as heavily as query ergonomics. A polymorphic table looks
+elegant in code but produces a Nova UI the client can't maintain. Modelling
+each entity independently and adding a brand scope where needed gave both
+sides a clean experience.
+
+The image pipeline taught me to push as much variant generation as possible
+to request time rather than upload time. Pre-generating crops at upload is
+fast to write but expensive to evolve — the day you want a new breakpoint
+you re-process the whole library. On-demand resizing through Cloudflare is
+a one-line URL change to introduce a new variant and keeps the storage
+footprint flat.
+
+The Inertia-with-SSR choice was the right call for this project shape.
+Server-rendered HTML protects SEO on routes that have to rank locally; the
+Vue runtime gives editors a fast, app-like feel when navigating the
+portfolio. A pure SPA would have sacrificed the first; pure Blade would
+have sacrificed the second.

@@ -1,0 +1,330 @@
+---
+title: "Tourane Fresh & Pure — Restaurant, E-Shop & Events Website"
+summary: "Full stack build of a Laravel 10 monolith with Vue.js islands powering a multi-channel restaurant platform — online menu, Stripe-backed e-shop, catering enquiry routing, and Uber Eats deep-link delivery — backed by a custom Nova admin, AWS S3 + Cloudflare media pipeline, and webhook-driven order lifecycle."
+slug: "tourane"
+date: "2025-05-08"
+order: 7
+category: "Hospitality & Restaurant"
+
+techStack:
+  - Laravel
+  - Livewire 3
+  - Laravel Nova
+  - Vue.js
+  - Alpine.js
+  - Tailwind CSS
+  - MySQL
+  - AWS EC2
+  - AWS S3
+  - Cloudflare CDN
+  - Stripe
+  - Uber Eats Integration
+  - Google Maps API
+  - Figma
+
+coverImage: "/projects/tourane.png"
+coverAlt: "Tourane Fresh & Pure homepage showing the restaurant interior with botanical décor and the Place du Luxembourg terrace"
+
+gallery:
+  - src: "/images/projects/tourane/screen-1.png"
+    alt: "Homepage hero with restaurant interior, botanical décor, and brand positioning"
+  - src: "/images/projects/tourane/screen-2.png"
+    alt: "Online menu page showing MediterrAsian fusion dishes including pho, wonton soup, and traditional nems"
+  - src: "/images/projects/tourane/screen-3.png"
+    alt: "Tourane E-Shop showing curated wines, olive oil, Mediterranean products, and artworks"
+  - src: "/images/projects/tourane/screen-4.png"
+    alt: "Meetings and catering page with private room options and bespoke event enquiry form"
+
+liveUrl: "https://tourane.be"
+githubUrl: ""
+
+featured: true
+published: true
+clientName: "Tourane Fresh & Pure"
+clientLocation: "Rue du Luxembourg 62–64, Brussels, Belgium"
+role: "Full Stack Engineer"
+duration: "3 months"
+teamSize: "2"
+
+hero:
+  name: "Tourane Fresh & Pure"
+  tagline: "RESTAURANT, E-SHOP & EVENTS WEBSITE"
+
+stats:
+  - value: "12"
+    label: "Nova-managed admin entities — menu sections, dishes, wines, products, orders, enquiries, and media collections wired through Eloquent relationships"
+  - value: "95+"
+    label: "Lighthouse performance score on content pages — server-rendered HTML, deferred Vue islands, and S3+Cloudflare image delivery keep the JS payload under 90KB"
+  - value: "4"
+    label: "Stripe webhook events handled end-to-end — checkout.session.completed, payment_intent.succeeded/failed, and charge.refunded — driving order status, stock decrement, and queued notifications"
+
+seo:
+  title: "Tourane Fresh & Pure — Restaurant, E-Shop & Events Website | Hiran Nuwanpriya"
+  description: "Case study: Laravel + Vue full stack build for Tourane Fresh & Pure — multi-channel data model, Stripe checkout with webhook-driven order lifecycle, custom Nova admin, AWS S3 + Cloudflare media pipeline, and Uber Eats deep-link integration."
+  ogImage: "/images/projects/tourane/og.png"
+
+structuredData:
+  type: "WebSite"
+  applicationCategory: "BusinessApplication"
+---
+
+## Overview
+
+Tourane Fresh & Pure is a MediterrAsian fusion restaurant in Brussels' European
+quarter that runs four distinct revenue channels off a single venue: dine-in
+service, take-away with third-party delivery, a curated retail e-shop (wines,
+olive oil, Mediterranean products, artworks), and a meetings and catering
+business targeting EU institution clients.
+
+From an engineering perspective the brief was effectively four products on one
+domain: a content-heavy restaurant site, a transactional e-commerce store, a
+structured B2B enquiry funnel, and a referral surface for Uber Eats. The
+challenge was to model all four cleanly behind one Laravel application, share
+brand and layout primitives without coupling the channels, and keep the public
+front end fast enough to score in the green on Core Web Vitals while still
+allowing rich product imagery and menu galleries.
+
+## The Problem
+
+- No existing data model — menu, wine list, retail products, event packages,
+  and enquiry routing all needed to be designed from scratch with relationships
+  that the client could maintain without engineering involvement.
+- No transactional surface — the retail offer existed only in the dining room,
+  with no order capture, no stock tracking, no payment flow, and no customer
+  notification system.
+- No structured catering enquiry pipeline — event leads were arriving over
+  ad-hoc email with no triage, no audit trail, and no validation of the
+  fields the events team actually needed.
+- No CMS — every content change required developer involvement, which was
+  unsustainable for a menu that updates with seasonal produce.
+- Performance and SEO budget — the site needed to rank in the European
+  quarter's competitive restaurant search market while serving high-resolution
+  food and interior photography.
+
+## My Role
+
+Sole engineer across the full stack: schema design, Laravel application
+architecture, Nova admin build, Vue and Alpine front-end implementation,
+Stripe integration and webhook handling, AWS infrastructure, Cloudflare CDN
+configuration, deployment pipeline, and client handover including admin
+training documentation.
+
+## Solution
+
+### Architecture
+
+A Laravel 10 monolith serves the whole site as server-rendered HTML, with two
+Vue.js islands mounted only on the routes that need them — the e-shop catalogue
++ cart, and the menu/gallery interactions. Lighter pages (catering, contact,
+brand story, take-away) use Alpine.js for progressive enhancement, which keeps
+the JavaScript payload off pages that don't need a SPA-style runtime. This
+hybrid was a deliberate choice over a single Vue SPA: it preserves SSR for SEO,
+simplifies cache invalidation, and avoids shipping the e-shop bundle to users
+reading the menu.
+
+The data layer is a normalised MySQL schema with Eloquent relationships
+covering menu sections → dishes, wine categories → wines, product categories →
+products → variants, orders → order items, and enquiries → enquiry types. A
+custom Laravel Nova admin panel exposes every entity to the client with
+inline media management, soft deletes, and role-scoped access for kitchen vs
+events vs e-shop staff.
+
+The application runs on AWS EC2 behind Cloudflare, with a queue worker
+(database driver) handling Stripe webhook side-effects and outbound mail so
+the request-response cycle for checkout stays tight.
+
+### Multi-channel Data Modelling
+
+The trickiest schema decision was whether menu items, wines, and retail
+products should share a polymorphic `products` table or live in separate
+tables. I chose separate tables. They share almost no fields in practice — a
+dish has allergen flags and a section ordering, a wine has a vintage and a
+producer region, a retail product has stock and shipping weight — and forcing
+them into one table would have meant either a wide nullable schema or a
+metadata bag that the client couldn't manage cleanly in Nova. Separate tables
+gave each channel its own admin experience and its own validation rules,
+without ever needing to branch on a `type` column at query time.
+
+Orders, by contrast, are unified — a single `orders` table with polymorphic
+`order_items` so the e-shop can grow into mixed carts (wine + olive oil +
+artwork) without schema churn.
+
+### Stripe Integration and Order Lifecycle
+
+E-shop payments use Stripe Checkout Sessions. The checkout flow:
+
+1. Cart state is posted to a Laravel controller that revalidates pricing and
+   stock server-side (never trusting the client cart).
+2. A pending `Order` record is created and a Checkout Session is opened with
+   the order ID in `metadata`.
+3. The user completes payment on Stripe-hosted checkout.
+4. A webhook endpoint verifies the signature, dispatches a queued job, and
+   the job transitions the order through `paid → confirmed → fulfilled`,
+   decrements stock, and triggers buyer + admin notifications via the
+   Laravel notification system.
+5. `payment_intent.failed` and `charge.refunded` events flow through the same
+   queue, keeping the order state machine in one place.
+
+Idempotency is handled by storing the Stripe event ID and short-circuiting
+duplicate deliveries — Stripe retries are common and the order lifecycle has
+to be safe to replay.
+
+### Custom CMS via Laravel Nova
+
+Rather than bolt on a generic CMS, I built the admin as Nova resources mapped
+directly to the domain model. Menu sections are reorderable via drag-and-drop,
+dishes carry structured allergen data, wines have a Nova action to bulk-toggle
+"currently pouring" status, and the events team has its own dashboard showing
+incoming enquiries with filters by date, room, and party size. The client
+handles every content change without engineering involvement, which was the
+explicit success criterion at handover.
+
+### Uber Eats Deep-Link — A Deliberate Tradeoff
+
+Uber Eats exposes a partner API for menu sync and order pull, but for a
+single venue with a stable take-away menu the integration cost (OAuth, menu
+schema mapping, ongoing reconciliation) outweighed the benefit. I implemented
+the take-away channel as a curated landing page on the restaurant's own
+domain with a deep link to the Uber Eats listing. The site captures the SEO
+and brand benefit of owning the take-away surface, while delivery operations
+stay inside the channel the kitchen already uses. This is documented in the
+project README as a future-upgrade path if order volume justifies the API
+work later.
+
+### AWS S3 + Cloudflare Media Pipeline
+
+All product, menu, and interior imagery is uploaded through Nova, processed
+into responsive variants by an `intervention/image` queued job, and stored on
+S3. Cloudflare sits in front as the CDN with long-cache headers and Polish
+enabled for additional image optimisation. The front end requests images
+through `srcset` with explicit `width`/`height` to eliminate CLS, and uses
+native `loading="lazy"` below the fold.
+
+### Form Validation and Enquiry Routing
+
+The catering enquiry form is the highest-value lead capture on the site. It
+runs through a dedicated `EnquiryRequest` form request with field-level
+validation (party size bounds, date in future, required event type), Alpine
+mirrors the rules client-side for instant feedback, and successful
+submissions create an `Enquiry` record, dispatch a notification to the
+events inbox, and send the enquirer a templated confirmation. Honeypot +
+rate limiting on the route keeps spam out without a captcha that would hurt
+conversion.
+
+### Performance, SEO, and Accessibility
+
+- Server-rendered HTML for every public route keeps TTFB low and gives crawlers
+  fully populated pages.
+- Vue is mounted as islands only where interactivity is needed; the e-shop
+  bundle never loads on the menu or catering pages.
+- Tailwind is purged to the actually-used class set, dropping production CSS
+  to a small fraction of the dev build.
+- Structured data (Restaurant, Menu, Product, LocalBusiness) is emitted from
+  Blade partials so each entity in Nova drives its own schema.org payload.
+- Forms, navigation, and the e-shop are keyboard-navigable with visible focus
+  rings and ARIA labelling on the icon-only controls.
+
+### Key Features
+
+- Server-rendered Laravel front end with Vue.js islands for the e-shop and
+  menu, Alpine.js for lighter interactions
+- Normalised MySQL schema with separate tables per content type and unified
+  polymorphic order items
+- Stripe Checkout integration with signed-webhook-driven order lifecycle and
+  idempotent event handling
+- Custom Laravel Nova admin covering every content and commerce entity, with
+  role-scoped access and drag-and-drop ordering
+- Queued image processing pipeline producing responsive variants on S3,
+  served through Cloudflare with optimisation enabled
+- Catering enquiry form with server + client validation, honeypot, rate
+  limiting, and queued notifications to the events inbox
+- Uber Eats deep-link integration with a documented upgrade path to the
+  partner API
+- schema.org structured data emitted per entity (Restaurant, Menu, Product,
+  LocalBusiness) for richer search results
+
+## Outcomes
+
+- One Laravel codebase cleanly serves four revenue channels with no shared
+  state leaking between them, and the client maintains all content through
+  Nova without engineering involvement.
+- The e-shop processes Stripe-backed orders end-to-end with stock,
+  notifications, and order state managed off a single webhook handler — no
+  manual reconciliation required.
+- Catering enquiries land in a structured queue with validated fields,
+  removing the back-and-forth that previously preceded every event quote.
+- Public pages score in the green on Core Web Vitals; the JS payload on
+  content pages stays under ~90KB by keeping Vue out of routes that don't
+  need it.
+- The admin model is documented and handed over with role-based access, so
+  the events, e-shop, and kitchen teams each see only their own surface.
+
+## Tech Stack Detail
+
+**Laravel** is the backbone — routing, controllers, Eloquent models, form
+requests, jobs, notifications, and the queue. Domain logic lives in service
+classes invoked from controllers, and the order state machine is implemented
+as explicit job classes per Stripe event so each side-effect is independently
+retryable.
+
+**Vue.js** powers the two interactive islands: the e-shop catalogue + cart
+(with reactive stock + pricing) and the menu navigation/gallery. Each island
+is mounted to a single DOM node with its own bundle, so the routes that don't
+need them never download them.
+
+**Alpine.js** handles progressive enhancement on lighter pages — the mobile
+navigation drawer, the wine list accordion, and the form-validation feedback
+on the catering and contact forms — keeping these routes essentially
+zero-runtime.
+
+**Laravel Nova** is the admin layer. Every domain entity has a Nova resource
+with custom fields, actions (e.g. bulk "pouring this week" toggle on wines),
+and lenses for the events team's enquiry triage view.
+
+**MySQL** holds the normalised schema. Indexes are placed on the foreign
+keys that drive the public catalogue queries, and order lookups are indexed
+by Stripe session ID for fast webhook resolution.
+
+**AWS S3 + Cloudflare CDN** form the media pipeline — uploads land on S3,
+a queued image job produces responsive variants, and Cloudflare serves them
+with long cache TTLs and Polish optimisation.
+
+**Stripe** handles payments via Checkout Sessions. Webhooks are verified by
+signature, persisted by event ID for idempotency, and processed by queued
+jobs that update the order state machine.
+
+**Uber Eats** is integrated as a deep-link referral, with a documented path
+to the partner API if delivery volume warrants it.
+
+**Google Maps API** is embedded for the location surface, lazy-loaded so it
+never blocks the initial render.
+
+## Challenges and Learnings
+
+The most interesting engineering decision was the channel boundary. The
+business wanted four products on one domain; the easy path was a single Vue
+SPA hitting a Laravel API, but that would have meant shipping every channel's
+JavaScript to every visitor, fighting SSR for SEO, and inventing a cache
+invalidation story for menu changes. Choosing a server-rendered monolith
+with Vue islands kept each channel cheap to load, kept SEO simple, and kept
+the admin model tightly coupled to the routes that consume it.
+
+The schema decision — separate tables per content type vs polymorphic
+products — taught me to weight admin ergonomics as heavily as query
+ergonomics. A polymorphic table would have looked elegant in code but would
+have produced a Nova UI the client could not maintain, which would have
+defeated the whole point of building the CMS. Modelling each channel
+independently, then unifying only the truly shared concept (orders), gave
+both the engineering and the operational sides a clean experience.
+
+The Stripe integration reinforced two patterns I now reach for by default on
+any payments work: never trust the client cart (always re-price server-side
+inside the checkout-create handler), and always queue webhook side-effects
+behind an idempotency key. The first prevents tampering; the second makes
+Stripe's retry behaviour a feature instead of a bug.
+
+The Uber Eats decision was a useful reminder that the right integration is
+sometimes the smaller one. A deep-link captured the brand and SEO value with
+a one-day implementation; the full API would have taken a week and added
+ongoing menu-sync maintenance for marginal user benefit. Documenting the
+upgrade path made the tradeoff explicit rather than hidden.
