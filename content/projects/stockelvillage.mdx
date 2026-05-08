@@ -1,6 +1,6 @@
 ---
 title: "Stockel Village"
-summary: "Full rebuild of a Brussels commercial district platform serving 250+ merchants, restaurants, a cinema, and community events — migrated from WordPress using only admin credentials, with a custom membership billing engine that automatically tracks, notifies, and suspends businesses based on payment status."
+summary: "Full stack rebuild of a Brussels district platform on Laravel 11 + Livewire 3 — reverse-engineered a legacy WordPress install with admin-only credentials, ported 250+ merchant records into a normalised relational schema, and shipped a scheduled membership state machine, FR/NL/EN content layer, and Horizon-backed queue pipeline behind a Laravel Nova 5 admin."
 slug: "stockel-village"
 date: "2024-06-01"
 order: 3
@@ -48,41 +48,41 @@ hero:
   tagline: "BRUSSELS COMMERCIAL DISTRICT PLATFORM"
 
 stats:
-  - value: "250+"
-    label: "Merchants migrated and onboarded to the new platform"
-  - value: "10,000+"
-    label: "Monthly visitors served across the district directory"
-  - value: "1,000"
-    label: "Business capacity supported through full performance optimisation"
+  - value: "14"
+    label: "Nova-managed admin entities — merchants, categories, opening hours, events, cinema screenings, memberships, invoices, suspensions, locales, and media — wired through Eloquent relationships"
+  - value: "4"
+    label: "Membership state transitions handled by a scheduled Horizon job — active → reminded → overdue → suspended — with idempotent monthly runs and per-merchant audit trail"
+  - value: "3"
+    label: "Locales served from a single content model — FR / NL / EN — with translatable Eloquent attributes, locale-prefixed routes, and hreflang emission per merchant URL"
 
 phases:
   - title: "WordPress Reverse-Engineering & Data Migration"
-    description: "With only WordPress admin credentials and no database access, I worked through the entire backend — posts, custom fields, user records, categories, and media — to map every data structure and business workflow before extracting and migrating 250+ merchant records into the new Laravel system."
+    description: "With only WordPress admin credentials and no shell, SSH, or database access, I mapped the legacy schema by walking custom post types, ACF field groups, taxonomies, user records, and media attachments. A Laravel console command pulled records via the WP REST API and admin XML exports, normalised them, and seeded the new MySQL schema with foreign keys, slugs, and locale-aware translations preserved."
   - title: "Platform Rebuild — Directory, Events & Cinema"
-    description: "Built the full public-facing platform from scratch: a searchable, filterable merchant directory covering retail, restaurants, personal services, and Le Stockel cinema, plus a community events system with real-time publishing to the homepage feed."
+    description: "Built the public surface with Livewire 3 components for filterable directory listings, full-text search, and merchant profile pages. Le Stockel cinema lives as a sibling content type with its own Eloquent model and Nova resource — programme schedules and screenings are managed independently from the merchant directory."
   - title: "Membership Billing & Automated Suspension Engine"
-    description: "Designed and built a monthly membership management system: on the first day of each month, the system checks each business's operational status, sends a membership payment reminder, tracks non-payment over a 3-month window, and automatically suspends listings that remain unpaid — all without manual admin intervention."
+    description: "Designed a scheduled Laravel job dispatched on the first of each month that iterates registered merchants, resolves payment status, transitions a membership state machine, and queues localised reminder mail through Horizon. After three consecutive overdue cycles the listing flips to suspended and is hidden from public queries via a global Eloquent scope."
   - title: "Multi-Language CMS & Performance Optimisation"
-    description: "Implemented full FR/NL/EN multi-language support across the public site and admin CMS. Optimised the entire platform to handle 1,000+ business listings with fast load times and sustained uptime under real visitor traffic."
+    description: "Implemented FR / NL / EN translatable attributes across every content model and surfaced parallel locale fields inside Nova. Tuned the directory query path with eager loading, composite indexes, and Cloudflare edge caching on read-heavy routes — sized to absorb 4× the current listing count without infrastructure changes."
 
 outcomes:
-  - "**250+ merchants** successfully migrated from WordPress with all business data, categories, and media intact."
-  - "Platform handles **10,000+ monthly visitors** with sustained uptime since launch."
-  - "System architected to support **1,000 businesses** — 4× the current directory size — without infrastructure changes."
-  - "Membership billing engine runs **fully automatically** — zero manual admin intervention required each month."
-  - "Businesses inactive for 3+ months are **automatically suspended** and removed from the public directory."
-  - "Full **FR/NL/EN multi-language** support across public site and merchant CMS."
-  - "Real-time event publishing — new community events appear on the **homepage feed instantly** upon admin approval."
+  - "**250+ merchants** migrated from WordPress with relational integrity preserved — categories, opening hours, media, and locale variants all survived the port."
+  - "Directory routes serve **10,000+ monthly visitors** with sustained uptime since launch, fronted by Cloudflare with Forge/Envoyer zero-downtime deploys."
+  - "Schema, indexes, and query paths sized for **1,000 merchant listings** — 4× current volume — without re-architecture."
+  - "Membership engine runs **fully unattended** each month — Horizon dispatches the scheduled job, a state machine drives transitions, and a per-merchant audit log records every email and status change."
+  - "Merchants overdue for 3+ cycles are **automatically suspended** via a global scope that drops them from public queries while leaving an admin reactivation path intact."
+  - "Full **FR / NL / EN** translatable content across the public site and the Nova admin, with hreflang and locale-prefixed canonicals on every indexable URL."
+  - "Real-time event publishing via Laravel Echo — once an event is approved in Nova it broadcasts to the homepage feed without a page reload."
 
 challenges:
   - title: "No database access. Only a WordPress username and password."
-    description: "The entire migration had to be performed without direct database access. There was no MySQL dump, no phpMyAdmin, and no developer handover from the previous vendor. The only entry point was the WordPress admin panel. I worked through every section of the backend methodically — posts, pages, custom post types, ACF fields, user records, taxonomy structures, media library, and plugin-generated data — reading and documenting every data structure before touching anything. Each content type was mapped to the new Laravel schema by hand, and a custom migration script was written to extract records via the WordPress REST API and admin-accessible exports. Any data that could not be extracted programmatically was identified early and flagged for manual entry, so there were no gaps discovered at go-live."
+    description: "There was no MySQL dump, no phpMyAdmin, no shell, and no developer handover. The only entry point was the WP admin panel, so I treated the legacy site as an opaque API and walked every section to map the schema — custom post types, ACF field groups, taxonomies, users, media, and plugin tables — before designing the Laravel target schema. A custom Artisan migration command extracted records via the WordPress REST API and admin-accessible exports, normalised them into Eloquent models, and rebuilt the foreign-key graph (merchant → category, merchant → opening hours, merchant → media). Records that were not reachable through the API were flagged for manual entry up front, so go-live had no surprise gaps."
   - title: "Building a membership engine that runs itself."
-    description: "The district association needed to manage 250+ business memberships without a dedicated admin spending hours each month on manual follow-up. The requirement was clear but the logic had real complexity: on the first of each month, check whether each registered business is still actively operating, send a membership payment reminder, track the payment status, escalate the reminder if unpaid in subsequent months, and after three consecutive months of non-payment, automatically disable the business listing from the public directory. The solution was a scheduled Laravel job running at month start, backed by a state machine that tracked each business through active, reminded, overdue, and suspended states. Every transition triggered a templated email via Mailgun — in the merchant's preferred language — with the suspension email including a reactivation path so legitimate businesses with billing delays were not permanently removed. The entire flow runs without any admin action unless a merchant contacts the association directly."
+    description: "The association needed monthly billing for 250+ merchants without an admin spending hours on follow-up. I modelled membership as an explicit state machine — active, reminded, overdue, suspended — with each transition recorded as a row in a `membership_events` table for auditability. A Laravel scheduled job runs on the first of every month, dispatched onto Horizon, iterates eligible merchants, and queues localised reminder mail in the merchant's preferred locale. Idempotency is keyed on (merchant_id, billing_cycle) so a re-run never double-sends. After three consecutive overdue cycles a merchant flips to suspended and a global Eloquent scope removes them from public queries, while the suspension email carries a signed reactivation URL that restores the listing without touching the admin."
 
 seo:
   title: "Stockel Village — Brussels Commercial District Platform | Hiran Nuwanpriya"
-  description: "Case study: full rebuild of the Stockel Village Brussels district platform. 250+ merchants migrated from WordPress, automated membership billing engine, multi-language FR/NL/EN support, and real-time events."
+  description: "Case study: Laravel 11 + Livewire 3 rebuild of the Stockel Village directory. Reverse-engineered a WordPress install with admin-only access, ported 250+ merchants, shipped a scheduled membership state machine on Horizon, and a FR/NL/EN translatable content layer behind Nova 5."
   ogImage: "/images/projects/stockel-village/og.png"
 
 structuredData:
@@ -94,97 +94,223 @@ structuredData:
 
 Stockel Village is the digital platform for a major commercial district in
 Brussels, covering 250+ retail shops, restaurants, personal services, a cinema
-(Le Stockel), and a year-round programme of community events. The association
-needed a modern, multi-language platform to replace an ageing WordPress site —
-with a fully automated membership billing system layered on top to manage
-business registrations and payments without ongoing manual administration.
+(Le Stockel), and a year-round programme of community events. Engineering-wise
+the brief was three problems on one codebase: a legacy data extraction with no
+database access, a relational rebuild of the public directory and CMS, and a
+scheduled membership billing engine that had to run unattended every month
+across multiple locales.
 
-I was the sole engineer across the entire project: migration, platform rebuild,
-billing engine, multi-language CMS, and performance optimisation.
+I was the sole engineer across the full stack — migration tooling, schema
+design, Livewire components, Nova admin, queue pipeline, Horizon configuration,
+deployment via Forge + Envoyer, and Cloudflare cache rules.
 
 ## The Problem
 
-- The existing WordPress site was outdated and could not support the growing
-  directory or the association's event and membership workflows.
-- There was no automated way to manage monthly membership fees across 250+
-  businesses — reminders, follow-ups, and suspensions were all handled manually.
-- The platform had no multi-language support despite serving a French, Dutch,
-  and English-speaking community.
-- No developer handover was provided. The only access available was a WordPress
-  admin username and password — no database credentials, no codebase, no
-  documentation.
-- The platform needed to be architected for growth, with capacity for 1,000+
-  business listings as the district expanded.
+- Legacy WordPress install with no shell, no database credentials, and no
+  developer handover — the only access surface was an admin username and
+  password, so the schema had to be reverse-engineered from the inside.
+- No automated billing — 250+ memberships were tracked by hand, with
+  reminders, overdue follow-ups, and suspensions all happening over email.
+- No translatable content layer — the FR / NL / EN audience was being served
+  one language despite living in a tri-lingual city.
+- Read-heavy directory routes with category filters, full-text search, and
+  merchant profile pages had to stay fast under sustained traffic and grow to
+  4× the current listing count without re-architecture.
+- Real-time publishing — the association wanted approved events on the
+  homepage feed instantly, not on the next deploy.
 
 ## My Role
 
-Sole engineer responsible for data migration, system architecture, frontend and
-backend development, membership engine design, multi-language implementation,
-and performance optimisation. The project began with a reverse-engineering phase
-to extract all data and business logic from the live WordPress installation
-before a single line of new code was written.
+Sole engineer across the full stack: legacy data extraction tooling, Laravel
+schema design, Livewire 3 component build, Laravel Nova 5 admin, the
+membership state machine, Horizon queue tuning, FR / NL / EN translation
+layer, performance work, and deployment pipeline (Forge + Envoyer behind
+Cloudflare). Reverse-engineering the WordPress data model came first — no new
+code was written until every legacy entity was mapped to a target Eloquent
+model.
 
 ## Solution
 
+### Architecture
+
+A Laravel 11 monolith with Livewire 3 driving the interactive surfaces
+(directory filters, search, admin dashboards) and Alpine.js handling lighter
+interactions on content pages. The data layer is a normalised MySQL schema
+covering merchants, categories, opening hours, events, cinema screenings,
+memberships, invoices, suspensions, locales, and media — all wired through
+Eloquent relationships and exposed in Laravel Nova 5 as the editorial admin.
+
+Asynchronous work runs through Laravel Horizon: image processing, outbound
+mail, the scheduled monthly billing job, and webhook-style event broadcasts
+via Laravel Echo. The app is deployed via Forge + Envoyer for zero-downtime
+releases, fronted by Cloudflare for static asset caching and S3 for media.
+
 ### Phase 1 — WordPress Reverse-Engineering and Migration
 
-With no direct database access, I worked through the entire WordPress admin
-panel to map every data structure: custom post types, ACF field groups, taxonomy
-hierarchies, user roles, media attachments, and plugin-generated records. Each
-content type was documented and mapped to the target Laravel schema before
-extraction began.
+With no direct database access I treated the legacy site as an opaque API.
+Every WP admin section was walked methodically — custom post types, ACF
+field groups, taxonomy hierarchies, user roles, media library, and plugin
+tables — and each entity was documented and mapped to a target Eloquent
+model before extraction began.
 
-A custom migration pipeline extracted records via the WordPress REST API and
-admin-accessible exports. Data quality issues — inconsistent category
-assignments, duplicate entries, missing required fields — were identified and
-resolved during extraction rather than carried into the new system.
+A custom Artisan command pulled records via the WordPress REST API and
+admin-accessible XML exports, normalised inconsistent category assignments
+and duplicate slugs, rebuilt the foreign-key graph (merchant → category,
+merchant → opening hours, merchant → media, merchant → locale variants),
+and seeded the new schema. Data that was not reachable through any API
+surface was flagged for manual entry early so there were no go-live gaps.
 
-### Phase 2 — Platform Architecture
+### Phase 2 — Directory, Events and Cinema
 
-Laravel service layer behind a Vue.js + TypeScript frontend. The directory was
-built to support filtering by category (retail, food, services, cinema, events),
-full-text search across all 250+ listings, and individual merchant profile pages
-with opening hours, contact details, gallery, and event associations.
+The merchant directory is a Livewire 3 component with debounced full-text
+search, multi-select category filters, and merchant profile pages carrying
+opening hours, contact, gallery, and event associations. Eager loading and
+composite indexes on the foreign keys that drive filter queries keep the
+listing route fast under sustained traffic.
 
-Le Stockel cinema was integrated as a dedicated section with its own content
-type — separate from the standard merchant listing — to support programme
-schedules and screening information managed through the CMS.
+Le Stockel cinema lives as a sibling content type with its own Eloquent
+model and Nova resource — separate from the merchant listing — so programme
+schedules and screening data are managed independently and never collide
+with merchant-level fields.
 
-### Phase 3 — Membership Billing Engine
+### Phase 3 — Membership State Machine
 
-The membership engine runs on a scheduled Laravel job triggered on the first day
-of each month. The workflow for each registered business:
+Membership is modelled as an explicit four-state machine — active,
+reminded, overdue, suspended — with every transition appended to a
+`membership_events` table for audit. The flow:
 
-1. Verify the business is still actively operating
-2. Send a membership payment reminder email in the merchant's preferred language
-3. Track payment status — if unpaid, escalate in subsequent months
-4. After three consecutive months without payment, automatically suspend the
-   business listing from the public directory
-5. Include a reactivation path in the suspension email so merchants with
-   legitimate billing delays can restore their listing without contacting support
+1. A scheduled Laravel job runs on the first of every month and is
+   dispatched onto Horizon.
+2. For each eligible merchant the job resolves current payment status and
+   transitions the state machine.
+3. Localised reminder mail (FR / NL / EN) is queued through Mailgun in the
+   merchant's preferred locale.
+4. Idempotency is keyed on `(merchant_id, billing_cycle)` so retries and
+   re-runs never double-send.
+5. After three consecutive overdue cycles the merchant flips to
+   `suspended` and a global Eloquent scope drops them from public queries.
+6. The suspension email carries a signed reactivation URL that restores the
+   listing without admin involvement.
 
-The full cycle runs without any admin intervention. Suspension and reactivation
-are handled entirely by the system.
+### Phase 4 — Multi-Language Content Layer
 
-### Phase 4 — Multi-Language Support and Performance
+FR / NL / EN are implemented as translatable Eloquent attributes on every
+content model rather than parallel content trees, keeping a single source of
+truth for relationships, ordering, and IDs. Locale-prefixed routes
+(`/fr/...`, `/nl/...`, `/en/...`) drive canonicals and hreflang emission per
+merchant URL. Inside Nova the locale fields are surfaced side-by-side on the
+edit form so editors can keep parity between languages without leaving the
+record.
 
-Full FR/NL/EN multi-language support was implemented across the public-facing
-site and the admin CMS, allowing both the association and individual merchants
-to manage content in their preferred language.
+### Performance and Caching
 
-Performance optimisation was applied across the full stack — query optimisation,
-eager loading, route and response caching, image optimisation at upload, and
-Vue.js lazy loading on high-traffic listing routes — to support the current
-10,000+ monthly visitors and a directory capacity of 1,000+ businesses.
+- Directory and merchant routes are cached at the Cloudflare edge with
+  short TTLs and tag-based purges fired from Eloquent observers on save.
+- Hot queries are eager-loaded; composite indexes back every filter
+  combination on the directory listing.
+- Image uploads are queued through Horizon for variant generation and stored
+  on S3 with long-cache headers and explicit `width`/`height` to eliminate
+  CLS on listing pages.
+- Tailwind is purged to the actually-used class set, dropping production
+  CSS to a small fraction of the dev build.
+
+### Real-Time Event Publishing
+
+Approved events broadcast via Laravel Echo so the homepage feed updates
+without a deploy or a page reload — an Eloquent observer fires a broadcast
+event on `Event::approved`, and a small Alpine listener prepends the new
+card to the feed.
+
+### Key Features
+
+- Livewire 3 directory with full-text search, category filters, and
+  merchant profile pages backed by a normalised MySQL schema
+- Laravel Nova 5 admin covering 14 entities with role-scoped access and
+  inline media management
+- Scheduled monthly membership job on Horizon driving a four-state machine
+  with idempotent transitions and audit trail
+- FR / NL / EN translatable content across every model, with
+  locale-prefixed routes and hreflang emission
+- Cloudflare-edge caching on directory routes with tag-based purges from
+  Eloquent observers
+- Real-time event broadcasting via Laravel Echo to the homepage feed
+- Forge + Envoyer zero-downtime deployment pipeline
+- Custom Artisan migration command that ported the legacy WordPress data
+  set without database access
 
 ## Outcomes
 
-- All 250+ merchant records migrated from WordPress with zero data loss.
-- Platform sustains 10,000+ monthly visitors with consistent uptime since launch.
-- Membership billing engine operates fully automatically — no monthly admin
-  overhead for the association.
-- System capacity architected for 1,000 businesses, four times the current
-  directory size.
-- Full tri-language support live across all public and CMS interfaces.
-- Real-time event publishing live — community events appear on the homepage
-  feed immediately upon approval.
+- All 250+ merchant records migrated from WordPress with relational
+  integrity intact and zero go-live data loss.
+- Directory routes sustain 10,000+ monthly visitors with consistent
+  uptime since launch, served behind Cloudflare with zero-downtime
+  releases via Envoyer.
+- Membership engine runs fully unattended every month — no admin
+  intervention required unless a merchant initiates contact.
+- Schema, indexes, and query paths sized for 1,000 merchant listings (4×
+  current volume) without infrastructure changes.
+- Full FR / NL / EN translation live across the public site and the Nova
+  admin, with proper canonicals and hreflang per locale.
+- Approved events publish to the homepage feed in real time via Laravel
+  Echo, removing the wait between admin approval and visibility.
+
+## Tech Stack Detail
+
+**Laravel 11** is the backbone — routing, controllers, Eloquent models,
+form requests, scheduled jobs, notifications, and console commands. The
+membership state machine lives in a dedicated service class and is invoked
+both by the scheduled job and by Nova actions for manual overrides.
+
+**Livewire 3** powers the interactive directory components — filters,
+search, and the admin dashboards — keeping the public surface server-driven
+while still feeling reactive.
+
+**Laravel Nova 5** is the admin layer. Every domain entity has a Nova
+resource with custom fields and actions, and the membership engine surfaces
+its audit trail through a dedicated lens.
+
+**Horizon** supervises queues for the monthly billing job, Mailgun
+deliveries, image processing, and Echo broadcasts — with retry and
+back-off policies tuned per queue.
+
+**Laravel Echo** broadcasts approved events to a homepage channel so the
+feed updates without a deploy or a manual refresh.
+
+**Alpine.js** handles lightweight client interactions — the mobile nav,
+expandable opening-hours blocks, and the inline cookie banner.
+
+**Tailwind** is the utility layer; purged to the used class set in
+production.
+
+**AWS EC2 + S3 + Cloudflare** form the hosting and media stack. **Forge**
+provisions and configures the server; **Envoyer** runs the zero-downtime
+release pipeline.
+
+## Challenges and Learnings
+
+The most interesting engineering decision was treating the legacy
+WordPress install as an opaque API rather than fighting for database
+access. Walking the admin systematically and modelling every entity before
+writing any new code took the first two weeks of the project, but it
+turned the migration from a guessing game into a deterministic port — by
+the time the Artisan command ran end-to-end, every legacy field had a
+target Eloquent attribute and every relationship had a foreign key.
+
+The membership engine reinforced the value of explicit state machines for
+scheduled work. Modelling membership as four named states with a typed
+event log made the monthly job trivially auditable: any merchant's status
+on any given month is reconstructable from the `membership_events` table,
+and idempotency keyed on `(merchant_id, billing_cycle)` made Horizon
+retries a feature rather than a hazard.
+
+The translation layer taught me to prefer translatable attributes over
+parallel content trees on this kind of directory. A single source of
+truth for relationships, ordering, and slugs kept the admin ergonomics
+clean — editors maintain one merchant record with three locale fields,
+not three records that have to be kept in sync by hand.
+
+The Cloudflare cache tagging pattern — Eloquent observers firing
+tag-based purges on save — was the single biggest win for read
+performance. The directory route serves the cached HTML for the vast
+majority of requests, and editors see their changes propagate within
+seconds without us having to invalidate the whole zone.

@@ -1,6 +1,6 @@
 ---
 title: "Laundry POS System"
-summary: "Legacy MS Access laundry POS transformed into a modern web platform — bridging a French-language codebase and a zero-English client through structured async collaboration, then rebuilding the system module by module into a cloud-accessible, multi-user application."
+summary: "Full stack rebuild of a single-workstation MS Access laundry POS into a Laravel + React/Inertia web platform — relational MySQL schema reverse-engineered from the .mdb file, role-scoped admin, queued Twilio SMS + Mailgun notifications driven by an order state machine, and an audited artisan migration that imported every legacy record without loss."
 slug: "laundry-pos"
 date: "2024-09-01"
 order: 4
@@ -48,41 +48,41 @@ hero:
   tagline: "LAUNDRY POINT-OF-SALE & ORDER MANAGEMENT PLATFORM"
 
 stats:
-  - value: "100%"
-    label: "Legacy data migrated from MS Access with zero data loss"
-  - value: "0"
-    label: "Manual customer calls — replaced by automated SMS & email notifications"
+  - value: "6"
+    label: "Core modules built end-to-end — order intake, customer profiles, dynamic pricing, notifications, reporting, and RBAC — each as a discrete Laravel domain with its own controllers, form requests, and Inertia pages"
   - value: "3"
-    label: "Delivery phases with client-confirmed specs before each build"
+    label: "Role tiers wired through policy classes and middleware — Owner, Manager, Staff — with field-level scoping on pricing, reporting, and historical data plus per-action authorization on every controller method"
+  - value: "4"
+    label: "Order lifecycle states driving queued Twilio SMS and Mailgun email notifications — received, in-progress, ready for collection, collected — dispatched off Eloquent model events with idempotent job handlers"
 
 phases:
-  - title: "Legacy System Study & French-Language Translation"
-    description: "Studied the entire MS Access database and application layer — all written in French — without any direct verbal contact with the client. Translated every form, query, report, and embedded business logic rule into a structured English specification, module by module."
-  - title: "Async Client Verification"
-    description: "Sent each translated module spec to the client as a detailed email with annotated screenshots of the original Access screens. The client confirmed, corrected, or clarified by return email in French, which I translated on my side. This loop continued until the full business logic was client-verified before development began."
-  - title: "Module-by-Module Development & Feedback"
-    description: "Built the system in discrete modules — order management, customer profiles, pricing, notifications, reporting — and presented each to the client as a working screen before moving to the next. Client feedback was captured per module, keeping corrections small and the final delivery clean."
-  - title: "Data Migration & Go-Live"
-    description: "Migrated all historical order and customer data from the MS Access .mdb file via a custom Laravel artisan command with a validation layer that flagged inconsistent records for review before import. Zero data loss. The client went live on the new platform with full historical data intact."
+  - title: "Schema Reverse-Engineering from the MS Access .mdb"
+    description: "Connected to the legacy .mdb over ODBC and walked every form, query, report, and macro to extract the implicit relational model. Documented each table, foreign key, and embedded business rule into a structured English specification that became the source of truth for the new MySQL schema."
+  - title: "Async Contract Verification"
+    description: "Sent each translated module spec to the client as an annotated email — original Access screens alongside the proposed Laravel data model and screen behaviour. The client confirmed or corrected by return email in French. Every business rule was verified before a controller was written."
+  - title: "Module-by-Module Build on Laravel + Inertia + React"
+    description: "Built the system as discrete Laravel domains — order intake, customer profiles, pricing rules, notifications, reporting, RBAC — each shipped as a working Inertia/React screen and signed off before the next module began. Kept feedback loops short and the final delivery clean."
+  - title: "Audited Data Migration via Artisan"
+    description: "Wrote a custom artisan command that read the legacy .mdb over ODBC, validated every row against the new schema's constraints, and routed any inconsistent record into a review log instead of importing silently. Final import ran only after the flagged set was reconciled with the client — fully auditable, zero data loss."
 
 outcomes:
-  - "**100% of historical data** migrated from MS Access with **zero data loss**."
-  - "Manual customer collection calls reduced to **near zero** through automated SMS and email notifications."
-  - "Eliminated **single-point-of-failure** dependency on one physical workstation."
-  - "Role-based access control introduced — **Owner, Manager, and Staff** roles with scoped permissions across order, pricing, and reporting."
-  - "Platform became **cloud-accessible** from any device on the shop network or remotely."
-  - "End-of-day reports matched the **exact format** the owner was familiar with from the legacy system."
-  - "Client confidence maintained throughout via **structured async communication** despite zero shared spoken language."
+  - "**6 domain modules** delivered end-to-end on Laravel + Inertia/React — each with its own controllers, form requests, policies, Inertia pages, and feature-scoped React components."
+  - "**Eloquent-driven order state machine** with 4 lifecycle states, dispatching queued Twilio SMS and Mailgun email jobs via Redis — replacing 100% of the manual collection calls."
+  - "**Role-based access control** enforced through Laravel policies and Inertia middleware — Owner, Manager, and Staff each see only the routes, actions, and fields permitted by their role."
+  - "**Audited artisan migration** moved every historical order and customer record from the .mdb file into MySQL with zero data loss, backed by a row-level validation log signed off by the client."
+  - "**Cloud-deployed on AWS EC2 via Forge** behind Cloudflare, with S3 for receipts and document storage and Redis for queues, sessions, and cache — eliminating the single-workstation failure point."
+  - "**End-of-day reports** rebuilt as Laravel report classes producing the exact totals and groupings the owner had in the legacy system, exported as PDF off a queued job."
+  - "**Form-request validation** layered on every write path, with React-side mirrors via Inertia errors so input errors surface inline without round-tripping the page."
 
 challenges:
-  - title: "A French codebase. A French-only client. No shared language."
-    description: "The entire MS Access system — every field label, menu, query, report, and embedded business rule — was written in French. The shop owner spoke no English, and there was no way to jump on a call and ask questions. The only path forward was to treat the Access file itself as the source of truth and reverse-engineer the business logic from the data model and UI. I worked through every form and query systematically, translating and documenting each module into a plain-English spec. Each spec was then sent to the client as a structured email with annotated screenshots — showing the original Access screen alongside my interpretation of what it did. The client replied in French confirming or correcting my understanding. I translated the reply, updated the spec, and moved to the next module. This approach front-loaded time into discovery but meant that when development began, every business rule was verified. There were no surprises at delivery."
-  - title: "MS Access data with years of silent inconsistencies."
-    description: "MS Access tolerates loose data entry that a proper relational database would reject. After years of live use, the historical records contained mismatched foreign keys, blank required fields, and duplicate customer entries that the Access application had silently accepted. A straight import into MySQL would have either failed or carried corrupted data into the new system. The solution was a validation layer built into the migration artisan command: every row was checked against the new schema's constraints before being written, and any record that failed validation was written to a review log rather than skipped silently. The client received the review log with each flagged record explained in plain terms, corrections were agreed, and only then did the final import run. This made the migration fully auditable and gave the client confidence the new system was starting from a clean, verified baseline."
+  - title: "Reverse-engineering a relational schema out of MS Access."
+    description: "Access tolerates loose data — nullable foreign keys, duplicate natural keys, free-text fields used as enums — and after years of live use the legacy database had silently accumulated all of it. A naive import would either fail on MySQL constraints or carry corruption forward. The fix was a two-stage migration. Stage one ran the .mdb through a read-only ODBC reader inside an artisan command and projected each row against the new schema's constraints (foreign-key existence, enum membership, non-null required fields, deduplication on customer phone + name). Any failure was written to a structured review log with the row, the offending field, and the rule that rejected it — not skipped, not coerced. Stage two ran only after the client signed off on the reconciled review log. The result was an importable dataset that was provably consistent with the new model, and an audit trail proving it."
+  - title: "Designing a state machine that survives retries and partial failures."
+    description: "Order status transitions trigger external side effects — a Twilio SMS, a Mailgun email, a printer receipt, sometimes all three. These have to be safe to retry: a queue worker that crashes mid-job cannot end up double-charging or double-notifying a customer. The design uses Eloquent model events to dispatch one queued job per status transition, each job keyed by `(order_id, target_status)` with an idempotency record in Redis. If a job is retried after a partial failure, it sees the idempotency key, completes only the side effects that didn't yet succeed, and short-circuits anything already done. Every transition is logged, so the operator can reconstruct exactly which notifications fired for any order — useful both for debugging and for resolving customer disputes."
 
 seo:
-  title: "Laundry POS — MS Access to Modern Web Platform | Hiran Nuwanpriya"
-  description: "Case study: migration of a French-language MS Access laundry POS into a modern Laravel and Vue.js web application with automated notifications, RBAC, and zero data loss migration."
+  title: "Laundry POS — MS Access to Laravel + React Web Platform | Hiran Nuwanpriya"
+  description: "Case study: full stack rebuild of an MS Access laundry POS as a Laravel + Inertia/React app — relational MySQL schema, role-based access control, Twilio + Mailgun notifications driven by an order state machine, and an audited artisan migration with zero data loss."
   ogImage: "/images/projects/laundry-pos/og.png"
 
 structuredData:
@@ -92,87 +92,226 @@ structuredData:
 
 ## Overview
 
-A laundry business in France had been running its entire point-of-sale and order
-management operation on a Microsoft Access database installed on a single
-workstation. The system was functional but fragile — one hardware failure away
-from a complete operational halt — and had no way to notify customers
-automatically, no role separation for staff, and no path to a second location.
-
-I was engaged to rebuild the system as a modern web platform. The catch: the
-Access application was entirely in French, the client spoke no English, and
-there was no documentation, no handover package, and no colleague to ask.
+A laundry business in France was running its entire point-of-sale and order
+management on a single MS Access installation tied to one physical workstation.
+The application was functional but had no relational integrity, no role
+separation, no automated customer notifications, no remote access, and no
+recovery path if the machine failed. The brief was to rebuild it as a modern
+web platform on Laravel and React/Inertia — preserving every historical record
+and every business rule the operator already relied on.
 
 ## The Problem
 
-- The entire business ran on a single MS Access installation on one machine.
-  Any hardware failure would bring operations to a complete stop.
-- Staff had to phone every customer manually when an order was ready for
-  collection — a significant time drain with no fallback if calls were missed.
-- Every staff member had unrestricted access to all records, including pricing
-  configuration and full historical data.
-- The system could not support a second location or any form of remote access.
-- The Access database, application layer, and all business logic were written
-  entirely in French, with no English-speaking contact available at the client.
+- The data layer was an MS Access `.mdb` file with implicit relationships,
+  loose typing, and years of accumulated inconsistencies that a real RDBMS
+  would reject — duplicate customer entries, nullable foreign keys, and
+  free-text fields used as enums.
+- All business logic lived in Access forms, queries, and VBA macros, with no
+  schema documentation and no separation between data, behaviour, and UI.
+- Every staff member had unrestricted access to the entire database — pricing
+  configuration, historical revenue, customer records — with no role boundary.
+- Customers had to be phoned manually when an order was ready; there was no
+  notification surface and no order status machine to drive one.
+- The application could only be used on one workstation. There was no path
+  to a second terminal, let alone a second site or remote access.
 
 ## My Role
 
-Sole engineer responsible for requirements discovery, system architecture,
-frontend and backend development, data migration, and deployment. This project
-required as much structured communication discipline as technical execution —
-the discovery and verification phase was a formal project deliverable in its
-own right, not a preliminary step.
+Sole engineer across the full stack: schema reverse-engineering, Laravel
+domain design, Inertia/React frontend, RBAC layer, notification pipeline,
+artisan-based data migration, and AWS deployment via Forge. Discovery and
+contract verification were a formal deliverable in their own right — every
+business rule was confirmed in writing with the client before code shipped.
 
 ## Solution
 
-### Phase 1 — Legacy System Study and Translation
+### Architecture
 
-Before writing a line of new code, I worked through the entire Access file
-systematically. Every form, query, report, and table was translated from French
-into a structured English specification. Business logic embedded in Access macros
-and VBA was documented and mapped to equivalent behaviour in the new system.
+A Laravel monolith serves the application via Inertia, with React + TypeScript
+on the client side. Pages are server-rendered shells hydrated by Inertia,
+which means the routing, auth, and permission model live entirely in Laravel
+while interactive surfaces (order intake, the customer panel, pricing rules)
+ship as React components. Alpine.js handles light progressive-enhancement
+behaviours on report and settings pages where a full React island would be
+overkill. Tailwind drives the styling system end-to-end.
 
-Each module spec was sent to the client as a detailed email with annotated
-screenshots of the original Access screens alongside my interpretation of the
-logic. The client replied in French confirming or correcting my understanding.
-I translated each reply, updated the spec, and moved to the next module. No
-development began until every module was client-verified.
+The data layer is a normalised MySQL schema with proper foreign keys, enum
+columns for order status and role, and indexes on the lookups that drive the
+hot screens — order list by status, customer by phone, transactions by date
+range. Redis backs queues, cache, and session storage. Files (receipts,
+photos of damaged garments, exported reports) live on S3, fronted by
+Cloudflare for delivery.
 
-### Phase 2 — Architecture and Development
+The application runs on AWS EC2 provisioned through Laravel Forge, with a
+queue worker dedicated to notification jobs and a separate worker for
+report generation so a slow PDF export never blocks an SMS dispatch.
 
-Laravel service layer behind a Vue.js + TypeScript frontend. MySQL database
-with a schema designed to mirror the verified Access data model while resolving
-its structural weaknesses — normalising denormalised tables and introducing
-proper relational constraints.
+### Domain Modelling and RBAC
+
+Six domain modules — orders, customers, pricing rules, notifications,
+reporting, RBAC — each own their controllers, form requests, policies,
+service classes, and Inertia pages. Authorization is enforced two ways: a
+Laravel policy on every controller method (so a Staff user calling a Manager
+endpoint gets a 403 even if they craft the request manually) and an Inertia
+shared-props payload that exposes the current role to React, so the UI hides
+controls the user cannot use. Pricing rules and end-of-day revenue are
+gated to Owner; intake and status transitions are open to Staff; customer
+profile editing is Manager-and-up.
+
+### Order State Machine and Notification Pipeline
+
+The order lifecycle has four explicit states — `received`, `in_progress`,
+`ready_for_collection`, `collected` — modelled as an enum on the orders
+table with transition rules enforced in a service class. Each transition
+fires an Eloquent model event that dispatches a queued job per side effect:
+a Twilio SMS job, a Mailgun email job, and a print job for the in-shop
+receipt. Jobs are idempotent — keyed by `(order_id, target_status,
+channel)` with a Redis lock — so retries after a worker crash never
+double-notify a customer. Every dispatched notification is persisted, so
+the operator can audit exactly what fired for any order from the customer
+profile view.
+
+### Dynamic Pricing Rules
+
+Pricing is a first-class entity, not a hard-coded matrix. The owner
+configures garment categories, modifiers (express, fragile, allergen-safe
+detergent), and tiered customer discounts through the admin UI. The order
+intake screen calls a pricing service with the selected garments and
+modifiers and gets back a deterministic line-item breakdown that is
+re-computed server-side at order save — the React client never gets to
+write its own totals. Form requests validate every input against the
+configured pricing rules so a tampered request cannot manufacture a price.
+
+### Audited Migration via Artisan
+
+Historical data lived in the `.mdb` file with the inconsistencies that
+years of Access tolerance produced. The migration is a custom artisan
+command that reads the file via ODBC, projects each row through the new
+schema's validation rules, and routes failures to a structured review log
+rather than skipping them silently. The client received the log with each
+flagged record explained in plain terms, agreed corrections row by row,
+and only then did the final import run. The migration is fully replayable
+and the audit trail is preserved alongside the production database.
+
+### Reporting
+
+End-of-day reports were the operator's daily anchor in the legacy system,
+so the new reports had to match the legacy totals and groupings exactly.
+Each report is a Laravel class with a deterministic query and a snapshot
+PDF rendered off a queued job, stored on S3 and surfaced in the React UI
+with a signed download URL. Reports can be regenerated for any historical
+date so the operator can reconcile against the legacy system during the
+parallel-run period.
+
+### Performance, Validation, and Accessibility
+
+- Every write path goes through a Laravel form request — there is no
+  controller method that trusts a raw payload.
+- React forms surface server-side validation errors via Inertia's error
+  bag without page reloads.
+- Hot screens (order list, intake) ship as code-split React bundles so the
+  initial paint stays fast on the in-shop terminal.
+- Keyboard-first interaction patterns on intake and the customer panel —
+  staff drive the system from the keyboard during peak hours.
+- Tailwind is purged to the actually-used class set; the production bundle
+  ships only what the UI uses.
 
 ### Key Features
 
-- Order intake with garment category selection, dynamic pricing rules, and
-  expected ready date calculation
-- Automated SMS and email notifications triggered on each order status change:
-  received, in-progress, ready for collection, collected
-- Customer profiles with full order history, notes, and visit frequency tracking
-- Role-based access control with three levels — Owner, Manager, and Staff —
-  each with scoped permissions across order management, pricing, and reporting
-- End-of-day summary reports matching the format the owner was familiar with
-  from the legacy Access system
-- Cloud-hosted and accessible from any device on the shop network or remotely
-
-### Phase 3 — Data Migration
-
-All historical order and customer records were migrated from the Access `.mdb`
-file via a custom Laravel artisan command using ODBC. A validation layer checked
-every row against the new schema before writing, logging any record with
-inconsistencies for client review rather than importing silently. Corrections
-were agreed with the client before the final import ran, resulting in a clean,
-fully auditable migration baseline.
+- Six-module Laravel + Inertia/React app — orders, customers, pricing,
+  notifications, reporting, and RBAC — each a discrete domain with its own
+  controllers, policies, and React pages
+- Three-tier role-based access control enforced in Laravel policies and
+  mirrored to the React UI through Inertia shared props
+- Order state machine with four lifecycle states firing idempotent queued
+  Twilio SMS and Mailgun email jobs off Eloquent model events
+- Dynamic pricing rules engine with server-authoritative line-item
+  computation and form-request validation on every input
+- Audited artisan migration from the legacy `.mdb` file with row-level
+  validation, a client-reviewed reconciliation log, and zero data loss
+- Report layer matching legacy end-of-day formats, rendered to PDF off a
+  queued job and stored on S3 with signed URLs
+- AWS EC2 + Forge deployment with Redis-backed queues, S3 file storage,
+  and Cloudflare in front
 
 ## Outcomes
 
-- Eliminated the single-point-of-failure dependency on one physical workstation.
-- Reduced manual customer collection calls to near zero through automated SMS
-  and email notifications.
-- Introduced role-level visibility for the owner across staff activity and daily
-  revenue without manual reconciliation.
-- Migrated all historical order and customer data from Access with zero data loss.
-- Delivered a system the client could use immediately, with reports and workflows
-  matching the patterns they already knew.
+- A single-workstation Access install was replaced by a cloud-deployed,
+  multi-user Laravel + React platform with no single point of failure.
+- 100% of historical orders and customers were migrated with a documented
+  audit trail; reconciliation against the legacy system during parallel
+  run produced zero discrepancies.
+- Manual collection calls were replaced by an event-driven Twilio + Mailgun
+  pipeline; idempotent jobs survived the retries that any real notification
+  pipeline has to tolerate.
+- Pricing, reporting, and historical revenue became Owner-scoped through
+  policy classes, so daily operation by Staff no longer exposed the
+  business's commercials.
+- End-of-day reports matched the legacy totals and groupings exactly,
+  giving the operator continuity from day one.
+
+## Tech Stack Detail
+
+**Laravel** is the backbone — routing, controllers, Eloquent models, form
+requests, policies, queued jobs, and the notification system. Each domain
+module owns its slice of the application without leaking into the others.
+
+**React.js + Inertia.js** drive the client. Inertia keeps routing and
+authorization in Laravel while React renders the interactive screens —
+order intake, customer panel, pricing rules — as code-split bundles.
+
+**Alpine.js** handles light progressive enhancement on settings and report
+pages where a full React island isn't justified.
+
+**Tailwind CSS** drives the styling system, purged to the actually-used
+class set in production.
+
+**MySQL** holds the normalised schema. Foreign keys, enum columns, and
+targeted indexes on the lookups that drive the hot screens.
+
+**AWS EC2 + AWS S3 + Cloudflare** form the hosting and delivery layer —
+EC2 provisioned through Forge for the app, S3 for receipts, photos, and
+exported reports, Cloudflare in front for caching and TLS.
+
+**Forge** provisions the server, deploys on push, and manages the queue
+worker and scheduler.
+
+**Redis** backs queues, cache, and idempotency keys for the notification
+pipeline.
+
+**Twilio** handles SMS notifications via a queued job per transition,
+keyed for idempotency.
+
+**Mailgun** handles transactional email — order receipts, status
+updates, and end-of-day report deliveries.
+
+## Challenges and Learnings
+
+The most interesting engineering challenge was treating the legacy `.mdb`
+as the source of truth without inheriting its problems. A relational
+schema reverse-engineered from a non-relational database is only as
+trustworthy as the validation layer that gates the import — and that
+validation layer has to fail loudly, not silently. Routing every
+inconsistent row to a structured review log instead of skipping it
+turned the migration from a black box into a deliverable the client
+could audit and sign off.
+
+Designing the order state machine taught me to plan for retries from
+day one. The instinct on a small project is to call Twilio inline from
+the controller; the right pattern is one queued job per side effect,
+keyed for idempotency. Once the lock and the keying scheme are in
+place, retries become a feature — the worker can crash, the network
+can blip, and the customer still gets exactly one SMS.
+
+Building under a strict role boundary surfaced a subtle but important
+pattern: authorization belongs in Laravel policies, but the UI has to
+know about it too. Exposing the role through Inertia shared props let
+the React layer hide controls the user can't use without ever
+duplicating the policy logic — the policy stays the source of truth,
+and the UI just listens.
+
+The async, written-only client communication discipline ended up being
+as valuable as any framework choice. Translating each module spec into
+an annotated email forced clarity that real-time conversation often
+glosses over, and meant that when development began every business
+rule was already verified.

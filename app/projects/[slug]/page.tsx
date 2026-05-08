@@ -121,6 +121,17 @@ export default async function ProjectDetailPage({
             <p className="mt-6 max-w-3xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
               {fm.summary}
             </p>
+            {fm.liveUrl ? (
+              <a
+                href={fm.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--color-accent-blue)] px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[var(--color-accent-blue-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-blue)]"
+              >
+                Visit site
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
           </div>
 
           <div className="mt-12 md:mt-16">

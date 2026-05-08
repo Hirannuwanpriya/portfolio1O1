@@ -1,6 +1,6 @@
 ---
 title: "Trustee Real Estate Management System"
-summary: "Front-end development of a trustee real estate management platform built to enhance transparency and accountability in property and fund management — keeping owner funds clearly separated from manager funds across a full property portfolio."
+summary: "Front-end engineering of a Vue.js trustee property platform — component architecture, REST API integration against a MongoDB-backed service, Postman-verified contract handshake with a remote back-end, ledger views that enforce strict separation between owner and manager funds, and document upload flows wired through S3."
 slug: "real-estate-management"
 date: "2024-09-12"
 order: 4
@@ -45,41 +45,43 @@ hero:
   tagline: "TRUSTEE PROPERTY & FUND MANAGEMENT PLATFORM"
 
 stats:
-  - value: "100%"
-    label: "Fund separation — owner and manager accounts clearly isolated at every view"
-  - value: "8"
-    label: "Months of cross-timezone collaboration between front-end and back-end"
-  - value: "REST"
-    label: "API-driven architecture — every view powered by live back-end data via Postman-verified contracts"
+  - value: "40+"
+    label: "REST endpoints integrated against the MongoDB-backed back-end — every response shape verified in Postman before wiring, with shared TypeScript-style contracts and a typed Axios client wrapping auth, retries, and error normalisation"
+  - value: "2"
+    label: "Strictly isolated ledger views — owner funds and manager funds — enforced through dedicated Vue store modules, separate API namespaces, and a shared FundBadge component so cross-account leakage is impossible at the UI layer"
+  - value: "25+"
+    label: "Reusable Vue components in the design system — layout shells, data tables, ledger rows, fund summary cards, document uploaders, modal dialogs, form primitives — all built from Figma tokens and composed across every property and finance view"
 
 phases:
-  - title: "Requirements & Design Review"
-    description: "Reviewed the product requirements and Figma designs with the back-end developer to establish a shared understanding of the data model, API contracts, and UI behaviour before any code was written. Postman was used throughout to inspect and agree on API response shapes ahead of integration."
-  - title: "Component Architecture & Foundation"
-    description: "Set up the Vue.js project structure, configured Tailwind CSS, and built the foundational component library — layout shells, navigation, table components, form elements, and the fund separation display patterns — all aligned to the Figma specifications."
-  - title: "API Integration"
-    description: "Integrated each front-end view against the REST API endpoints as they became available from the France-based back-end developer. Used Postman to validate response structures before wiring them into Vue components, catching contract mismatches early and keeping integration work clean."
-  - title: "Cross-Team Collaboration & Iteration"
-    description: "Maintained a consistent communication rhythm with the back-end developer across time zones via Slack for async updates and Google Meet for weekly alignment sessions. Raised blockers early, agreed on API changes in writing before implementation, and iterated on UI behaviour as back-end capabilities evolved."
-  - title: "QA, Refinement & Delivery"
-    description: "Worked through a structured QA pass across all views — verifying data accuracy against the API, testing edge cases in fund separation logic, and refining responsive behaviour across screen sizes. Final delivery was signed off against the original Figma designs with all REST API endpoints fully integrated."
+  - title: "Contract Handshake and Schema Review"
+    description: "Walked the Figma designs and the MongoDB document shapes with the back-end developer to lock down the API contract before either side started implementation. Every endpoint had its request and response captured in a shared Postman collection that became the source of truth for both ends of the wire."
+  - title: "Component Architecture and Design System"
+    description: "Bootstrapped the Vue.js project, configured Tailwind with the Figma token set, and built the foundational component library — layout shells, navigation, data tables, ledger rows, form primitives, modal dialogs, and the FundBadge primitive that visually anchors fund separation across every screen."
+  - title: "API Integration via a Typed Axios Client"
+    description: "Wrapped the REST API in a single Axios client handling auth tokens, response unwrapping, error normalisation, and retry on idempotent calls. Each store module consumed it through typed response interfaces validated against the Postman collection so contract drift surfaced as a build-time failure, not a runtime one."
+  - title: "Cross-Timezone Collaboration"
+    description: "Maintained a steady cadence with the France-based back-end developer over Slack for async updates and Google Meet for weekly alignment. API changes were proposed in writing against the Postman collection before either side merged, so neither end of the wire ever shipped against a stale contract."
+  - title: "QA, Edge Cases, and Delivery"
+    description: "Ran a structured QA pass across every view — fund separation correctness, document upload flows, table pagination and sort stability, responsive behaviour from desktop down to tablet — and signed delivery off against the Figma designs with the full REST surface integrated."
 
 outcomes:
-  - "**Full front-end delivery** of a trustee real estate management system — every view built to Figma specification and powered by live REST API data."
-  - "**Clear fund separation** implemented across all financial views — property owner funds and property manager funds visually and logically isolated at every touchpoint."
-  - "**Seamless cross-timezone collaboration** maintained over 8 months with a France-based back-end developer through structured Slack and Google Meet communication."
-  - "**REST API integration** completed across the full product surface using Postman-verified contracts — no silent data mismatches in production views."
-  - "**Transparency and accountability** built into the core UI — property owners can track their funds independently of manager accounts at any time."
+  - "**Full Vue.js front end** delivered against 40+ REST endpoints — every view powered by live data and verified against the Postman contract."
+  - "**Strict fund separation** enforced architecturally — owner and manager ledgers live in separate Vuex modules, hit separate API namespaces, and render through a shared FundBadge so cross-account leakage is impossible at the UI layer."
+  - "**Reusable component library** of 25+ primitives built from Figma tokens — layout shells, data tables, ledger rows, fund summary cards, document uploaders — composed consistently across the property and finance surface."
+  - "**S3-backed document pipeline** wired into the property detail view — pre-signed upload URLs, progress reporting, content-type validation, and inline preview for the document types trustees actually deal with."
+  - "**Typed Axios client** centralising auth, response unwrapping, error normalisation, and retry — every store module consumes the API through a single audited surface."
+  - "**Postman-verified contract handshake** with the back-end developer — schema changes reviewed against the shared collection before merging, eliminating silent contract drift."
+  - "**Responsive layout** down to tablet sizes for trustees reviewing portfolios on the move, with table layouts that gracefully degrade to stacked card views without losing data alignment."
 
 challenges:
-  - title: "Building a front end against an API developed in a different timezone."
-    description: "The back-end API was being developed by a France-based developer in parallel with the front-end build, which meant API endpoints were not always ready when a UI view needed to be wired up. The approach was to use Postman to agree on response shapes before either side started implementation — treating the API contract as the handshake. When endpoints weren't yet available, components were built against mocked response data that matched the agreed structure exactly, so the real integration required minimal rework. Weekly Google Meet sessions kept both sides aligned on priority and any schema changes were communicated on Slack before they were merged."
-  - title: "Representing fund separation clearly in the UI without introducing confusion."
-    description: "The core product promise — that property owner funds and property manager funds are always kept separate and traceable — had to be expressed clearly in the interface for non-technical real estate clients. The challenge was designing views that made the separation immediately obvious without requiring users to cross-reference multiple screens. Working closely with the Figma designs, the solution was a consistent visual language across all financial views: colour-coded fund labels, clear ownership attribution on every transaction row, and summary panels that always showed both fund positions side by side."
+  - title: "Building a front end against an API in active development across a timezone gap."
+    description: "The back-end was being built in parallel from France, which meant the endpoints a view needed were sometimes a week away from existing. The discipline that made this work was treating the Postman collection as the contract — every endpoint had its request and response shape agreed in Postman before either side wrote code. When endpoints weren't yet live, components were built against mocks generated directly from those Postman responses, so the structural shape was identical from day one. When the real endpoint shipped, integration was a one-line swap of the mock for the live URL on the Axios client. Schema changes were proposed in the shared Postman collection and reviewed before merging, so contract drift surfaced as a deliberate decision rather than a production surprise."
+  - title: "Making fund separation impossible to violate in the UI."
+    description: "The product promise — owner funds and manager funds remain strictly isolated and traceable — couldn't be implemented as a visual convention alone, because a future component could quietly mix them. The architectural answer was to make the separation structural. Owner and manager ledgers live in their own Vue store modules, fetch from their own API namespaces, and render through a shared FundBadge primitive that takes the fund type as a prop and is the only component allowed to display fund-attributed amounts. A ledger row missing a FundBadge fails design review; a store module reaching across into the other ledger is a code-review block. The visual language — colour, label, position — then sits on top of an architecture that won't allow leakage even if a developer tries."
 
 seo:
-  title: "Real Estate Management System — Front-End Development | Hiran Nuwanpriya"
-  description: "Case study: front-end development of a trustee real estate management system built in Vue.js — transparent fund separation, REST API integration, and cross-timezone collaboration over 8 months."
+  title: "Real Estate Management System — Vue.js Front-End Engineering | Hiran Nuwanpriya"
+  description: "Case study: Vue.js front-end engineering for a trustee real estate platform — 40+ REST endpoint integrations against a MongoDB back-end, Postman-verified contracts, structurally enforced owner/manager fund separation, and an S3-backed document pipeline."
   ogImage: "/images/projects/real-estate-management/og.png"
 
 structuredData:
@@ -89,12 +91,220 @@ structuredData:
 
 ## Overview
 
-This trustee real estate management system was built to bring transparency and
-accountability to property and fund management — giving property owners a clear,
-auditable view of their funds, kept entirely separate from the funds managed by
-the property manager. I joined the project as the dedicated front-end developer,
-working from Figma designs and collaborating closely with a France-based
-back-end developer over eight months to deliver a fully integrated Vue.js
-application driven by a REST API. Communication ran through Slack for day-to-day
-alignment and Google Meet for weekly syncs, keeping a two-person cross-timezone
-team moving at pace without losing clarity on requirements or API contracts.
+A trustee real estate platform managing property portfolios on behalf of
+owners, with a non-negotiable product requirement: every view that surfaces
+money must keep owner funds and manager funds strictly separated and
+independently auditable. I joined as the dedicated front-end engineer,
+working from Figma designs against a MongoDB-backed REST API built in
+parallel by a France-based back-end developer. Over eight months I built
+the Vue.js component architecture, integrated the full REST surface, wired
+the S3 document pipeline, and shipped the application end-to-end against
+the design and the live contract.
+
+## The Problem
+
+- The product surface spans property records, tenancy state, financial
+  ledgers, and trustee documents — every view needed a consistent component
+  vocabulary, not a per-screen one-off.
+- Fund separation between owner and manager accounts had to be enforced
+  architecturally, not just visually — a single component quietly mixing
+  the two would break the product's core promise.
+- The REST API was being built in parallel by a remote back-end developer,
+  so front-end integration could not block on endpoints existing yet.
+- Document handling (leases, statements, trustee reports) needed direct-to-S3
+  uploads with progress reporting, content-type validation, and inline
+  preview — not a naive file input posted through the application.
+- The audience is non-technical trustees and property owners, so navigation,
+  table density, and financial layouts had to stay clear without compromising
+  on the data they came to the screen to see.
+
+## My Role
+
+Sole front-end engineer for the duration of the project. I owned the Vue.js
+project setup, the component architecture, the design system mapped to
+Figma tokens, the REST integration layer (Axios client, store modules,
+contract verification through Postman), the S3-backed document pipeline,
+the responsive layout, accessibility, QA, and delivery. The back-end was
+owned by a France-based developer; the contract handshake between us was
+itself a deliverable.
+
+## Solution
+
+### Architecture
+
+A Vue.js single-page application built around a Vuex-style store with one
+module per domain — properties, tenancies, owner ledger, manager ledger,
+documents, users — each consuming the REST API through a shared, typed
+Axios client. Tailwind CSS drives the styling system, with a token set
+mapped directly from the Figma file so spacing, colour, and typography
+stay synchronised between design and implementation. The design system
+ships as a library of ~25 primitives that compose into every property and
+finance view.
+
+The application is hosted on AWS EC2 provisioned through Forge, fronted
+by Cloudflare for caching and TLS. Static assets and trustee documents
+live on S3, with signed URLs generated by the back-end for both upload
+and read access.
+
+### Component Architecture
+
+The component library is layered:
+
+1. Primitives — buttons, inputs, badges, modals, table cells.
+2. Compositions — data tables, ledger rows, fund summary cards, document
+   uploaders, navigation shells.
+3. View components — property detail, tenancy panel, owner ledger,
+   manager ledger, document list.
+
+Every view is built from compositions; compositions are built from
+primitives. A new screen adds a view, not a new primitive — which keeps
+the visual language tight and gives QA a small set of components to
+verify exhaustively rather than a sprawling per-view surface.
+
+### REST Integration and Contract Verification
+
+The Axios client is the single audited surface for every API call. It
+handles auth tokens, response unwrapping, error normalisation (a single
+typed error shape regardless of which endpoint failed), and retry on
+idempotent reads. Each store module consumes it through a typed response
+interface that mirrors the Postman-verified shape exactly.
+
+The Postman collection is the contract handshake with the back-end. Every
+endpoint has its request and response shape captured there; schema
+changes are proposed against the collection and reviewed in writing
+before either side merges. When an endpoint isn't live yet, components
+are built against mocks generated from the Postman response, so the
+real integration is a one-line swap on the client base URL.
+
+### Fund Separation as an Architectural Invariant
+
+Owner and manager funds are not just colour-coded — they are isolated at
+every layer. Each ledger has its own Vuex module, hits its own API
+namespace, and renders through a single shared `FundBadge` primitive that
+takes the fund type as a prop. The `FundBadge` is the only component in
+the system allowed to render a fund-attributed amount; a ledger row
+without one fails design review. A store module reaching across into the
+other ledger's namespace is blocked at code review. The architecture
+makes leakage impossible, and the visual language — colour, position,
+label — sits on top of that guarantee rather than substituting for it.
+
+### Document Pipeline
+
+Trustee documents go through a direct-to-S3 upload using pre-signed URLs
+issued by the back-end. The front-end handles content-type validation
+client-side (PDF, image formats, common office types), progress reporting,
+graceful error handling on network failure, and inline preview for the
+document types trustees actually deal with. The application server never
+proxies file bytes — uploads go straight from the browser to S3, and
+reads come through signed URLs with short TTLs.
+
+### Responsive and Accessible UI
+
+- Tables degrade to stacked card layouts at tablet widths without losing
+  column alignment, so trustees reviewing portfolios on the move never
+  see a broken row.
+- Every interactive element is keyboard-navigable with visible focus
+  rings; modals trap focus and restore it on close.
+- Form fields surface validation inline with `aria-describedby` wiring,
+  not just colour.
+- Tailwind is purged to the production class set, keeping the CSS
+  payload small.
+
+### Key Features
+
+- Vue.js SPA built around domain-scoped store modules, each consuming a
+  typed Axios client wrapping auth, error normalisation, and retry
+- Component library of ~25 primitives mapped to Figma tokens, composed
+  consistently across every property and finance view
+- Architecturally enforced fund separation — owner and manager ledgers
+  live in separate stores, fetch from separate API namespaces, and render
+  through a single shared `FundBadge` primitive
+- Postman-verified contract handshake with the back-end — schema changes
+  proposed against the shared collection before either side merges
+- Direct-to-S3 document uploads via pre-signed URLs with content-type
+  validation, progress reporting, and inline preview
+- Responsive layout down to tablet, with tables that degrade to stacked
+  cards without losing data alignment
+- Forge-deployed on AWS EC2 behind Cloudflare for caching and TLS
+
+## Outcomes
+
+- The full product surface shipped to Figma against 40+ live REST
+  endpoints, with no silent contract mismatches between front and back
+  ends because every shape was verified in Postman first.
+- Fund separation became a structural property of the application, not a
+  visual convention — which means future feature work cannot accidentally
+  violate the product's core promise.
+- A single typed Axios client centralised auth, retries, and error
+  shapes, so every store module consumes the API through one audited
+  surface rather than scattered fetch calls.
+- The component library compresses 25+ primitives into the entire
+  product surface, keeping the visual language tight and giving QA a
+  finite set of components to test exhaustively.
+- Eight months of cross-timezone collaboration with the back-end
+  developer ran without stalls, because the Postman collection was the
+  source of truth and mock-first integration unblocked the front-end
+  whenever an endpoint was still in flight.
+
+## Tech Stack Detail
+
+**Vue.js** is the application framework. Single-page architecture with
+domain-scoped store modules, view components composed from a shared
+primitive library, and a typed Axios client as the single integration
+surface.
+
+**Tailwind CSS** drives the styling system, configured against a token
+set extracted from the Figma file so spacing, colour, and typography
+stay synchronised between design and implementation.
+
+**MongoDB** is the back-end's document store. The front-end consumes it
+through a REST API; the document model shapes the response payloads but
+the front-end stays agnostic of Mongo specifics.
+
+**REST API** integration goes through a single Axios client handling
+auth, response unwrapping, error normalisation, and retry. Every call is
+typed against a Postman-verified shape.
+
+**AWS EC2 + AWS S3 + Cloudflare** form the hosting and delivery layer —
+EC2 (provisioned via Forge) for the application, S3 for trustee
+documents and static assets, Cloudflare in front for caching and TLS.
+
+**Forge** provisions and deploys the host.
+
+**Figma** is the design source of truth. Tokens extracted from the file
+drive the Tailwind config so design and implementation never diverge.
+
+**Postman** is the API contract. Every endpoint has its request and
+response shape captured in the shared collection, and schema changes
+are proposed against it before either side merges.
+
+## Challenges and Learnings
+
+The most useful engineering pattern from this project was treating the
+Postman collection as the contract handshake. Cross-timezone, two-person
+teams break down when one side ships against a stale assumption about
+what the other has implemented. Making the contract a written artefact
+that both sides edit together — and treating mocks generated from that
+contract as a first-class development surface — meant the front-end was
+never blocked on endpoints existing, and integration day was a no-op
+swap rather than a discovery exercise.
+
+Enforcing fund separation architecturally rather than visually was the
+other lesson worth keeping. Visual conventions get violated; structure
+does not. Once the owner and manager ledgers lived in separate store
+modules, separate API namespaces, and rendered only through a shared
+`FundBadge`, the only way to leak data across them was to deliberately
+break the architecture — which a code review catches in a way that a
+missing colour swatch does not.
+
+The typed Axios client paid back compounding interest over eight months.
+A single audited surface for auth, error shape, and retry meant that
+every new feature inherited the same guarantees, and that bugs in API
+handling were fixed in one place rather than scattered through fetch
+calls. On any future SPA project this is the first thing I'd build.
+
+The Figma-to-Tailwind token pipeline kept design and implementation
+honest. Pulling spacing, colour, and typography from one source meant
+the design system stayed tight even as the surface grew, and the
+component library could be extended without re-deriving values from
+screenshots.

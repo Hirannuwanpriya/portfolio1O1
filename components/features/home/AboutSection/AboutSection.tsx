@@ -40,7 +40,7 @@ export default function AboutSection() {
               I've delivered products for clients across Australia, Europe, and Asia — from SaaS platforms to eCommerce, Education and healthcare systems.
             </p>
             <div className="mt-8">
-              <ArrowButton href="/contact" variant="inline">
+              <ArrowButton href="/projects" variant="inline">
                 Portfolio
               </ArrowButton>
             </div>
