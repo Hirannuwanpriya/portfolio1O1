@@ -168,7 +168,7 @@ export default async function ProjectDetailPage({
 
           {fm.challenges && fm.challenges.length > 0 ? (
             <section className="mt-16 md:mt-24">
-              <SectionHeading>Challenges &amp; Learnings</SectionHeading>
+              <SectionHeading styleClass="text-[var(--color-text-primary)]">Challenges &amp; Learnings</SectionHeading>
               <div className="mt-6">
                 <ChallengesList challenges={fm.challenges} />
               </div>
