@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
+import { Analytics } from "@/components/common/analytics";
 import { Footer, Header } from "@/components/layout";
 import { SITE_LOCALE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -66,6 +67,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
+        <Analytics />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded focus:bg-[var(--color-text-primary)] focus:px-4 focus:py-2 focus:text-sm focus:text-white"
