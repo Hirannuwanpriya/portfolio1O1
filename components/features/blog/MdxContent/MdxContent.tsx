@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 
 interface MdxContentProps {
   source: string;
@@ -95,6 +96,37 @@ const mdxComponents = {
       className="mt-6 overflow-x-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-5 font-mono text-sm leading-relaxed text-[var(--color-text-primary)]"
     />
   ),
+  table: (props: ComponentPropsWithoutRef<"table">) => (
+    <div className="mt-8 -mx-6 overflow-x-auto md:mx-0">
+      <div className="min-w-full px-6 md:px-0">
+        <table
+          {...props}
+          className="w-full border-collapse text-left text-sm leading-relaxed text-[var(--color-text-primary)] md:text-base"
+        />
+      </div>
+    </div>
+  ),
+  thead: (props: ComponentPropsWithoutRef<"thead">) => (
+    <thead {...props} className="border-b border-[var(--color-border)]" />
+  ),
+  tbody: (props: ComponentPropsWithoutRef<"tbody">) => (
+    <tbody {...props} className="[&>tr:last-child>td]:border-b-0" />
+  ),
+  tr: (props: ComponentPropsWithoutRef<"tr">) => (
+    <tr {...props} className="align-top" />
+  ),
+  th: (props: ComponentPropsWithoutRef<"th">) => (
+    <th
+      {...props}
+      className="px-4 py-3 font-semibold text-[var(--color-text-primary)] first:pl-0 last:pr-0"
+    />
+  ),
+  td: (props: ComponentPropsWithoutRef<"td">) => (
+    <td
+      {...props}
+      className="border-b border-[var(--color-border)] px-4 py-3 align-top text-[var(--color-text-secondary)] first:pl-0 last:pr-0"
+    />
+  ),
   a: ({ href, children, ...rest }: ComponentPropsWithoutRef<"a">) => {
     if (!href) {
       return <a {...rest}>{children}</a>;
@@ -145,7 +177,11 @@ const mdxComponents = {
 export default function MdxContent({ source }: MdxContentProps) {
   return (
     <div className="mx-auto max-w-3xl">
-      <MDXRemote source={source} components={mdxComponents} />
+      <MDXRemote
+        source={source}
+        components={mdxComponents}
+        options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+      />
     </div>
   );
 }

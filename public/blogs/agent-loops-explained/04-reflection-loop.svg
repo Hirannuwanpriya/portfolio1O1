@@ -1,0 +1,23 @@
+<svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" width="680" height="220" font-family="sans-serif">
+  <rect width="680" height="220" fill="#FFFFFF"/>
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#6B7280" />
+    </marker>
+  </defs>
+  <rect x="30" y="80" width="140" height="55" rx="8" fill="#FFFFFF" stroke="#111418" stroke-width="2"/>
+  <text x="100" y="112" text-anchor="middle" font-size="13" fill="#111418" font-weight="600">Generate</text>
+
+  <rect x="270" y="80" width="140" height="55" rx="8" fill="#FFFFFF" stroke="#7D3C98" stroke-width="2"/>
+  <text x="340" y="105" text-anchor="middle" font-size="13" fill="#111418" font-weight="600">Critique</text>
+  <text x="340" y="122" text-anchor="middle" font-size="10" fill="#6B7280">vs. the goal</text>
+
+  <rect x="510" y="80" width="140" height="55" rx="8" fill="#111418"/>
+  <text x="580" y="105" text-anchor="middle" font-size="13" fill="#FFFFFF" font-weight="600">Good enough?</text>
+  <text x="580" y="122" text-anchor="middle" font-size="10" fill="#F9D5A3">yes → return</text>
+
+  <line x1="170" y1="107" x2="268" y2="107" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow4)"/>
+  <line x1="410" y1="107" x2="508" y2="107" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow4)"/>
+  <path d="M510,135 C400,190 200,190 100,135" fill="none" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow4)"/>
+  <text x="305" y="205" text-anchor="middle" font-size="11" fill="#6B7280">no → revise with critique as context</text>
+</svg>

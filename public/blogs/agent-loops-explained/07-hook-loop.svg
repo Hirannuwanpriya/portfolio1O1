@@ -1,0 +1,22 @@
+<svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" width="680" height="200" font-family="sans-serif">
+  <rect width="680" height="200" fill="#FFFFFF"/>
+  <defs>
+    <marker id="arrow7" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#6B7280" />
+    </marker>
+  </defs>
+  <rect x="30" y="75" width="130" height="50" rx="8" fill="#FFFFFF" stroke="#C0392B" stroke-width="2"/>
+  <text x="95" y="105" text-anchor="middle" font-size="12" fill="#111418" font-weight="600">PR opened</text>
+
+  <rect x="30" y="135" width="130" height="40" rx="8" fill="none" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="95" y="159" text-anchor="middle" font-size="10" fill="#6B7280">(or webhook / file change)</text>
+
+  <rect x="250" y="75" width="150" height="50" rx="8" fill="#FFFFFF" stroke="#3498DB" stroke-width="2"/>
+  <text x="325" y="105" text-anchor="middle" font-size="13" fill="#111418" font-weight="600">Listener / hook</text>
+
+  <rect x="490" y="75" width="150" height="50" rx="8" fill="#111418"/>
+  <text x="565" y="105" text-anchor="middle" font-size="13" fill="#FFFFFF" font-weight="600">Agent runs once</text>
+
+  <line x1="160" y1="100" x2="248" y2="100" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow7)"/>
+  <line x1="400" y1="100" x2="488" y2="100" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow7)"/>
+</svg>
